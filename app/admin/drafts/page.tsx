@@ -4,6 +4,7 @@ import { isAdmin } from '@/lib/admin/auth';
 import { getServiceClient } from '@/lib/supabase/server';
 import { getSettings } from '@/lib/settings';
 import AdminShell from '@/components/admin/AdminShell';
+import DraftsView, { type AdminDraft } from '@/components/admin/DraftsView';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,21 +13,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-type Draft = {
-  draft_id: string;
-  form_type: string;
-  name: string;
-  phone: string;
-  email: string;
-  city_slug: string;
-  message: string;
-  source_page: string;
-  field_count: number;
-  created_at: string;
-  updated_at: string;
-};
-
-async function loadDrafts(): Promise<Draft[]> {
+async function loadDrafts(): Promise<AdminDraft[]> {
   try {
     const supabase = getServiceClient();
     const { data, error } = await supabase
@@ -38,7 +25,19 @@ async function loadDrafts(): Promise<Draft[]> {
       console.warn('[admin] load drafts:', error.message || JSON.stringify(error));
       return [];
     }
-    return (data ?? []) as Draft[];
+    return (data ?? []).map((row) => ({
+      draft_id: String(row.draft_id),
+      form_type: String(row.form_type ?? 'quote'),
+      name: row.name ?? '',
+      phone: row.phone ?? '',
+      email: row.email ?? '',
+      city_slug: row.city_slug ?? '',
+      message: row.message ?? '',
+      source_page: row.source_page ?? '',
+      field_count: Number(row.field_count ?? 0),
+      created_at: String(row.created_at),
+      updated_at: String(row.updated_at),
+    }));
   } catch (err) {
     console.warn('[admin] load drafts exception:', err);
     return [];
@@ -50,124 +49,112 @@ export default async function AdminDraftsPage() {
   const settings = await getSettings();
   const drafts = await loadDrafts();
 
-  const last24h = drafts.filter(
-    (d) => Date.now() - new Date(d.updated_at).getTime() < 86400_000
-  ).length;
-  const withContact = drafts.filter((d) => d.phone || d.email).length;
+  const now = Date.now();
+  const last24h = drafts.filter((d) => now - new Date(d.updated_at).getTime() < 86400_000).length;
+  const last7d = drafts.filter((d) => now - new Date(d.updated_at).getTime() < 7 * 86400_000).length;
+  const withPhone = drafts.filter((d) => Boolean(d.phone)).length;
+  const withEmail = drafts.filter((d) => Boolean(d.email)).length;
 
   return (
     <AdminShell active="drafts" brand={settings.brand} logoUrl={settings.logoUrl}>
-      <div>
-        <h1 className="text-2xl font-bold text-ink">Abandoned drafts</h1>
-        <p className="mt-1 text-sm text-gray-soft">
-          Visitors who started filling a form but did not submit. Auto-saved every 1.5 seconds and on
-          page exit. Drafts are deleted automatically when the form is submitted successfully.
-        </p>
+      <div className="flex items-start justify-between flex-wrap gap-3">
+        <div className="max-w-2xl">
+          <h1 className="text-2xl font-bold text-ink">Abandoned drafts</h1>
+          <p className="mt-1 text-sm text-gray-soft">
+            Visitors who started filling a form but did not submit. Auto-saved every 1.5 seconds and on
+            page exit. Drafts with phone or email captured are warm leads worth a quick follow-up call.
+          </p>
+        </div>
       </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
-        <Stat label="Total drafts" value={drafts.length.toString()} />
-        <Stat label="Last 24 hours" value={last24h.toString()} />
-        <Stat label="With contact info" value={withContact.toString()} sub="Phone or email captured" />
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Stat
+          tone="primary"
+          label="Total drafts"
+          value={drafts.length.toString()}
+          sub={`${last7d} active in last 7 days`}
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5" aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 3v6h6" />
+            </svg>
+          }
+        />
+        <Stat
+          tone="amber"
+          label="Last 24 hours"
+          value={last24h.toString()}
+          sub={drafts.length > 0 ? `${Math.round((last24h / drafts.length) * 100)}% of all drafts` : '—'}
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5" aria-hidden>
+              <circle cx="12" cy="12" r="9" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 7v5l3 2" />
+            </svg>
+          }
+        />
+        <Stat
+          tone="green"
+          label="With phone"
+          value={withPhone.toString()}
+          sub="Direct call opportunities"
+          icon={
+            <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
+              <path d="M2.5 4.75A2.25 2.25 0 014.75 2.5h2.27a2.25 2.25 0 012.226 1.929l.43 3.014a2.25 2.25 0 01-.65 1.97l-1.2 1.2a14.25 14.25 0 006.06 6.06l1.2-1.2a2.25 2.25 0 011.97-.65l3.014.43a2.25 2.25 0 011.929 2.227V19.25A2.25 2.25 0 0119.5 21.5h-1.25C9.7 21.5 2.5 14.3 2.5 5.75V4.75z" />
+            </svg>
+          }
+        />
+        <Stat
+          tone="blue"
+          label="With email"
+          value={withEmail.toString()}
+          sub="Reachable via mailto"
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5" aria-hidden>
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path strokeLinecap="round" d="M3 7l9 6 9-6" />
+            </svg>
+          }
+        />
       </div>
 
-      <div className="mt-8 grid gap-4">
-        {drafts.length === 0 && (
-          <div className="rounded-xl border border-gray-line bg-white p-12 text-center text-gray-soft shadow-sm">
-            No abandoned drafts yet.
-          </div>
-        )}
-        {drafts.map((d) => (
-          <div key={d.draft_id} className="rounded-xl border border-gray-line bg-white p-5 shadow-sm transition hover:shadow-md">
-            <div className="flex items-start justify-between flex-wrap gap-3">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-primary">
-                    {d.form_type}
-                  </span>
-                  <span className="text-xs text-gray-soft">
-                    {d.field_count} field{d.field_count === 1 ? '' : 's'} filled
-                  </span>
-                </div>
-                <h3 className="mt-2 text-lg font-semibold text-ink">
-                  {d.name || <span className="italic text-gray-soft">No name yet</span>}
-                </h3>
-              </div>
-              <div className="text-xs text-gray-soft text-right">
-                <div>
-                  Last typed:{' '}
-                  {new Date(d.updated_at).toLocaleString('en-GB', {
-                    day: '2-digit',
-                    month: 'short',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </div>
-                <div>
-                  Started:{' '}
-                  {new Date(d.created_at).toLocaleString('en-GB', {
-                    day: '2-digit',
-                    month: 'short',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <dl className="mt-4 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
-              {d.phone && (
-                <div>
-                  <dt className="text-xs uppercase tracking-wide text-gray-soft">Phone</dt>
-                  <dd>
-                    <a href={`tel:${d.phone}`} className="text-primary hover:underline">
-                      {d.phone}
-                    </a>
-                  </dd>
-                </div>
-              )}
-              {d.email && (
-                <div>
-                  <dt className="text-xs uppercase tracking-wide text-gray-soft">Email</dt>
-                  <dd>
-                    <a href={`mailto:${d.email}`} className="text-primary hover:underline">
-                      {d.email}
-                    </a>
-                  </dd>
-                </div>
-              )}
-              {d.city_slug && (
-                <div>
-                  <dt className="text-xs uppercase tracking-wide text-gray-soft">City</dt>
-                  <dd className="capitalize text-ink">{d.city_slug}</dd>
-                </div>
-              )}
-              {d.source_page && (
-                <div>
-                  <dt className="text-xs uppercase tracking-wide text-gray-soft">Source page</dt>
-                  <dd className="text-ink break-all">{d.source_page}</dd>
-                </div>
-              )}
-            </dl>
-
-            {d.message && (
-              <div className="mt-4 rounded-lg bg-off-white p-3 text-sm text-ink">
-                <div className="text-xs uppercase tracking-wide text-gray-soft">Message so far</div>
-                <p className="mt-1 whitespace-pre-line">{d.message}</p>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+      <DraftsView drafts={drafts} />
     </AdminShell>
   );
 }
 
-function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
+type Tone = 'primary' | 'green' | 'blue' | 'amber';
+const TONE: Record<Tone, { iconWrap: string; iconColor: string; ring: string }> = {
+  primary: { iconWrap: 'bg-primary/10', iconColor: 'text-primary', ring: 'ring-primary/10' },
+  green: { iconWrap: 'bg-green-100', iconColor: 'text-green-700', ring: 'ring-green-100' },
+  blue: { iconWrap: 'bg-blue-100', iconColor: 'text-blue-700', ring: 'ring-blue-100' },
+  amber: { iconWrap: 'bg-amber-100', iconColor: 'text-amber-700', ring: 'ring-amber-100' },
+};
+
+function Stat({
+  label,
+  value,
+  sub,
+  tone = 'primary',
+  icon,
+}: {
+  label: string;
+  value: string;
+  sub?: string;
+  tone?: Tone;
+  icon?: React.ReactNode;
+}) {
+  const t = TONE[tone];
   return (
-    <div className="rounded-xl border border-gray-line bg-white p-5 shadow-sm">
-      <div className="text-xs font-semibold uppercase tracking-wide text-gray-soft">{label}</div>
-      <div className="mt-2 text-2xl font-extrabold text-ink tabular-nums">{value}</div>
+    <div className="rounded-xl border border-gray-line bg-white p-5 shadow-sm transition hover:shadow-md">
+      <div className="flex items-center justify-between gap-3">
+        <div className="text-xs font-semibold uppercase tracking-wide text-gray-soft">{label}</div>
+        {icon && (
+          <div className={`grid h-9 w-9 place-items-center rounded-lg ring-1 ${t.iconWrap} ${t.iconColor} ${t.ring}`}>
+            {icon}
+          </div>
+        )}
+      </div>
+      <div className="mt-3 text-2xl font-extrabold text-ink tabular-nums">{value}</div>
       {sub && <div className="mt-1 text-xs text-gray-soft">{sub}</div>}
     </div>
   );
