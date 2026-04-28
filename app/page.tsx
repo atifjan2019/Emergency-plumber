@@ -784,7 +784,7 @@ export default async function HomePage() {
 
       {/* SECTION 12: FAQ */}
       <section className="section bg-off-white">
-        <div className="container-content max-w-3xl">
+        <div className="container-content">
           <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">FAQs</span>
           <h2 className="mt-3">Plumbing services FAQs</h2>
           <p className="mt-3 text-gray-soft">If your question is not here, call us - a real dispatcher answers 24 hours a day.</p>

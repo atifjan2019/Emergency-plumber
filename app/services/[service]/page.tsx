@@ -122,7 +122,7 @@ export default async function ServicePage({ params }: { params: Promise<{ servic
 
       {/* QUICK ANSWER + WHAT'S INCLUDED + STARTING PRICE */}
       <section className="section">
-        <div className="container-content max-w-5xl">
+        <div className="container-content">
           <div className="grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-7">
               <h2>What this service covers</h2>
@@ -587,7 +587,7 @@ export default async function ServicePage({ params }: { params: Promise<{ servic
 
       {/* SECTION 12: FAQ */}
       <section className="section bg-off-white">
-        <div className="container-content max-w-3xl">
+        <div className="container-content">
           <h2>{service.name} FAQs</h2>
           <p className="mt-3 text-gray-soft">If your question is not here, call us - a real dispatcher answers 24 hours a day.</p>
           <div className="mt-8">
