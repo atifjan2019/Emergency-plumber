@@ -11,6 +11,16 @@ export type LeadActionState = {
   message: string;
 };
 
+export const LEAD_STATUSES = ['new', 'contacted', 'complete', 'lost'] as const;
+export type LeadStatus = (typeof LEAD_STATUSES)[number];
+
+const STATUS_LABEL: Record<LeadStatus, string> = {
+  new: 'New',
+  contacted: 'In progress',
+  complete: 'Complete',
+  lost: 'Lost',
+};
+
 const trim = (v: FormDataEntryValue | null) =>
   typeof v === 'string' ? v.trim() : '';
 const orNull = (v: string) => (v ? v : null);
@@ -47,6 +57,7 @@ export async function createLead(
         city_slug: orNull(citySlug),
         message,
         source_page: orNull(sourcePage) ?? 'admin',
+        status: 'new',
       })
       .select('id')
       .single();
@@ -83,6 +94,7 @@ export async function updateLead(
   const citySlug = trim(formData.get('city_slug'));
   const message = trim(formData.get('message'));
   const sourcePage = trim(formData.get('source_page'));
+  const notes = trim(formData.get('notes'));
 
   if (!name || !message) {
     return { ok: false, message: 'Name and message are required.' };
@@ -99,6 +111,7 @@ export async function updateLead(
         city_slug: orNull(citySlug),
         message,
         source_page: orNull(sourcePage),
+        notes,
       })
       .eq('id', id);
     if (error) {
@@ -142,4 +155,71 @@ export async function deleteLead(formData: FormData): Promise<void> {
   }
 
   revalidatePath('/admin');
+}
+
+export type StatusActionState = {
+  ok: boolean;
+  message: string;
+};
+
+export async function updateLeadStatus(
+  _prev: StatusActionState,
+  formData: FormData
+): Promise<StatusActionState> {
+  if (!(await ensureAdmin())) return { ok: false, message: 'Not authorised.' };
+
+  const id = trim(formData.get('id'));
+  const status = trim(formData.get('status')) as LeadStatus;
+  const earnedRaw = trim(formData.get('earned'));
+  const notes = trim(formData.get('notes'));
+  const nameHint = trim(formData.get('name_hint'));
+
+  if (!id) return { ok: false, message: 'Missing lead id.' };
+  if (!LEAD_STATUSES.includes(status)) {
+    return { ok: false, message: 'Invalid status value.' };
+  }
+
+  let earned = 0;
+  if (status === 'complete') {
+    const parsed = parseFloat(earnedRaw);
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      return { ok: false, message: 'Enter a valid earned amount (0 or higher).' };
+    }
+    earned = Math.round(parsed * 100) / 100;
+  }
+
+  const isTerminal = status === 'complete' || status === 'lost';
+
+  const update: Record<string, unknown> = {
+    status,
+    earned: status === 'complete' ? earned : 0,
+    closed_at: isTerminal ? new Date().toISOString() : null,
+  };
+  if (notes) update.notes = notes;
+
+  try {
+    const supabase = getServiceClient();
+    const { error } = await supabase.from('leads').update(update).eq('id', id);
+    if (error) {
+      console.error('[leads] status update error:', error.message);
+      return { ok: false, message: 'Could not update status.' };
+    }
+
+    const label = STATUS_LABEL[status];
+    const earnedSuffix =
+      status === 'complete' && earned > 0 ? ` (£${earned.toFixed(2)})` : '';
+    const personHint = nameHint ? ` "${nameHint}"` : '';
+    await logActivity(
+      'update',
+      'lead',
+      `Marked lead${personHint} as ${label}${earnedSuffix}`,
+      { entityId: id, metadata: { status, earned } }
+    );
+  } catch (err) {
+    console.error('[leads] status update exception:', err);
+    return { ok: false, message: 'Could not update status.' };
+  }
+
+  revalidatePath('/admin');
+  return { ok: true, message: 'Saved.' };
 }
