@@ -20,6 +20,16 @@ export type SiteSettings = {
   siteUrl: string;
   faviconUrl: string;
   logoUrl: string;
+  // SEO
+  metaTitleDefault: string;
+  metaDescriptionDefault: string;
+  ogImageUrl: string;
+  twitterHandle: string;
+  googleSiteVerification: string;
+  bingSiteVerification: string;
+  gtmId: string;
+  gaId: string;
+  keywords: string;
 };
 
 const fallback: SiteSettings = {
@@ -32,6 +42,15 @@ const fallback: SiteSettings = {
   siteUrl: SITE_URL,
   faviconUrl: '',
   logoUrl: '',
+  metaTitleDefault: '',
+  metaDescriptionDefault: '',
+  ogImageUrl: '',
+  twitterHandle: '',
+  googleSiteVerification: '',
+  bingSiteVerification: '',
+  gtmId: '',
+  gaId: '',
+  keywords: '',
 };
 
 export const getSettings = cache(async (): Promise<SiteSettings> => {
@@ -39,7 +58,7 @@ export const getSettings = cache(async (): Promise<SiteSettings> => {
     const supabase = getServiceClient();
     const { data, error } = await supabase
       .from('site_settings')
-      .select('brand, phone_display, phone_tel, email, address, gas_safe_number, site_url, favicon_url, logo_url')
+      .select('*')
       .eq('id', 1)
       .maybeSingle();
 
@@ -58,6 +77,15 @@ export const getSettings = cache(async (): Promise<SiteSettings> => {
       siteUrl: data.site_url || fallback.siteUrl,
       faviconUrl: data.favicon_url || '',
       logoUrl: data.logo_url || '',
+      metaTitleDefault: data.meta_title_default || '',
+      metaDescriptionDefault: data.meta_description_default || '',
+      ogImageUrl: data.og_image_url || '',
+      twitterHandle: data.twitter_handle || '',
+      googleSiteVerification: data.google_site_verification || '',
+      bingSiteVerification: data.bing_site_verification || '',
+      gtmId: data.gtm_id || '',
+      gaId: data.ga_id || '',
+      keywords: data.keywords || '',
     };
   } catch (err) {
     console.error('[settings] unexpected error:', err);

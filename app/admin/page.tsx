@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { isAdmin } from '@/lib/admin/auth';
 import { getServiceClient } from '@/lib/supabase/server';
 import { getSettings } from '@/lib/settings';
 import AdminShell from '@/components/admin/AdminShell';
+import DeleteLeadButton from '@/components/admin/DeleteLeadButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -76,6 +78,15 @@ export default async function AdminPage() {
             All submissions from the contact form, quote popup and area-page quote forms.
           </p>
         </div>
+        <Link
+          href="/admin/leads/new"
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-primary-dark"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
+          </svg>
+          New lead
+        </Link>
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-4">
@@ -87,7 +98,7 @@ export default async function AdminPage() {
 
       <div className="mt-8 overflow-hidden rounded-xl border border-gray-line bg-white shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[900px] text-sm">
+          <table className="w-full min-w-[1000px] text-sm">
             <thead className="bg-off-white text-xs uppercase tracking-wide text-gray-soft">
               <tr>
                 <th className="px-4 py-3 text-left">When</th>
@@ -96,12 +107,13 @@ export default async function AdminPage() {
                 <th className="px-4 py-3 text-left">City</th>
                 <th className="px-4 py-3 text-left">Source</th>
                 <th className="px-4 py-3 text-left">Message</th>
+                <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               {leads.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-10 text-center text-gray-soft">
+                  <td colSpan={7} className="px-4 py-10 text-center text-gray-soft">
                     No leads yet. Submissions will appear here.
                   </td>
                 </tr>
@@ -132,6 +144,15 @@ export default async function AdminPage() {
                   <td className="px-4 py-3 capitalize text-ink">{lead.city_slug || '-'}</td>
                   <td className="px-4 py-3 text-xs text-gray-soft">{lead.source_page || '-'}</td>
                   <td className="px-4 py-3 max-w-md text-ink">{lead.message}</td>
+                  <td className="px-4 py-3 whitespace-nowrap text-right">
+                    <Link
+                      href={`/admin/leads/${lead.id}`}
+                      className="mr-3 text-xs font-semibold text-primary hover:underline"
+                    >
+                      Edit
+                    </Link>
+                    <DeleteLeadButton id={lead.id} nameHint={lead.name} />
+                  </td>
                 </tr>
               ))}
             </tbody>

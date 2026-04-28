@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-type NavKey = 'leads' | 'drafts' | 'settings';
+type NavKey = 'leads' | 'drafts' | 'activity' | 'settings';
 
 const NAV: { key: NavKey; label: string; href: string; icon: ReactNode }[] = [
   {
@@ -22,6 +22,17 @@ const NAV: { key: NavKey; label: string; href: string; icon: ReactNode }[] = [
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M14 3v6h6" />
+      </svg>
+    ),
+  },
+  {
+    key: 'activity',
+    label: 'Activity log',
+    href: '/admin/activity',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5" aria-hidden>
+        <circle cx="12" cy="12" r="9" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 7v5l3 2" />
       </svg>
     ),
   },
@@ -48,7 +59,6 @@ export default function AdminShell({ active, brand, children }: Props) {
   return (
     <div className="min-h-screen bg-off-white">
       <div className="flex flex-col md:flex-row md:items-stretch">
-        {/* Sidebar */}
         <aside className="md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 border-b md:border-b-0 md:border-r border-gray-line bg-white">
           <div className="flex h-16 items-center gap-2 border-b border-gray-line px-5">
             <span className="grid h-9 w-9 place-items-center rounded-md bg-primary text-white">
@@ -83,7 +93,7 @@ export default function AdminShell({ active, brand, children }: Props) {
             })}
           </nav>
 
-          <div className="hidden md:block absolute bottom-0 left-0 right-0 border-t border-gray-line p-3">
+          <div className="mt-auto border-t border-gray-line p-3">
             <form action="/admin/logout" method="post">
               <button
                 type="submit"
@@ -96,19 +106,8 @@ export default function AdminShell({ active, brand, children }: Props) {
               </button>
             </form>
           </div>
-          <div className="md:hidden border-t border-gray-line p-3">
-            <form action="/admin/logout" method="post">
-              <button
-                type="submit"
-                className="w-full rounded-lg border border-gray-line bg-white px-3 py-2 text-sm font-semibold text-ink hover:border-primary hover:text-primary"
-              >
-                Sign out
-              </button>
-            </form>
-          </div>
         </aside>
 
-        {/* Main content */}
         <main className="flex-1 min-w-0">
           <div className="mx-auto max-w-5xl px-5 py-8 md:px-10 md:py-12">{children}</div>
         </main>

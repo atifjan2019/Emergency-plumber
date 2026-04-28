@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { isAdmin } from '@/lib/admin/auth';
 import { getServiceClient } from '@/lib/supabase/server';
+import { logActivity } from '@/lib/admin/activity';
 
 export type SettingsFormState = {
   ok: boolean;
@@ -13,14 +14,14 @@ const trim = (v: FormDataEntryValue | null) =>
   typeof v === 'string' ? v.trim() : '';
 
 const SAFE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'];
-const MAX_BYTES = 2 * 1024 * 1024; // 2 MB
+const MAX_BYTES = 4 * 1024 * 1024;
 
 async function uploadAsset(
   file: File,
-  prefix: 'logo' | 'favicon'
+  prefix: 'logo' | 'favicon' | 'og'
 ): Promise<{ url?: string; error?: string }> {
   if (file.size === 0) return {};
-  if (file.size > MAX_BYTES) return { error: `${prefix} file is too large (max 2 MB).` };
+  if (file.size > MAX_BYTES) return { error: `${prefix} file is too large (max 4 MB).` };
   if (file.type && !SAFE_TYPES.includes(file.type)) {
     return { error: `${prefix} file type ${file.type} is not allowed.` };
   }
@@ -62,6 +63,15 @@ export async function saveSettings(
   const gasSafeNumber = trim(formData.get('gas_safe_number'));
   const siteUrl = trim(formData.get('site_url'));
 
+  const metaTitleDefault = trim(formData.get('meta_title_default'));
+  const metaDescriptionDefault = trim(formData.get('meta_description_default'));
+  const twitterHandle = trim(formData.get('twitter_handle'));
+  const googleSiteVerification = trim(formData.get('google_site_verification'));
+  const bingSiteVerification = trim(formData.get('bing_site_verification'));
+  const gtmId = trim(formData.get('gtm_id'));
+  const gaId = trim(formData.get('ga_id'));
+  const keywords = trim(formData.get('keywords'));
+
   if (!brand || !phoneDisplay || !phoneTel || !email) {
     return { ok: false, message: 'Brand, phone and email are required.' };
   }
@@ -74,6 +84,14 @@ export async function saveSettings(
     address,
     gas_safe_number: gasSafeNumber,
     site_url: siteUrl,
+    meta_title_default: metaTitleDefault,
+    meta_description_default: metaDescriptionDefault,
+    twitter_handle: twitterHandle,
+    google_site_verification: googleSiteVerification,
+    bing_site_verification: bingSiteVerification,
+    gtm_id: gtmId,
+    ga_id: gaId,
+    keywords,
   };
 
   const logoFile = formData.get('logo');
@@ -88,6 +106,13 @@ export async function saveSettings(
     const r = await uploadAsset(faviconFile, 'favicon');
     if (r.error) return { ok: false, message: r.error };
     if (r.url) update.favicon_url = r.url;
+  }
+
+  const ogFile = formData.get('og_image');
+  if (ogFile instanceof File && ogFile.size > 0) {
+    const r = await uploadAsset(ogFile, 'og');
+    if (r.error) return { ok: false, message: r.error };
+    if (r.url) update.og_image_url = r.url;
   }
 
   try {
@@ -105,6 +130,13 @@ export async function saveSettings(
     console.error('[settings] unexpected error:', err);
     return { ok: false, message: 'Save failed. Try again.' };
   }
+
+  const changed = Object.keys(update).filter(
+    (k) => !['updated_at'].includes(k)
+  );
+  await logActivity('update', 'settings', `Updated site settings (${changed.length} fields)`, {
+    metadata: { fields: changed },
+  });
 
   revalidatePath('/', 'layout');
   return { ok: true, message: 'Saved. The site will refresh on the next page load.' };

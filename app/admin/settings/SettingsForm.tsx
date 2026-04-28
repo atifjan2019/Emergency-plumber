@@ -17,6 +17,15 @@ type Props = {
     siteUrl: string;
     faviconUrl: string;
     logoUrl: string;
+    metaTitleDefault: string;
+    metaDescriptionDefault: string;
+    ogImageUrl: string;
+    twitterHandle: string;
+    googleSiteVerification: string;
+    bingSiteVerification: string;
+    gtmId: string;
+    gaId: string;
+    keywords: string;
   };
 };
 
@@ -36,32 +45,112 @@ function SubmitButton() {
 export default function SettingsForm({ defaults }: Props) {
   const [state, action] = useActionState(saveSettings, initial);
   return (
-    <form action={action} className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Brand / company name" name="brand" defaultValue={defaults.brand} required />
-        <Field label="Site URL" name="site_url" defaultValue={defaults.siteUrl} type="url" />
-        <Field label="Phone (display)" name="phone_display" defaultValue={defaults.phoneDisplay} required />
-        <Field label="Phone (tel: link)" name="phone_tel" defaultValue={defaults.phoneTel} required />
-        <Field label="Email" name="email" defaultValue={defaults.email} type="email" required />
-        <Field label="Gas Safe number" name="gas_safe_number" defaultValue={defaults.gasSafeNumber} />
-      </div>
+    <form action={action} className="space-y-10">
+      <section>
+        <SectionTitle title="Company details" subtitle="Phone, email and address shown across the site." />
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <Field label="Brand / company name" name="brand" defaultValue={defaults.brand} required />
+          <Field label="Site URL" name="site_url" defaultValue={defaults.siteUrl} type="url" />
+          <Field label="Phone (display)" name="phone_display" defaultValue={defaults.phoneDisplay} required />
+          <Field label="Phone (tel: link)" name="phone_tel" defaultValue={defaults.phoneTel} required />
+          <Field label="Email" name="email" defaultValue={defaults.email} type="email" required />
+          <Field label="Gas Safe number" name="gas_safe_number" defaultValue={defaults.gasSafeNumber} />
+        </div>
+        <div className="mt-4">
+          <Field label="Address" name="address" defaultValue={defaults.address} />
+        </div>
+      </section>
 
-      <Field label="Address" name="address" defaultValue={defaults.address} />
+      <section>
+        <SectionTitle title="Brand assets" subtitle="Uploaded to Supabase Storage and used across the site." />
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <FileField
+            label="Logo"
+            name="logo"
+            currentUrl={defaults.logoUrl}
+            accept="image/png,image/jpeg,image/webp,image/svg+xml"
+          />
+          <FileField
+            label="Favicon"
+            name="favicon"
+            currentUrl={defaults.faviconUrl}
+            accept="image/png,image/x-icon,image/vnd.microsoft.icon,image/svg+xml"
+          />
+        </div>
+      </section>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <FileField
-          label="Logo"
-          name="logo"
-          currentUrl={defaults.logoUrl}
-          accept="image/png,image/jpeg,image/webp,image/svg+xml"
+      <section>
+        <SectionTitle
+          title="SEO defaults"
+          subtitle="Used as the global fallback. Page-specific titles still override these."
         />
-        <FileField
-          label="Favicon"
-          name="favicon"
-          currentUrl={defaults.faviconUrl}
-          accept="image/png,image/x-icon,image/vnd.microsoft.icon,image/svg+xml"
+        <div className="mt-5 grid gap-4">
+          <Field
+            label="Default meta title"
+            name="meta_title_default"
+            defaultValue={defaults.metaTitleDefault}
+            placeholder="Leave blank to use the built-in template"
+          />
+          <Textarea
+            label="Default meta description"
+            name="meta_description_default"
+            defaultValue={defaults.metaDescriptionDefault}
+            rows={3}
+            placeholder="Recommended length: 150–160 characters"
+          />
+          <Textarea
+            label="Default keywords (comma-separated)"
+            name="keywords"
+            defaultValue={defaults.keywords}
+            rows={2}
+            placeholder="emergency plumber, 24/7 plumber, burst pipe repair, …"
+          />
+          <FileField
+            label="Default Open Graph image (1200×630)"
+            name="og_image"
+            currentUrl={defaults.ogImageUrl}
+            accept="image/png,image/jpeg,image/webp"
+          />
+          <Field
+            label="Twitter / X handle"
+            name="twitter_handle"
+            defaultValue={defaults.twitterHandle}
+            placeholder="@yourbrand"
+          />
+        </div>
+      </section>
+
+      <section>
+        <SectionTitle
+          title="Search engine verification"
+          subtitle="Paste only the verification token. The meta tag is added automatically."
         />
-      </div>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <Field
+            label="Google Site Verification"
+            name="google_site_verification"
+            defaultValue={defaults.googleSiteVerification}
+            placeholder="abc123…"
+          />
+          <Field
+            label="Bing Webmaster Verification"
+            name="bing_site_verification"
+            defaultValue={defaults.bingSiteVerification}
+            placeholder="abc123…"
+          />
+        </div>
+      </section>
+
+      <section>
+        <SectionTitle
+          title="Analytics"
+          subtitle="Scripts load only when an ID is present. Both run in parallel if both are set."
+        />
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <Field label="Google Tag Manager ID" name="gtm_id" defaultValue={defaults.gtmId} placeholder="GTM-XXXXXXX" />
+          <Field label="GA4 measurement ID" name="ga_id" defaultValue={defaults.gaId} placeholder="G-XXXXXXXXXX" />
+        </div>
+      </section>
 
       {state.message && (
         <p
@@ -75,8 +164,19 @@ export default function SettingsForm({ defaults }: Props) {
         </p>
       )}
 
-      <SubmitButton />
+      <div className="sticky bottom-0 -mx-6 border-t border-gray-line bg-white/95 px-6 py-4 backdrop-blur">
+        <SubmitButton />
+      </div>
     </form>
+  );
+}
+
+function SectionTitle({ title, subtitle }: { title: string; subtitle?: string }) {
+  return (
+    <div>
+      <h2 className="text-lg font-bold text-ink">{title}</h2>
+      {subtitle && <p className="mt-1 text-sm text-gray-soft">{subtitle}</p>}
+    </div>
   );
 }
 
@@ -86,12 +186,14 @@ function Field({
   defaultValue,
   type = 'text',
   required = false,
+  placeholder,
 }: {
   label: string;
   name: string;
   defaultValue?: string;
   type?: string;
   required?: boolean;
+  placeholder?: string;
 }) {
   return (
     <label className="block">
@@ -104,6 +206,34 @@ function Field({
         name={name}
         defaultValue={defaultValue}
         required={required}
+        placeholder={placeholder}
+        className="mt-1.5 w-full rounded-lg border border-gray-line bg-white px-3.5 py-2.5 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+      />
+    </label>
+  );
+}
+
+function Textarea({
+  label,
+  name,
+  defaultValue,
+  rows = 3,
+  placeholder,
+}: {
+  label: string;
+  name: string;
+  defaultValue?: string;
+  rows?: number;
+  placeholder?: string;
+}) {
+  return (
+    <label className="block">
+      <span className="text-sm font-semibold text-ink">{label}</span>
+      <textarea
+        name={name}
+        defaultValue={defaultValue}
+        rows={rows}
+        placeholder={placeholder}
         className="mt-1.5 w-full rounded-lg border border-gray-line bg-white px-3.5 py-2.5 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
       />
     </label>
@@ -139,7 +269,7 @@ function FileField({
           accept={accept}
           className="block w-full text-sm text-ink file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white"
         />
-        <p className="mt-2 text-xs text-gray-soft">Upload to replace. Max 2 MB.</p>
+        <p className="mt-2 text-xs text-gray-soft">Upload to replace. Max 4 MB.</p>
       </div>
     </label>
   );
