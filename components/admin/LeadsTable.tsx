@@ -27,6 +27,7 @@ export type AdminLead = {
 };
 
 type FilterKey = 'all' | LeadStatus;
+type SortKey = 'newest' | 'oldest' | 'earned_high';
 
 const FILTERS: { key: FilterKey; label: string }[] = [
   { key: 'all', label: 'All' },
@@ -36,8 +37,23 @@ const FILTERS: { key: FilterKey; label: string }[] = [
   { key: 'lost', label: 'Lost' },
 ];
 
+const SORTS: { key: SortKey; label: string }[] = [
+  { key: 'newest', label: 'Newest first' },
+  { key: 'oldest', label: 'Oldest first' },
+  { key: 'earned_high', label: 'Highest earned' },
+];
+
+const STATUS_AVATAR_RING: Record<LeadStatus, string> = {
+  new: 'bg-blue-100 text-blue-700 ring-blue-200',
+  contacted: 'bg-amber-100 text-amber-800 ring-amber-200',
+  complete: 'bg-green-100 text-green-800 ring-green-200',
+  lost: 'bg-red-100 text-red-700 ring-red-200',
+};
+
 export default function LeadsTable({ leads }: { leads: AdminLead[] }) {
   const [filter, setFilter] = useState<FilterKey>('all');
+  const [sort, setSort] = useState<SortKey>('newest');
+  const [query, setQuery] = useState('');
   const [openId, setOpenId] = useState<string | null>(null);
 
   const counts = useMemo(() => {
@@ -47,98 +63,224 @@ export default function LeadsTable({ leads }: { leads: AdminLead[] }) {
   }, [leads]);
 
   const filtered = useMemo(() => {
-    if (filter === 'all') return leads;
-    return leads.filter((l) => l.status === filter);
-  }, [leads, filter]);
+    const q = query.trim().toLowerCase();
+    let arr = leads.filter((l) => {
+      if (filter !== 'all' && l.status !== filter) return false;
+      if (q) {
+        const blob = `${l.name} ${l.phone ?? ''} ${l.email ?? ''} ${l.city_slug ?? ''} ${l.message}`.toLowerCase();
+        if (!blob.includes(q)) return false;
+      }
+      return true;
+    });
+    if (sort === 'oldest') {
+      arr = [...arr].sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+    } else if (sort === 'earned_high') {
+      arr = [...arr].sort((a, b) => Number(b.earned) - Number(a.earned));
+    }
+    return arr;
+  }, [leads, filter, sort, query]);
 
   const open = filtered.find((l) => l.id === openId) ?? null;
 
   return (
     <>
-      <div className="mt-6 flex flex-wrap gap-2">
-        {FILTERS.map((f) => (
-          <button
-            key={f.key}
-            type="button"
-            onClick={() => setFilter(f.key)}
-            className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition ${
-              filter === f.key
-                ? 'border-primary bg-primary text-white'
-                : 'border-gray-line bg-white text-ink hover:border-primary hover:text-primary'
-            }`}
-          >
-            {f.label}
-            <span
-              className={`rounded-full px-2 py-0.5 text-[11px] tabular-nums ${
-                filter === f.key ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-soft'
+      <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-wrap gap-2">
+          {FILTERS.map((f) => (
+            <button
+              key={f.key}
+              type="button"
+              onClick={() => setFilter(f.key)}
+              className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition ${
+                filter === f.key
+                  ? 'border-primary bg-primary text-white'
+                  : 'border-gray-line bg-white text-ink hover:border-primary hover:text-primary'
               }`}
             >
-              {counts[f.key]}
-            </span>
-          </button>
-        ))}
-      </div>
+              {f.label}
+              <span
+                className={`rounded-full px-2 py-0.5 text-[11px] tabular-nums ${
+                  filter === f.key ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-soft'
+                }`}
+              >
+                {counts[f.key]}
+              </span>
+            </button>
+          ))}
+        </div>
 
-      <div className="mt-4 overflow-hidden rounded-xl border border-gray-line bg-white shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[1000px] text-sm">
-            <thead className="bg-off-white text-xs uppercase tracking-wide text-gray-soft">
-              <tr>
-                <th className="px-4 py-3 text-left">When</th>
-                <th className="px-4 py-3 text-left">Name</th>
-                <th className="px-4 py-3 text-left">Contact</th>
-                <th className="px-4 py-3 text-left">City</th>
-                <th className="px-4 py-3 text-left">Status</th>
-                <th className="px-4 py-3 text-right">Earned</th>
-                <th className="px-4 py-3 text-left">Message</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="px-4 py-12 text-center text-gray-soft">
-                    No leads in this view yet.
-                  </td>
-                </tr>
-              )}
-              {filtered.map((lead) => (
-                <tr
-                  key={lead.id}
-                  onClick={() => setOpenId(lead.id)}
-                  className="border-t border-gray-line align-top cursor-pointer transition hover:bg-off-white/70"
-                >
-                  <td className="px-4 py-3 whitespace-nowrap text-gray-soft">
-                    {formatDate(lead.created_at)}
-                  </td>
-                  <td className="px-4 py-3 font-semibold text-ink">{lead.name}</td>
-                  <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                    {lead.phone && (
-                      <a href={`tel:${lead.phone}`} className="block text-primary hover:underline">
-                        {lead.phone}
-                      </a>
-                    )}
-                    {lead.email && (
-                      <a href={`mailto:${lead.email}`} className="block text-primary hover:underline">
-                        {lead.email}
-                      </a>
-                    )}
-                    {!lead.phone && !lead.email && <span className="text-gray-soft">—</span>}
-                  </td>
-                  <td className="px-4 py-3 capitalize text-ink">{lead.city_slug || '-'}</td>
-                  <td className="px-4 py-3"><StatusBadge status={lead.status} /></td>
-                  <td className="px-4 py-3 text-right tabular-nums text-ink">
-                    {lead.status === 'complete' && lead.earned > 0 ? `£${lead.earned.toFixed(2)}` : <span className="text-gray-soft">—</span>}
-                  </td>
-                  <td className="px-4 py-3 max-w-md text-ink truncate">{lead.message}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <div className="relative w-full sm:w-64">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-soft"
+              aria-hidden
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path strokeLinecap="round" d="M21 21l-3.5-3.5" />
+            </svg>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search name, phone, email, city…"
+              className="w-full rounded-lg border border-gray-line bg-white py-2 pl-9 pr-3 text-sm text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+          </div>
+
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value as SortKey)}
+            className="rounded-lg border border-gray-line bg-white py-2 pl-3 pr-8 text-sm font-semibold text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          >
+            {SORTS.map((s) => (
+              <option key={s.key} value={s.key}>
+                {s.label}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
+      {filtered.length === 0 ? (
+        <div className="mt-6 rounded-xl border border-dashed border-gray-line bg-white p-12 text-center text-sm text-gray-soft">
+          {leads.length === 0
+            ? 'No leads yet. Submissions from the contact form, quote popup, or admin will appear here.'
+            : 'No leads match the current filter.'}
+        </div>
+      ) : (
+        <ul className="mt-6 grid gap-3">
+          {filtered.map((lead) => (
+            <li key={lead.id}>
+              <LeadCard lead={lead} onOpen={() => setOpenId(lead.id)} />
+            </li>
+          ))}
+        </ul>
+      )}
+
       {open && <LeadDetailModal lead={open} onClose={() => setOpenId(null)} />}
     </>
+  );
+}
+
+function LeadCard({ lead, onOpen }: { lead: AdminLead; onOpen: () => void }) {
+  const initial = (lead.name?.trim()?.[0] || '?').toUpperCase();
+  const ring = STATUS_AVATAR_RING[lead.status] ?? STATUS_AVATAR_RING.new;
+  const minutesAgo = Math.max(1, Math.round((Date.now() - new Date(lead.created_at).getTime()) / 60000));
+  const ago =
+    minutesAgo < 60
+      ? `${minutesAgo}m ago`
+      : minutesAgo < 1440
+      ? `${Math.round(minutesAgo / 60)}h ago`
+      : `${Math.round(minutesAgo / 1440)}d ago`;
+
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="group flex w-full items-start gap-4 rounded-xl border border-gray-line bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:p-5"
+    >
+      <div
+        className={`grid h-11 w-11 shrink-0 place-items-center rounded-full text-base font-bold ring-2 ${ring}`}
+      >
+        {initial}
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-start justify-between gap-3 flex-wrap">
+          <div className="min-w-0">
+            <h3 className="truncate text-base font-bold text-ink">{lead.name}</h3>
+            <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-gray-soft">
+              {lead.city_slug && <span className="capitalize">{lead.city_slug}</span>}
+              {lead.city_slug && <span aria-hidden>·</span>}
+              <span title={new Date(lead.created_at).toLocaleString('en-GB')}>{ago}</span>
+              {lead.source_page && (
+                <>
+                  <span aria-hidden>·</span>
+                  <span className="truncate max-w-[180px]" title={lead.source_page}>
+                    {lead.source_page}
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {lead.status === 'complete' && lead.earned > 0 && (
+              <span className="rounded-md bg-green-100 px-2 py-1 text-sm font-bold tabular-nums text-green-800">
+                £{lead.earned.toFixed(2)}
+              </span>
+            )}
+            <StatusBadge status={lead.status} />
+          </div>
+        </div>
+
+        <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+          {lead.phone && (
+            <ContactPill
+              tone="green"
+              icon={
+                <svg viewBox="0 0 24 24" fill="currentColor" className="h-3 w-3" aria-hidden>
+                  <path d="M2.5 4.75A2.25 2.25 0 014.75 2.5h2.27a2.25 2.25 0 012.226 1.929l.43 3.014a2.25 2.25 0 01-.65 1.97l-1.2 1.2a14.25 14.25 0 006.06 6.06l1.2-1.2a2.25 2.25 0 011.97-.65l3.014.43a2.25 2.25 0 011.929 2.227V19.25A2.25 2.25 0 0119.5 21.5h-1.25C9.7 21.5 2.5 14.3 2.5 5.75V4.75z" />
+                </svg>
+              }
+              label={lead.phone}
+              href={`tel:${lead.phone}`}
+            />
+          )}
+          {lead.email && (
+            <ContactPill
+              tone="blue"
+              icon={
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3 w-3" aria-hidden>
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path strokeLinecap="round" d="M3 7l9 6 9-6" />
+                </svg>
+              }
+              label={lead.email}
+              href={`mailto:${lead.email}`}
+            />
+          )}
+          {!lead.phone && !lead.email && (
+            <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-800">
+              no contact info
+            </span>
+          )}
+        </div>
+
+        <p className="mt-3 line-clamp-2 text-sm text-gray-soft">{lead.message}</p>
+      </div>
+    </button>
+  );
+}
+
+function ContactPill({
+  tone,
+  icon,
+  label,
+  href,
+}: {
+  tone: 'green' | 'blue';
+  icon: React.ReactNode;
+  label: string;
+  href: string;
+}) {
+  const classes =
+    tone === 'green'
+      ? 'border-green-200 bg-green-50 text-green-800 hover:bg-green-100'
+      : 'border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100';
+  return (
+    <a
+      href={href}
+      onClick={(e) => e.stopPropagation()}
+      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-semibold transition ${classes}`}
+    >
+      {icon}
+      <span className="truncate max-w-[180px]">{label}</span>
+    </a>
   );
 }
 
