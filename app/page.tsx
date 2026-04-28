@@ -228,10 +228,10 @@ export default async function HomePage() {
                 ? 'border-green/30 hover:border-green'
                 : 'border-gray-line hover:border-primary';
               const iconBg = isEmergency
-                ? 'bg-gradient-to-br from-accent to-accent-dark shadow-lg shadow-accent/30'
+                ? 'bg-accent shadow-lg shadow-accent/30'
                 : isMaintenance
-                ? 'bg-gradient-to-br from-green to-green-dark shadow-lg shadow-green/30'
-                : 'bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/30';
+                ? 'bg-green shadow-lg shadow-green/30'
+                : 'bg-primary shadow-lg shadow-primary/30';
               const linkColor = isEmergency ? 'text-accent' : isMaintenance ? 'text-green-dark' : 'text-primary';
               const cardBlob = isEmergency
                 ? 'bg-accent/5 group-hover:bg-accent/10'
