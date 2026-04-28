@@ -1,13 +1,24 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-type NavKey = 'leads' | 'drafts' | 'activity' | 'settings';
+type NavKey = 'dashboard' | 'leads' | 'drafts' | 'activity' | 'settings';
 
 const NAV: { key: NavKey; label: string; href: string; icon: ReactNode }[] = [
   {
+    key: 'dashboard',
+    label: 'Dashboard',
+    href: '/admin',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5" aria-hidden>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13l2-2 4 4 6-7 5 6" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18" />
+      </svg>
+    ),
+  },
+  {
     key: 'leads',
     label: 'Leads',
-    href: '/admin',
+    href: '/admin/leads',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h10" />
@@ -120,7 +131,7 @@ export default function AdminShell({ active, brand, logoUrl = '', children }: Pr
         </aside>
 
         <main className="flex-1 min-w-0">
-          <div className="mx-auto max-w-5xl px-5 py-8 md:px-10 md:py-12">{children}</div>
+          <div className="px-4 py-6 md:px-6 md:py-8">{children}</div>
         </main>
       </div>
     </div>
