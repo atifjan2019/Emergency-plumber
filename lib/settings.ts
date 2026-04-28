@@ -1,6 +1,7 @@
 import 'server-only';
 import { cache } from 'react';
 import { getServiceClient } from '@/lib/supabase/server';
+import { normalizeR2Url } from '@/lib/r2';
 import {
   BRAND,
   PHONE_DISPLAY,
@@ -75,11 +76,11 @@ export const getSettings = cache(async (): Promise<SiteSettings> => {
       address: data.address || '',
       gasSafeNumber: data.gas_safe_number || fallback.gasSafeNumber,
       siteUrl: data.site_url || fallback.siteUrl,
-      faviconUrl: data.favicon_url || '',
-      logoUrl: data.logo_url || '',
+      faviconUrl: normalizeR2Url(data.favicon_url || ''),
+      logoUrl: normalizeR2Url(data.logo_url || ''),
       metaTitleDefault: data.meta_title_default || '',
       metaDescriptionDefault: data.meta_description_default || '',
-      ogImageUrl: data.og_image_url || '',
+      ogImageUrl: normalizeR2Url(data.og_image_url || ''),
       twitterHandle: data.twitter_handle || '',
       googleSiteVerification: data.google_site_verification || '',
       bingSiteVerification: data.bing_site_verification || '',

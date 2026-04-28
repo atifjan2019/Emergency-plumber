@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { saveSettings, type SettingsFormState } from './actions';
 
@@ -44,6 +44,9 @@ function SubmitButton() {
 
 export default function SettingsForm({ defaults }: Props) {
   const [state, action] = useActionState(saveSettings, initial);
+  const [logoRemoved, setLogoRemoved] = useState(false);
+  const [faviconRemoved, setFaviconRemoved] = useState(false);
+
   return (
     <form action={action} className="space-y-10">
       <section>
@@ -62,20 +65,101 @@ export default function SettingsForm({ defaults }: Props) {
       </section>
 
       <section>
-        <SectionTitle title="Brand assets" subtitle="Uploaded to Supabase Storage and used across the site." />
+        <SectionTitle title="Brand assets" subtitle="Uploaded to R2 and used across the site." />
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          <FileField
-            label="Logo"
-            name="logo"
-            currentUrl={defaults.logoUrl}
-            accept="image/png,image/jpeg,image/webp,image/svg+xml"
-          />
-          <FileField
-            label="Favicon"
-            name="favicon"
-            currentUrl={defaults.faviconUrl}
-            accept="image/png,image/x-icon,image/vnd.microsoft.icon,image/svg+xml"
-          />
+          {/* Logo with remove option */}
+          <div>
+            <span className="text-sm font-semibold text-ink">Logo</span>
+            <div className="mt-1.5 rounded-lg border border-gray-line bg-white p-3">
+              {defaults.logoUrl && !logoRemoved ? (
+                <div className="mb-3 flex items-center gap-3">
+                  <img
+                    src={defaults.logoUrl}
+                    alt=""
+                    className="h-12 w-12 rounded object-contain border border-gray-line"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <span className="break-all text-xs text-gray-soft block">{defaults.logoUrl}</span>
+                    <button
+                      type="button"
+                      onClick={() => setLogoRemoved(true)}
+                      className="mt-1.5 text-xs font-semibold text-accent hover:text-accent-dark transition-colors"
+                    >
+                      Remove logo
+                    </button>
+                  </div>
+                </div>
+              ) : logoRemoved ? (
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="text-xs text-gray-soft italic">Logo will be removed on save.</span>
+                  <button
+                    type="button"
+                    onClick={() => setLogoRemoved(false)}
+                    className="text-xs font-semibold text-primary hover:text-primary-dark transition-colors"
+                  >
+                    Undo
+                  </button>
+                </div>
+              ) : (
+                <p className="mb-3 text-xs text-gray-soft">No logo uploaded yet.</p>
+              )}
+              {logoRemoved && <input type="hidden" name="remove_logo" value="1" />}
+              <input
+                type="file"
+                name="logo"
+                accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                className="block w-full text-sm text-ink file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white"
+              />
+              <p className="mt-2 text-xs text-gray-soft">Upload to replace. Max 4 MB. Stored in R2.</p>
+            </div>
+          </div>
+
+          {/* Favicon with remove option */}
+          <div>
+            <span className="text-sm font-semibold text-ink">Favicon</span>
+            <div className="mt-1.5 rounded-lg border border-gray-line bg-white p-3">
+              {defaults.faviconUrl && !faviconRemoved ? (
+                <div className="mb-3 flex items-center gap-3">
+                  <img
+                    src={defaults.faviconUrl}
+                    alt=""
+                    className="h-12 w-12 rounded object-contain border border-gray-line"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <span className="break-all text-xs text-gray-soft block">{defaults.faviconUrl}</span>
+                    <button
+                      type="button"
+                      onClick={() => setFaviconRemoved(true)}
+                      className="mt-1.5 text-xs font-semibold text-accent hover:text-accent-dark transition-colors"
+                    >
+                      Remove favicon
+                    </button>
+                  </div>
+                </div>
+              ) : faviconRemoved ? (
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="text-xs text-gray-soft italic">Favicon will be removed on save.</span>
+                  <button
+                    type="button"
+                    onClick={() => setFaviconRemoved(false)}
+                    className="text-xs font-semibold text-primary hover:text-primary-dark transition-colors"
+                  >
+                    Undo
+                  </button>
+                </div>
+              ) : (
+                <p className="mb-3 text-xs text-gray-soft">No favicon uploaded yet.</p>
+              )}
+              {faviconRemoved && <input type="hidden" name="remove_favicon" value="1" />}
+              <input
+                type="file"
+                name="favicon"
+                accept="image/png,image/x-icon,image/vnd.microsoft.icon,image/svg+xml"
+                className="block w-full text-sm text-ink file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white"
+              />
+              <p className="mt-2 text-xs text-gray-soft">Upload to replace. Max 4 MB. Stored in R2.</p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -199,7 +283,7 @@ function Field({
     <label className="block">
       <span className="text-sm font-semibold text-ink">
         {label}
-        {required && <span className="ml-0.5 text-primary">*</span>}
+        {required && <span className="ml-0.5 text-accent">*</span>}
       </span>
       <input
         type={type}
@@ -269,7 +353,7 @@ function FileField({
           accept={accept}
           className="block w-full text-sm text-ink file:mr-3 file:rounded-md file:border-0 file:bg-primary file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white"
         />
-        <p className="mt-2 text-xs text-gray-soft">Upload to replace. Max 4 MB.</p>
+        <p className="mt-2 text-xs text-gray-soft">Upload to replace. Max 4 MB. Stored in R2.</p>
       </div>
     </label>
   );

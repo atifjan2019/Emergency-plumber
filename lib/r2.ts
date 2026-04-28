@@ -14,11 +14,22 @@ import {
 let cached: S3Client | null = null;
 
 const BUCKET = process.env.R2_BUCKET || 'plumbers';
-const PUBLIC_URL =
-  process.env.R2_PUBLIC_URL || 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev';
+const PUBLIC_URL = 'https://media.emergencyplumbernow.co.uk';
 const ENDPOINT =
   process.env.R2_ENDPOINT ||
   'https://3c76920fa5848e9b288777b0edae64fa.r2.cloudflarestorage.com';
+
+// Rewrites any old r2.dev or stale custom-domain URLs to the current PUBLIC_URL
+export function normalizeR2Url(url: string): string {
+  if (!url) return url;
+  try {
+    const u = new URL(url);
+    if (u.hostname.endsWith('.r2.dev') || u.hostname !== new URL(PUBLIC_URL).hostname) {
+      return `${PUBLIC_URL.replace(/\/$/, '')}/${u.pathname.replace(/^\//, '')}`;
+    }
+  } catch {}
+  return url;
+}
 
 const SAFE_TYPES = [
   'image/png',
@@ -81,7 +92,7 @@ function getClient(): S3Client {
 }
 
 function publicUrlForKey(key: string): string {
-  return `${PUBLIC_URL.replace(/\/$/, '')}/${encodeURI(key)}`;
+  return normalizeR2Url(`${PUBLIC_URL.replace(/\/$/, '')}/${encodeURI(key)}`);
 }
 
 export async function listMedia(): Promise<MediaItem[]> {

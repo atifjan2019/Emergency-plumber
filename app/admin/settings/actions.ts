@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { isAdmin } from '@/lib/admin/auth';
 import { getServiceClient } from '@/lib/supabase/server';
+import { uploadToR2 } from '@/lib/r2';
 import { logActivity } from '@/lib/admin/activity';
 
 export type SettingsFormState = {
@@ -13,38 +14,14 @@ export type SettingsFormState = {
 const trim = (v: FormDataEntryValue | null) =>
   typeof v === 'string' ? v.trim() : '';
 
-const SAFE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'];
-const MAX_BYTES = 4 * 1024 * 1024;
-
 async function uploadAsset(
   file: File,
   prefix: 'logo' | 'favicon' | 'og'
 ): Promise<{ url?: string; error?: string }> {
   if (file.size === 0) return {};
-  if (file.size > MAX_BYTES) return { error: `${prefix} file is too large (max 4 MB).` };
-  if (file.type && !SAFE_TYPES.includes(file.type)) {
-    return { error: `${prefix} file type ${file.type} is not allowed.` };
-  }
-
-  const ext = file.name.split('.').pop()?.toLowerCase() || 'bin';
-  const path = `${prefix}-${Date.now()}.${ext}`;
-
-  const supabase = getServiceClient();
-  const { error: uploadError } = await supabase.storage
-    .from('site-assets')
-    .upload(path, file, {
-      contentType: file.type || undefined,
-      upsert: true,
-      cacheControl: '3600',
-    });
-
-  if (uploadError) {
-    console.error(`[settings] upload ${prefix} error:`, uploadError.message);
-    return { error: `Failed to upload ${prefix}.` };
-  }
-
-  const { data } = supabase.storage.from('site-assets').getPublicUrl(path);
-  return { url: data.publicUrl };
+  const result = await uploadToR2(file, null);
+  if (result.error) return { error: `Failed to upload ${prefix}: ${result.error}` };
+  return { url: result.url };
 }
 
 export async function saveSettings(
@@ -94,6 +71,13 @@ export async function saveSettings(
     keywords,
   };
 
+  if (formData.get('remove_logo') === '1') {
+    update.logo_url = '';
+  }
+  if (formData.get('remove_favicon') === '1') {
+    update.favicon_url = '';
+  }
+
   const logoFile = formData.get('logo');
   if (logoFile instanceof File && logoFile.size > 0) {
     const r = await uploadAsset(logoFile, 'logo');
@@ -131,9 +115,7 @@ export async function saveSettings(
     return { ok: false, message: 'Save failed. Try again.' };
   }
 
-  const changed = Object.keys(update).filter(
-    (k) => !['updated_at'].includes(k)
-  );
+  const changed = Object.keys(update).filter((k) => k !== 'updated_at');
   await logActivity('update', 'settings', `Updated site settings (${changed.length} fields)`, {
     metadata: { fields: changed },
   });
