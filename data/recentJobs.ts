@@ -1,0 +1,133 @@
+export type RecentJob = {
+  date: string;
+  postcode: string;
+  issue: string;
+  resolution: string;
+  duration: string;
+};
+
+const jobsByCity: Record<string, RecentJob[]> = {
+  london: [
+    { date: '2026-04-26', postcode: 'SW4', issue: 'Burst lead supply pipe in basement', resolution: 'Isolated, replaced 2m lead with copper, made-good', duration: '2 hours' },
+    { date: '2026-04-24', postcode: 'N1', issue: 'Worcester combi no hot water', resolution: 'Diverter valve replaced from van stock', duration: '1 hour' },
+    { date: '2026-04-22', postcode: 'E8', issue: 'Blocked external drain', resolution: 'Jetted, root mat cleared, CCTV survey', duration: '90 minutes' },
+    { date: '2026-04-19', postcode: 'SW11', issue: 'Frozen condensate pipe lockout', resolution: 'Thawed, reinsulated externally', duration: '45 minutes' },
+    { date: '2026-04-17', postcode: 'W2', issue: 'Hidden leak under kitchen floor', resolution: 'Thermal imaging located, repaired', duration: '3 hours' },
+    { date: '2026-04-15', postcode: 'SE10', issue: 'Toilet blockage past trap', resolution: 'Cleared with electric rods', duration: '40 minutes' },
+    { date: '2026-04-13', postcode: 'NW3', issue: 'Cylinder thermostat failure', resolution: 'Stat replaced, hot water restored', duration: '1 hour' },
+    { date: '2026-04-11', postcode: 'EC1', issue: 'Apartment block stack blockage', resolution: 'Jetted from inspection chamber', duration: '2 hours' },
+  ],
+  manchester: [
+    { date: '2026-04-25', postcode: 'M21', issue: 'Burst frozen pipe in loft', resolution: 'Replaced split section, reinsulated', duration: '90 minutes' },
+    { date: '2026-04-23', postcode: 'M14', issue: 'HMO toilet blockage', resolution: 'Wipes cleared from soil pipe', duration: '45 minutes' },
+    { date: '2026-04-20', postcode: 'M20', issue: 'Vaillant low pressure fault', resolution: 'Slow leak on radiator valve, replaced', duration: '90 minutes' },
+    { date: '2026-04-18', postcode: 'M4', issue: 'Apartment unvented PRV failure', resolution: 'PRV replaced, system retested', duration: '90 minutes' },
+    { date: '2026-04-16', postcode: 'M19', issue: 'Lead pipe pinhole leak', resolution: 'Section replaced, lead replacement quote provided', duration: '2 hours' },
+    { date: '2026-04-14', postcode: 'M15', issue: 'Cold radiators upstairs', resolution: 'Powerflush completed, inhibitor dosed', duration: '5 hours' },
+    { date: '2026-04-12', postcode: 'M22', issue: 'Immersion heater burnout', resolution: 'Element replaced from van', duration: '1 hour' },
+    { date: '2026-04-10', postcode: 'M16', issue: 'Combi diverter valve fault', resolution: 'Diverter replaced, hot water restored', duration: '90 minutes' },
+  ],
+  birmingham: [
+    { date: '2026-04-26', postcode: 'B17', issue: 'Galvanised rising main split', resolution: 'Replaced with copper, system retested', duration: '3 hours' },
+    { date: '2026-04-24', postcode: 'B14', issue: 'Back boiler failure', resolution: 'Quoted for combi replacement, fitted next day', duration: '8 hours' },
+    { date: '2026-04-21', postcode: 'B23', issue: 'Drain collapse on patio', resolution: 'Excavation and clay-to-PVC replacement', duration: '5 hours' },
+    { date: '2026-04-19', postcode: 'B11', issue: 'Hidden leak behind tiles', resolution: 'Acoustic detection located, repaired', duration: '2 hours' },
+    { date: '2026-04-17', postcode: 'B5', issue: 'Apartment stack overflow', resolution: 'Jetted from upper inspection point', duration: '2 hours' },
+    { date: '2026-04-14', postcode: 'B16', issue: 'No hot water - motorised valve', resolution: 'S-plan motorised valve replaced', duration: '90 minutes' },
+    { date: '2026-04-12', postcode: 'B19', issue: 'Frozen condensate', resolution: 'Thawed and reinsulated', duration: '45 minutes' },
+    { date: '2026-04-10', postcode: 'B13', issue: 'Toilet blocked at trap', resolution: 'Auger cleared, no removal needed', duration: '30 minutes' },
+  ],
+  glasgow: [
+    { date: '2026-04-25', postcode: 'G12', issue: 'Tenement loft burst pipe', resolution: 'Replaced split, communal flat coordination', duration: '2 hours' },
+    { date: '2026-04-23', postcode: 'G41', issue: 'Frozen condensate boiler lockout', resolution: 'Thawed, external pipe lagged', duration: '45 minutes' },
+    { date: '2026-04-20', postcode: 'G3', issue: 'Communal stack blockage', resolution: 'Jetted, multiple flats restored', duration: '3 hours' },
+    { date: '2026-04-18', postcode: 'G11', issue: 'Lead pipe pinhole leak', resolution: 'Section replaced, advice on full replacement', duration: '90 minutes' },
+    { date: '2026-04-16', postcode: 'G42', issue: 'Combi PCB failure', resolution: 'PCB replaced from van stock', duration: '2 hours' },
+    { date: '2026-04-13', postcode: 'G31', issue: 'Cold radiators downstairs', resolution: 'Pump replaced, system bled', duration: '2 hours' },
+    { date: '2026-04-11', postcode: 'G4', issue: 'Toilet blockage upper flat', resolution: 'Cleared from soil branch', duration: '45 minutes' },
+    { date: '2026-04-09', postcode: 'G14', issue: 'Cylinder thermostat replacement', resolution: 'Stat fitted, hot water restored', duration: '1 hour' },
+  ],
+  leeds: [
+    { date: '2026-04-26', postcode: 'LS6', issue: 'Student let burst pipe', resolution: 'Replaced split section in vacant property', duration: '2 hours' },
+    { date: '2026-04-24', postcode: 'LS8', issue: 'Boiler diverter valve', resolution: 'Replaced, hot water restored', duration: '90 minutes' },
+    { date: '2026-04-22', postcode: 'LS11', issue: 'Back-to-back drainage block', resolution: 'Cleared via front-elevation access', duration: '90 minutes' },
+    { date: '2026-04-19', postcode: 'LS17', issue: 'Powerflush for cold radiators', resolution: 'Sludge cleared, inhibitor dosed', duration: '5 hours' },
+    { date: '2026-04-17', postcode: 'LS4', issue: 'HMO toilet blockage', resolution: 'Wipes removed from soil pipe', duration: '45 minutes' },
+    { date: '2026-04-15', postcode: 'LS1', issue: 'Apartment stack vent failure', resolution: 'Vent cleared and tested', duration: '2 hours' },
+    { date: '2026-04-13', postcode: 'LS19', issue: 'Frozen pipe in vacant let', resolution: 'Replaced and reinsulated', duration: '90 minutes' },
+    { date: '2026-04-11', postcode: 'LS7', issue: 'No hot water - immersion', resolution: 'New element, hot water restored', duration: '1 hour' },
+  ],
+  liverpool: [
+    { date: '2026-04-26', postcode: 'L8', issue: 'Georgian listed building leak', resolution: 'Minimally invasive repair, listed-friendly', duration: '3 hours' },
+    { date: '2026-04-24', postcode: 'L4', issue: 'Lead supply pipe burst', resolution: 'Made-safe, full replacement next day', duration: '2 hours' },
+    { date: '2026-04-22', postcode: 'L17', issue: 'Underfloor heating leak', resolution: 'Thermal imaging located, repaired', duration: '3 hours' },
+    { date: '2026-04-20', postcode: 'L1', issue: 'Apartment unvented cylinder PRV', resolution: 'PRV replaced, expansion vessel re-charged', duration: '2 hours' },
+    { date: '2026-04-17', postcode: 'L18', issue: 'External drain blockage', resolution: 'Jetted and CCTV surveyed', duration: '2 hours' },
+    { date: '2026-04-15', postcode: 'L13', issue: 'Worcester PCB failure', resolution: 'PCB replaced same visit', duration: '90 minutes' },
+    { date: '2026-04-13', postcode: 'L6', issue: 'Cold radiators top floor', resolution: 'Air bled, pump checked', duration: '1 hour' },
+    { date: '2026-04-11', postcode: 'L9', issue: 'Toilet blockage', resolution: 'Auger cleared at trap', duration: '30 minutes' },
+  ],
+  bristol: [
+    { date: '2026-04-26', postcode: 'BS8', issue: 'Clifton listed building leak', resolution: 'Repaired with conservation-aware methods', duration: '3 hours' },
+    { date: '2026-04-24', postcode: 'BS3', issue: 'Rear extension drainage failure', resolution: 'Joint replacement and CCTV survey', duration: '2 hours' },
+    { date: '2026-04-22', postcode: 'BS6', issue: 'Boiler PCB replacement', resolution: 'PCB fitted, system retested', duration: '90 minutes' },
+    { date: '2026-04-19', postcode: 'BS5', issue: 'Lead supply pipe leak', resolution: 'Section replaced, advice on lead removal', duration: '2 hours' },
+    { date: '2026-04-17', postcode: 'BS1', issue: 'Apartment stack blockage', resolution: 'Jetted from chamber', duration: '2 hours' },
+    { date: '2026-04-15', postcode: 'BS9', issue: 'Powerflush completed', resolution: 'Sludge cleared, inhibitor dosed', duration: '5 hours' },
+    { date: '2026-04-13', postcode: 'BS16', issue: 'Frozen condensate', resolution: 'Thawed and lagged externally', duration: '45 minutes' },
+    { date: '2026-04-11', postcode: 'BS7', issue: 'Immersion heater out', resolution: 'New element fitted', duration: '1 hour' },
+  ],
+  sheffield: [
+    { date: '2026-04-26', postcode: 'S10', issue: 'External pipe burst on hilltop', resolution: 'High pressure split repaired and lagged', duration: '2 hours' },
+    { date: '2026-04-24', postcode: 'S2', issue: 'Drainage backflow downhill', resolution: 'Cleared upstream blockage', duration: '2 hours' },
+    { date: '2026-04-22', postcode: 'S6', issue: 'Stone-built terrace leak', resolution: 'Routed through existing chase', duration: '3 hours' },
+    { date: '2026-04-19', postcode: 'S11', issue: 'Combi diverter valve', resolution: 'Replaced, hot water restored', duration: '90 minutes' },
+    { date: '2026-04-17', postcode: 'S7', issue: 'Cold radiators after move', resolution: 'Bled and balanced', duration: '90 minutes' },
+    { date: '2026-04-15', postcode: 'S5', issue: 'Frozen pipe split', resolution: 'Replaced and lagged', duration: '90 minutes' },
+    { date: '2026-04-13', postcode: 'S3', issue: 'Toilet blockage at trap', resolution: 'Cleared with auger', duration: '30 minutes' },
+    { date: '2026-04-11', postcode: 'S17', issue: 'Pump failure', resolution: 'Pump replaced, system bled', duration: '2 hours' },
+  ],
+  edinburgh: [
+    { date: '2026-04-26', postcode: 'EH3', issue: 'New Town tenement burst pipe', resolution: 'Replaced split section, listed-aware repair', duration: '2 hours' },
+    { date: '2026-04-24', postcode: 'EH9', issue: 'Communal close stack blockage', resolution: 'Jetted and flats restored', duration: '3 hours' },
+    { date: '2026-04-22', postcode: 'EH10', issue: 'Hidden leak in flat', resolution: 'Thermal imaging located, repaired', duration: '2 hours' },
+    { date: '2026-04-19', postcode: 'EH6', issue: 'Boiler low pressure fault', resolution: 'Slow leak diagnosed and repaired', duration: '90 minutes' },
+    { date: '2026-04-17', postcode: 'EH12', issue: 'Apartment unvented PRV', resolution: 'PRV replaced, system tested', duration: '90 minutes' },
+    { date: '2026-04-15', postcode: 'EH4', issue: 'Frozen condensate', resolution: 'Thawed and lagged', duration: '45 minutes' },
+    { date: '2026-04-13', postcode: 'EH7', issue: 'Cylinder thermostat fault', resolution: 'Stat replaced, hot water restored', duration: '1 hour' },
+    { date: '2026-04-11', postcode: 'EH16', issue: 'Toilet blockage', resolution: 'Cleared with rods', duration: '30 minutes' },
+  ],
+  newcastle: [
+    { date: '2026-04-26', postcode: 'NE2', issue: 'Tyneside flat cross-property leak', resolution: 'Located in upper flat, repaired', duration: '2 hours' },
+    { date: '2026-04-24', postcode: 'NE6', issue: 'Boiler fan failure', resolution: 'Fan replaced from van', duration: '90 minutes' },
+    { date: '2026-04-22', postcode: 'NE3', issue: 'External soil pipe corrosion', resolution: 'Section replaced with PVC', duration: '2 hours' },
+    { date: '2026-04-19', postcode: 'NE4', issue: 'Lead supply pipe leak', resolution: 'Section replaced, advice given', duration: '90 minutes' },
+    { date: '2026-04-17', postcode: 'NE7', issue: 'Quayside flat stack issue', resolution: 'Jetted from chamber', duration: '2 hours' },
+    { date: '2026-04-15', postcode: 'NE12', issue: 'Powerflush completed', resolution: 'Sludge cleared, inhibitor added', duration: '5 hours' },
+    { date: '2026-04-13', postcode: 'NE5', issue: 'Cylinder thermostat', resolution: 'Replaced, hot water back', duration: '1 hour' },
+    { date: '2026-04-11', postcode: 'NE15', issue: 'Toilet blockage past trap', resolution: 'Rods cleared the run', duration: '45 minutes' },
+  ],
+  nottingham: [
+    { date: '2026-04-26', postcode: 'NG5', issue: 'Frozen pipe split in semi loft', resolution: 'Replaced and reinsulated', duration: '90 minutes' },
+    { date: '2026-04-24', postcode: 'NG7', issue: 'HMO toilet blockage', resolution: 'Soil pipe cleared with rods', duration: '45 minutes' },
+    { date: '2026-04-22', postcode: 'NG3', issue: 'Lead pipe pinhole leak', resolution: 'Section replaced, lead replacement advised', duration: '2 hours' },
+    { date: '2026-04-19', postcode: 'NG2', issue: 'Boiler diverter valve', resolution: 'Replaced, hot water restored', duration: '90 minutes' },
+    { date: '2026-04-17', postcode: 'NG1', issue: 'Apartment stack blockage', resolution: 'Jetted from chamber', duration: '2 hours' },
+    { date: '2026-04-15', postcode: 'NG8', issue: 'Frozen condensate', resolution: 'Thawed and lagged', duration: '45 minutes' },
+    { date: '2026-04-13', postcode: 'NG9', issue: 'Underfloor heating leak', resolution: 'Thermal imaging located, repaired', duration: '3 hours' },
+    { date: '2026-04-11', postcode: 'NG4', issue: 'Cylinder thermostat fault', resolution: 'Replaced, hot water restored', duration: '1 hour' },
+  ],
+  cardiff: [
+    { date: '2026-04-26', postcode: 'CF24', issue: 'Cathays terrace burst pipe', resolution: 'Replaced section, made-good', duration: '90 minutes' },
+    { date: '2026-04-24', postcode: 'CF14', issue: 'Boiler PCB replacement', resolution: 'PCB fitted, system retested', duration: '2 hours' },
+    { date: '2026-04-22', postcode: 'CF10', issue: 'Bay area apartment stack', resolution: 'Jetted from chamber', duration: '2 hours' },
+    { date: '2026-04-19', postcode: 'CF5', issue: 'Edwardian extension drain failure', resolution: 'Joint replaced, CCTV survey', duration: '2 hours' },
+    { date: '2026-04-17', postcode: 'CF11', issue: 'External soil pipe corrosion', resolution: 'Section replaced with PVC', duration: '90 minutes' },
+    { date: '2026-04-15', postcode: 'CF23', issue: 'Cold radiators upstairs', resolution: 'Air bled and balanced', duration: '90 minutes' },
+    { date: '2026-04-13', postcode: 'CF15', issue: 'Cylinder thermostat fault', resolution: 'Replaced, hot water restored', duration: '1 hour' },
+    { date: '2026-04-11', postcode: 'CF3', issue: 'Toilet blockage', resolution: 'Cleared with auger', duration: '30 minutes' },
+  ],
+};
+
+export const getRecentJobsByCity = (citySlug: string): RecentJob[] =>
+  jobsByCity[citySlug] || [];

@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #0A0A0A;
+  --background: #FFFFFF;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  h1 {
+    @apply text-h1-m md:text-h1-d text-ink;
+  }
+  h2 {
+    @apply text-h2-m md:text-h2-d text-ink;
+  }
+  h3 {
+    @apply text-h3-m md:text-h3-d text-ink;
+  }
+  p {
+    @apply leading-relaxed;
+  }
+  a {
+    @apply transition-colors;
+  }
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
+}
+
+@layer components {
+  .container-content {
+    @apply mx-auto w-full max-w-content px-5 md:px-8;
+  }
+  .section {
+    @apply py-12 md:py-20;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3.5 font-semibold text-white shadow-md transition hover:bg-primary-dark active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-gray-line bg-white px-6 py-3.5 font-semibold text-ink transition hover:border-ink;
+  }
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-gray-line bg-white px-3 py-1 text-sm font-medium text-gray-soft;
+  }
+  .pulse-dot {
+    @apply relative inline-block h-2.5 w-2.5 rounded-full bg-primary;
+  }
+  .pulse-dot::after {
+    content: '';
+    @apply absolute inset-0 animate-ping rounded-full bg-primary opacity-75;
+  }
+}

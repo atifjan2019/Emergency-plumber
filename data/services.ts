@@ -1,0 +1,358 @@
+export type Service = {
+  slug: string;
+  name: string;
+  shortName: string;
+  icon: string;
+  shortDescription: string;
+  longDescription: string;
+  whatsIncluded: string[];
+  commonCauses: { title: string; description: string }[];
+  process: { step: number; title: string; description: string }[];
+  faq: { question: string; answer: string }[];
+  relatedServices: string[];
+  startingPrice: string;
+};
+
+export const services: Service[] = [
+  {
+    slug: 'burst-pipe-repair',
+    name: 'Burst Pipe Repair',
+    shortName: 'Burst Pipes',
+    icon: 'droplet',
+    shortDescription: 'Stop the flood fast. Burst pipe response, leak isolation, repair and reinstatement.',
+    longDescription:
+      'A burst pipe is the most damaging plumbing emergency a household can face. Within ten minutes a single pinhole leak in a pressurised mains run can release more than 200 litres of water and reach floors and ceilings two storeys away. Our burst pipe response is built around three priorities - isolate the supply, stop the loss, and dry the structure before secondary damage takes hold. Engineers carry mains isolation tools, freeze kits, repair couplings, and replacement runs of copper and plastic in standard domestic sizes so most repairs are completed in a single visit.',
+    whatsIncluded: [
+      'Mains isolation and pressure relief on arrival',
+      'Leak source identification using thermal and acoustic detection',
+      'Cut-out and replacement of failed pipework',
+      'Pressure test and reinstatement of supply',
+      'Basic make-good of cut-outs in plasterboard or floor finishes',
+      'Written report for insurance claims',
+    ],
+    commonCauses: [
+      { title: 'Frozen and split pipes', description: 'Water expands as it freezes, splitting copper and plastic pipework most often where it runs through unheated lofts, garages and external walls.' },
+      { title: 'Lead pipe corrosion', description: 'Original lead supply pipes in pre-1970s properties develop pinhole leaks as the metal degrades and joints fail.' },
+      { title: 'Joint failure', description: 'Compression fittings, soldered joints and push-fit connections all fail eventually, particularly under pressure cycling.' },
+      { title: 'Internal corrosion', description: 'Soft-water areas see copper pipes pit from the inside out, producing slow leaks that escalate suddenly.' },
+      { title: 'Mechanical damage', description: 'Drilling into walls or floors without checking for hidden pipework is a leading cause of accidental bursts.' },
+    ],
+    process: [
+      { step: 1, title: 'Call and isolate', description: 'When you call we talk you through finding and turning off your stopcock to stop the loss while we travel.' },
+      { step: 2, title: 'On-site diagnosis', description: 'We pinpoint the leak using thermal imaging or acoustic detection, avoiding unnecessary cut-outs.' },
+      { step: 3, title: 'Repair and test', description: 'Failed sections are cut out and replaced, joints are made with appropriate fittings for the pipe material, and the system is pressure tested.' },
+      { step: 4, title: 'Reinstate and report', description: 'We restore supply, flush the system, basic-make-good the access points, and provide a written report.' },
+    ],
+    faq: [
+      { question: 'How quickly can you reach me with a burst pipe?', answer: 'Average response across our 12-city UK coverage is 25 to 30 minutes from call to arrival, 24 hours a day.' },
+      { question: 'Should I turn the water off before you arrive?', answer: 'Yes. Find your internal stopcock - usually under the kitchen sink - and turn it clockwise. We talk you through this on the call.' },
+      { question: 'Do I need to claim on my insurance?', answer: 'For larger losses, often yes. We provide an itemised written report suitable for insurance claims at no extra cost.' },
+      { question: 'Can you repair lead pipes?', answer: 'We can make a temporary lead repair to stop the loss but always recommend full replacement of lead supply runs to modern copper or MDPE.' },
+      { question: 'Is the boiler safe to run during a burst pipe?', answer: 'No. Turn the boiler off at the consumer unit until the leak is repaired and the system has been refilled and inspected.' },
+      { question: 'Will you charge a call-out fee even if you cannot fix it tonight?', answer: 'We charge our standard call-out fee for attending. If we cannot complete the repair on the night we will isolate, make safe and return at no additional call-out charge.' },
+      { question: 'What pipework materials do you carry on the van?', answer: 'Copper in 15mm, 22mm and 28mm, MDPE supply pipe, plastic push-fit, and a range of compression and pressfit couplings for emergency joins.' },
+      { question: 'Do you cover hidden leaks behind walls?', answer: 'Yes. We carry thermal imaging and acoustic leak-detection equipment specifically to locate hidden leaks without unnecessary fabric damage.' },
+    ],
+    relatedServices: ['leak-detection', 'no-hot-water', '24-hour-plumber'],
+    startingPrice: '£89 call-out',
+  },
+  {
+    slug: 'emergency-boiler-repair',
+    name: 'Emergency Boiler Repair',
+    shortName: 'Boiler Repair',
+    icon: 'flame',
+    shortDescription: 'Gas Safe registered emergency boiler diagnosis and repair, 24 hours a day.',
+    longDescription:
+      'A boiler failure in winter turns a house cold within hours and leaves a household without hot water indefinitely until repaired. Our emergency boiler engineers are Gas Safe registered, hold appropriate ACS qualifications for the boiler types they attend, and arrive with diagnostic kits, pressure gauges and a range of common spare parts so that the majority of failures can be repaired on the first visit. We attend most major boiler brands - Worcester Bosch, Vaillant, Ideal, Baxi, Glow-worm, Viessmann and others - and where parts are not on the van we source them on day-rate next-working-day delivery.',
+    whatsIncluded: [
+      'Full diagnostic check including pressure, fault codes and combustion analysis where required',
+      'Gas Safe certified work with all required documentation',
+      'Common parts on the van: PCBs, fans, pumps, diverter valves, expansion vessels',
+      'Pressure test and recommissioning after repair',
+      'Honest assessment of repair vs replacement economics',
+      'Warranty on parts fitted',
+    ],
+    commonCauses: [
+      { title: 'Low pressure', description: 'Pressure below 1 bar shuts most modern boilers down. The cause is usually a slow leak, a degraded expansion vessel, or a venting valve.' },
+      { title: 'Frozen condensate pipe', description: 'External condensate runs freeze in cold snaps and cause boilers to lock out. Often resolved by thawing and reinsulating the pipe.' },
+      { title: 'Failed PCB', description: 'The printed circuit board is the most expensive failure mode, often requiring replacement on older units.' },
+      { title: 'Fan or pump failure', description: 'Mechanical components fail with age, often presenting as fault codes specific to each manufacturer.' },
+      { title: 'Limescale-blocked heat exchanger', description: 'Hard-water areas see heat exchangers scale up over years, leading to kettling, hot-spots and eventual failure.' },
+    ],
+    process: [
+      { step: 1, title: 'Diagnostic', description: 'We read fault codes, check pressure and flow, inspect flue and condensate, and identify the failure mode.' },
+      { step: 2, title: 'Honest cost assessment', description: 'For older boilers we tell you whether repair makes financial sense given likely future failures.' },
+      { step: 3, title: 'Repair', description: 'Common parts are fitted from van stock. Less common parts are sourced for next-working-day completion.' },
+      { step: 4, title: 'Recommission', description: 'Pressure test, flue gas analysis where required, and full recommissioning before sign-off.' },
+    ],
+    faq: [
+      { question: 'Are your engineers Gas Safe registered?', answer: 'Every engineer attending boiler work is Gas Safe registered with current ACS qualifications. Our company Gas Safe number is 123456.' },
+      { question: 'Will you tell me honestly if I should replace rather than repair?', answer: 'Yes. For older boilers (typically 12+ years) we explain the economics of repair vs replacement so you can make an informed choice.' },
+      { question: 'How much is a typical boiler repair?', answer: 'Most repairs fall between £150 and £450 fully fitted. Major component replacements like PCBs can run higher.' },
+      { question: 'Do you fit replacement boilers?', answer: 'Yes - we can fit a like-for-like replacement boiler within 24 to 48 hours where needed.' },
+      { question: 'My boiler shows a fault code - can you fix it?', answer: 'Tell us the fault code when you call. For most major brands we can identify the likely failure mode and bring the relevant parts.' },
+      { question: 'What if my boiler is too old for parts?', answer: 'For boilers where parts are no longer manufactured we provide a replacement quote and can usually fit a new boiler within 24 hours.' },
+      { question: 'Will you check my flue and gas safety?', answer: 'Yes. Gas safety checks are a core part of any emergency boiler attendance.' },
+      { question: 'Do you offer a warranty on repairs?', answer: 'Yes. Parts fitted carry a manufacturer warranty (typically 12 months) and our labour is guaranteed for 90 days against the same fault.' },
+    ],
+    relatedServices: ['no-hot-water', 'central-heating-repair', '24-hour-plumber'],
+    startingPrice: '£95 call-out',
+  },
+  {
+    slug: 'blocked-drain',
+    name: 'Blocked Drain Clearance',
+    shortName: 'Blocked Drains',
+    icon: 'pipe',
+    shortDescription: 'Outdoor and indoor drain unblocking, CCTV survey and root removal.',
+    longDescription:
+      'A blocked drain is rarely just an inconvenience. Once the system backs up to ground level you have grey or foul water in the garden, on patios, or worst of all coming back into the property through the lowest fitting. Our drain clearance vans carry high-pressure jetting equipment, electric drain rods, root-cutting heads and CCTV survey kit so that we can clear the immediate blockage and identify what caused it. Most domestic blockages clear within an hour. Recurrent blockages get a CCTV survey to identify the underlying defect.',
+    whatsIncluded: [
+      'High-pressure water jetting from 3,000 to 5,000 psi',
+      'Electric drain rods for soft and root blockages',
+      'CCTV survey on recurrent or stubborn blockages',
+      'Identification of root ingress, pipe collapse or joint displacement',
+      'Manhole and chamber clearance',
+      'Written drainage condition report on request',
+    ],
+    commonCauses: [
+      { title: 'Root ingress', description: 'Tree and shrub roots find the smallest joint gap, enter the pipe and grow into mats that catch debris and block flow.' },
+      { title: 'Wet wipes and non-flushables', description: 'Wipes labelled flushable rarely break down in domestic systems and form the most common blockage cause we attend.' },
+      { title: 'Fat, oil and grease', description: 'Cooled cooking fat solidifies in waste runs and accumulates over months until flow is fully blocked.' },
+      { title: 'Pipe collapse', description: 'Older clay drainage cracks and collapses with ground movement, particularly under driveways and near tree lines.' },
+      { title: 'Joint displacement', description: 'Settlement and ground movement displace pipe joints, creating step changes that catch debris.' },
+    ],
+    process: [
+      { step: 1, title: 'Locate the blockage', description: 'We lift inspection chambers to identify which run is blocked, narrowing the work area.' },
+      { step: 2, title: 'Clear the blockage', description: 'Jetting or rodding clears the immediate obstruction and restores flow.' },
+      { step: 3, title: 'CCTV inspection', description: 'On recurrent or unexplained blockages we run a camera survey to identify the underlying defect.' },
+      { step: 4, title: 'Report and recommend', description: 'You receive a clear explanation of the cause and any recommended further work, with footage if a survey was done.' },
+    ],
+    faq: [
+      { question: 'How long does drain clearance take?', answer: 'Most domestic blockages clear within 30 to 90 minutes. Larger or more complex blockages can take longer.' },
+      { question: 'Will you damage my drains?', answer: 'No. Jetting is set to appropriate pressure for the pipe material. We do not use rotary cutters on clay or pitch fibre without a CCTV survey first.' },
+      { question: 'Who is responsible for the blocked drain?', answer: 'Inside your property boundary it is your responsibility. Beyond the boundary it is usually the water company. We can clarify ownership during the visit.' },
+      { question: 'What is a CCTV drain survey?', answer: 'A camera on a flexible rod that records the inside of the drain run and identifies cracks, collapses, root ingress and joint defects.' },
+      { question: 'Do you remove tree roots?', answer: 'Yes. Root cutting heads and high-pressure jetting clear root mats. Recurrent root problems may need pipe relining.' },
+      { question: 'Do you cover commercial drains?', answer: 'Yes. We have heavier jetting equipment available for commercial drainage on request.' },
+      { question: 'My drain smells - is that a blockage?', answer: 'Often yes, but it can also be a dry trap or a vent failure. We diagnose the cause as part of the call-out.' },
+      { question: 'Can a chemical cleaner work instead?', answer: 'For grease and soap blockages sometimes. For wipes, roots or collapses, no chemical cleaner will work and most damage drains over time.' },
+    ],
+    relatedServices: ['blocked-toilet', 'leak-detection', '24-hour-plumber'],
+    startingPrice: '£89 call-out',
+  },
+  {
+    slug: 'leak-detection',
+    name: 'Leak Detection',
+    shortName: 'Leak Detection',
+    icon: 'search',
+    shortDescription: 'Find hidden leaks without unnecessary damage to floors, walls or ceilings.',
+    longDescription:
+      'Hidden leaks are the most insidious plumbing problem because they cause structural damage long before they make themselves visible. By the time water shows on a ceiling or in a damp patch on the floor, the actual leak may have been running for weeks. Our leak detection service uses non-invasive technology to pinpoint the source of a leak before any cutting begins. Thermal imaging cameras pick up temperature differences from heated water leaks. Acoustic detection identifies the sound signature of pressurised leaks even through concrete and tile. Tracer gas finds leaks where everything else has failed.',
+    whatsIncluded: [
+      'Thermal imaging camera survey',
+      'Acoustic leak detection',
+      'Tracer gas testing where appropriate',
+      'Moisture and humidity mapping',
+      'Marked location of leak source',
+      'Repair quote separate from detection service',
+    ],
+    commonCauses: [
+      { title: 'Pinhole copper leaks', description: 'Internal pipe corrosion produces tiny leaks that drip continuously rather than spray, often hidden in floor or wall cavities.' },
+      { title: 'Failed underfloor heating', description: 'UFH manifolds and pipework leaks present as warm patches and rising humidity rather than visible water.' },
+      { title: 'Leaking shower trays', description: 'Failed silicone seals or cracked tray substrate let water escape into the floor structure beneath.' },
+      { title: 'Internal soil pipe failure', description: 'Cracked soil stacks inside walls produce intermittent leaks tied to flushing patterns.' },
+      { title: 'Mains leaks under floors', description: 'Concealed mains supply runs in slab floors fail and produce damp patches that creep across rooms.' },
+    ],
+    process: [
+      { step: 1, title: 'Site survey', description: 'We map the suspect area and document the visible symptoms - damp patches, sound, pressure loss patterns.' },
+      { step: 2, title: 'Non-invasive detection', description: 'Thermal, acoustic and moisture detection narrow the leak location without cutting.' },
+      { step: 3, title: 'Confirm and mark', description: 'The leak source is confirmed and marked clearly on the floor or wall.' },
+      { step: 4, title: 'Quote for repair', description: 'You receive a clear repair quote separate from the detection service - no obligation.' },
+    ],
+    faq: [
+      { question: 'Can you find leaks without damaging my floors?', answer: 'Yes - that is the whole point of leak detection. We locate the leak before any cutting is done.' },
+      { question: 'How accurate is thermal imaging?', answer: 'For heated water leaks, accuracy is typically within 10 to 20 cm. Combined with acoustic methods we get to within a few centimetres.' },
+      { question: 'My pressure keeps dropping but I cannot see a leak - can you help?', answer: 'Yes. Pressure-loss-only leaks are exactly what leak detection is for.' },
+      { question: 'Do I need a leak detection survey for insurance?', answer: 'Insurers commonly require a leak source to be identified before authorising repair work. Our reports are accepted by major insurers.' },
+      { question: 'How much does leak detection cost?', answer: 'Standard domestic surveys start at £180 and most are completed within two hours.' },
+      { question: 'Can you detect leaks in underfloor heating?', answer: 'Yes. UFH leaks are one of the most common cases we attend, using thermal imaging while the system is hot.' },
+      { question: 'Does the survey cause any damage?', answer: 'No. Detection itself is fully non-invasive. Any cutting is part of the subsequent repair, with your authorisation.' },
+      { question: 'Will you repair the leak after finding it?', answer: 'In most cases yes - we give you a clear quote for repair after detection and you decide whether to proceed.' },
+    ],
+    relatedServices: ['burst-pipe-repair', 'central-heating-repair', '24-hour-plumber'],
+    startingPrice: '£180 survey',
+  },
+  {
+    slug: 'no-hot-water',
+    name: 'No Hot Water',
+    shortName: 'No Hot Water',
+    icon: 'shower',
+    shortDescription: 'Hot water restored fast - boilers, immersion heaters, cylinders and combis.',
+    longDescription:
+      'No hot water in winter is one of the highest-priority emergencies we attend. The cause is usually one of a small set - boiler lockout, diverter valve failure, immersion heater burnout, or cylinder thermostat failure - and an experienced engineer can usually identify and fix the problem within an hour. We carry diverter valves, immersion elements, motorised valves and replacement thermostats on the van so that the majority of no-hot-water calls result in same-visit restoration of supply. For older boilers and cylinders where parts are obsolete we offer same-day replacement options.',
+    whatsIncluded: [
+      'Full diagnosis of the no-hot-water cause',
+      'Diverter valve, motorised valve and immersion element replacements as needed',
+      'Cylinder thermostat replacement',
+      'Boiler PCB and pump fault diagnosis',
+      'Hot water restored in most cases on the same visit',
+      'Like-for-like cylinder replacement available',
+    ],
+    commonCauses: [
+      { title: 'Diverter valve failure', description: 'In combi boilers a stuck diverter valve gives heating but no hot water - the valve cannot switch demand modes.' },
+      { title: 'Immersion heater burnout', description: 'In tank-fed systems the immersion element fails over time, leaving the cylinder cold.' },
+      { title: 'Cylinder thermostat failure', description: 'A failed thermostat will not call for heat, leaving the cylinder cold even though the boiler is running.' },
+      { title: 'Boiler lockout', description: 'Pressure drops, frozen condensate or fault conditions can lock the boiler out and leave both heating and hot water off.' },
+      { title: 'Motorised valve failure', description: 'In Y-plan and S-plan systems a failed motorised valve cuts hot water while heating continues.' },
+    ],
+    process: [
+      { step: 1, title: 'Diagnose', description: 'We confirm the system type and identify the failure mode from symptoms and fault codes.' },
+      { step: 2, title: 'Repair', description: 'Most causes are repaired from van stock - diverter valves, immersion elements, thermostats, motorised valves.' },
+      { step: 3, title: 'Test', description: 'We confirm hot water flow and temperature at multiple outlets before sign-off.' },
+      { step: 4, title: 'Advise', description: 'If the underlying system is failing repeatedly we explain replacement options.' },
+    ],
+    faq: [
+      { question: 'How quickly can I get hot water back?', answer: 'Most no-hot-water calls are restored within the first visit, typically within 60 to 90 minutes of arrival.' },
+      { question: 'My heating works but I have no hot water - what is wrong?', answer: 'Almost always a diverter valve (combi) or motorised valve (Y-plan or S-plan) failure. Both are common and quick to repair.' },
+      { question: 'Can you fit a new immersion heater on the same visit?', answer: 'Yes. Standard immersion elements are van stock and fit the majority of UK cylinders.' },
+      { question: 'How long does an immersion element last?', answer: 'Typically 5 to 10 years depending on water hardness. Soft-water areas see longer life; hard-water limescale shortens it.' },
+      { question: 'What if my cylinder is leaking?', answer: 'A leaking cylinder generally needs replacement. We offer same-day or next-day cylinder replacement.' },
+      { question: 'Do you fit unvented cylinders?', answer: 'Yes - our engineers hold G3 unvented qualifications and we can install or replace unvented cylinders.' },
+      { question: 'My combi gives lukewarm water only - is that a heat exchanger problem?', answer: 'Often yes, particularly in hard-water areas. We descale or replace the heat exchanger as appropriate.' },
+      { question: 'Is no hot water an emergency?', answer: 'In winter or with vulnerable household members, yes. We treat it as a priority response.' },
+    ],
+    relatedServices: ['emergency-boiler-repair', 'central-heating-repair', '24-hour-plumber'],
+    startingPrice: '£89 call-out',
+  },
+  {
+    slug: 'blocked-toilet',
+    name: 'Blocked Toilet',
+    shortName: 'Blocked Toilet',
+    icon: 'toilet',
+    shortDescription: 'Blocked toilet clearance, fast and clean. We bring everything we need.',
+    longDescription:
+      'A blocked toilet that cannot be cleared with a plunger usually means the blockage is past the trap and into the soil branch or the soil stack itself. Our toilet unblocking service covers the full range - simple paper blockages cleared with mechanical augers, deeper blockages cleared with electric drain rods, and stack blockages cleared by jetting through inspection chambers. We bring our own protective coverings for floors, our own waste removal, and the equipment to clear the blockage cleanly without damage to ceramics or finishes.',
+    whatsIncluded: [
+      'Floor and surround protection before any work',
+      'Mechanical toilet augers for trap blockages',
+      'Electric drain rods for deeper soil-pipe blockages',
+      'Jetting service for stack-level blockages',
+      'Removal and refit of toilet pan if required',
+      'Waste removal and clean-down on completion',
+    ],
+    commonCauses: [
+      { title: 'Wipes and sanitary products', description: 'Wipes are the leading cause of toilet blockages. Even those marketed as flushable rarely break down in time.' },
+      { title: 'Excess paper', description: 'Heavy paper use blocks traps, particularly in older toilets with smaller flush volumes.' },
+      { title: 'Foreign objects', description: 'Toys, phones, brushes and other items dropped into toilets often lodge at the trap or just past it.' },
+      { title: 'Soil pipe collapse', description: 'External soil pipe failures back up through the lowest fitting in the property, which is usually a ground-floor toilet.' },
+      { title: 'Stack ventilation failure', description: 'A blocked stack vent creates pressure issues that simulate a blockage even when the run is clear.' },
+    ],
+    process: [
+      { step: 1, title: 'Protect the area', description: 'Coverings down on floors and surrounds before any work begins.' },
+      { step: 2, title: 'Clear the blockage', description: 'Auger first, drain rods if needed, jetting if the blockage is deeper.' },
+      { step: 3, title: 'Test the flush', description: 'Multiple test flushes confirm clean clearance.' },
+      { step: 4, title: 'Clean and tidy', description: 'Full clean-down and waste removal so the bathroom is left as we found it.' },
+    ],
+    faq: [
+      { question: 'Can I unblock a toilet myself first?', answer: 'A plunger and patience clears simple blockages. If two attempts fail, call us before forcing.' },
+      { question: 'Will the toilet need to be removed?', answer: 'Rarely. Most blockages clear without removing the pan. We only remove it if the blockage is at or behind the trap.' },
+      { question: 'My toilet keeps blocking - why?', answer: 'Recurrent blockages usually indicate a deeper issue: soil pipe collapse, joint displacement, or root ingress. A CCTV survey will identify it.' },
+      { question: 'Is a chemical drain unblocker safe to use?', answer: 'Most are not safe for toilet ceramics or for the rubber seals beneath. We do not recommend them.' },
+      { question: 'Will you charge if I cannot unblock it before you arrive?', answer: 'No. The call-out fee covers attendance regardless of whether the blockage clears before we get there.' },
+      { question: 'Do you cover ground floor toilets that overflow when an upstairs toilet is flushed?', answer: 'Yes. That symptom indicates a blockage downstream of both, usually in the soil stack or external drain.' },
+      { question: 'How much does it cost to unblock a toilet?', answer: 'Most domestic clearances are completed within the call-out fee plus one hour of labour. Total typical cost £130 to £180.' },
+      { question: 'Can you do it discreetly?', answer: 'Yes. Engineers are uniformed, vans are unmarked options available, and we are professional and clean throughout.' },
+    ],
+    relatedServices: ['blocked-drain', 'leak-detection', '24-hour-plumber'],
+    startingPrice: '£89 call-out',
+  },
+  {
+    slug: 'central-heating-repair',
+    name: 'Central Heating Repair',
+    shortName: 'Heating Repair',
+    icon: 'radiator',
+    shortDescription: 'Cold radiators, system noise, pressure loss - heating diagnosed and repaired.',
+    longDescription:
+      'Central heating problems range from a single cold radiator to a system-wide circulation failure. Our central heating engineers diagnose the entire system as a unit - boiler, pump, motorised valves, expansion vessel, radiators and pipework - rather than treating each symptom in isolation. That diagnostic approach finds underlying causes that piecemeal repairs miss. We carry replacement pumps, motorised valves, expansion vessels, thermostatic radiator valves and lockshields on the van and complete most repairs on the first visit. For system flush and powerflush jobs we use industry-standard pumping equipment and water treatment.',
+    whatsIncluded: [
+      'Full system diagnostic',
+      'Pump, motorised valve, expansion vessel replacement',
+      'Radiator bleeding, balancing and TRV replacement',
+      'Pressure fault diagnosis and repair',
+      'Powerflush service for sludged systems',
+      'System inhibitor dosing on completion',
+    ],
+    commonCauses: [
+      { title: 'Sludge buildup', description: 'Black iron oxide sludge accumulates in radiators and pumps over years, blocking circulation and causing cold spots.' },
+      { title: 'Failed expansion vessel', description: 'When the vessel loses charge, system pressure rises uncontrollably during heating and drops when cool.' },
+      { title: 'Pump failure', description: 'Circulating pumps run for years and eventually seize or weaken, producing poor circulation and cold radiators.' },
+      { title: 'Motorised valve failure', description: 'A stuck or failed motorised valve cuts circulation to the heating circuit, hot water circuit, or both.' },
+      { title: 'Air in the system', description: 'Trapped air at high points stops circulation. Bleeding clears it; recurring air points to a system issue.' },
+    ],
+    process: [
+      { step: 1, title: 'Diagnose the whole system', description: 'We check pressure, flow, valve operation and radiator surface temperatures across the system.' },
+      { step: 2, title: 'Identify the failure', description: 'Symptoms point to specific failure modes - cold tops to air, cold bottoms to sludge, no flow at all to pump or valve.' },
+      { step: 3, title: 'Repair', description: 'Common parts are replaced from van stock; system inhibitor is dosed on completion.' },
+      { step: 4, title: 'Test and balance', description: 'We balance radiators across the system so heat distribution is even.' },
+    ],
+    faq: [
+      { question: 'My radiators are cold at the bottom - what is wrong?', answer: 'Sludge buildup. The bottom of the radiator fills with iron oxide and water cannot circulate. A powerflush usually resolves it.' },
+      { question: 'My radiators are cold at the top - what is wrong?', answer: 'Trapped air. We bleed the radiators and check for any underlying cause if it recurs.' },
+      { question: 'Do I need a powerflush?', answer: 'Only if there is significant sludge. We test the system water and recommend a flush only when justified.' },
+      { question: 'How much is a powerflush?', answer: 'Typically £450 to £750 depending on system size and sludge level.' },
+      { question: 'My pressure keeps dropping - is that a leak?', answer: 'Often a small leak somewhere on the heating circuit. Sometimes a failed expansion vessel. We diagnose both.' },
+      { question: 'Can I add radiators to my system?', answer: 'In most cases yes, depending on boiler output and pipework size. We assess capacity before adding.' },
+      { question: 'My system is noisy - what is causing it?', answer: 'Kettling (boiling) usually points to limescale on the heat exchanger. Banging often indicates trapped air or pipework expansion.' },
+      { question: 'Do you fit smart thermostats?', answer: 'Yes. Hive, Nest, Honeywell and Tado are all common installations.' },
+    ],
+    relatedServices: ['emergency-boiler-repair', 'no-hot-water', '24-hour-plumber'],
+    startingPrice: '£89 call-out',
+  },
+  {
+    slug: '24-hour-plumber',
+    name: '24 Hour Plumber',
+    shortName: '24/7 Plumber',
+    icon: 'clock',
+    shortDescription: 'Round-the-clock emergency plumbing across all 12 of our UK city coverage zones.',
+    longDescription:
+      'Our 24 hour plumbing service covers everything from middle-of-the-night burst pipes to weekend boiler failures and bank holiday blocked drains. Engineers work in shifts so we have qualified, sober, fully equipped plumbers on the road every hour of every day, including Christmas Day. Same-rate pricing applies regardless of hour or day - we do not surcharge for nights, weekends or bank holidays the way some emergency operators do. The 24/7 capability is supported by central dispatch that holds your address, system type and prior call history so the engineer arrives prepared.',
+    whatsIncluded: [
+      'Genuine 24/7/365 coverage including bank holidays',
+      'Same-rate pricing - no out-of-hours surcharge',
+      'Gas Safe registered engineers on every shift',
+      'Full van stock for first-visit completion',
+      'Central dispatch with address and system history',
+      'Direct phone line - no call centre routing',
+    ],
+    commonCauses: [
+      { title: 'Burst pipes', description: 'Mains and feed pipe failures account for the largest share of overnight emergency calls, particularly in winter.' },
+      { title: 'Boiler failures', description: 'Boiler lockouts and component failures peak in the first cold weekends of autumn each year.' },
+      { title: 'Blocked drains', description: 'External drain blockages back up at any hour and need immediate attention to prevent property damage.' },
+      { title: 'Leaks above ceilings', description: 'A leak from an upper floor presenting at a downstairs ceiling demands immediate isolation regardless of time.' },
+      { title: 'No heating in cold weather', description: 'Heating loss in winter with vulnerable household members is treated as priority emergency.' },
+    ],
+    process: [
+      { step: 1, title: 'Direct call answer', description: 'Our number rings to a real dispatcher 24 hours a day, not a call centre.' },
+      { step: 2, title: 'Closest engineer dispatched', description: 'Whichever engineer is closest to you is dispatched, with target arrival within your city response window.' },
+      { step: 3, title: 'Same-rate emergency repair', description: 'Standard call-out and labour rates apply regardless of time of day or day of week.' },
+      { step: 4, title: 'Follow-up if needed', description: 'For temporary make-safes overnight we book a full repair return at no additional call-out.' },
+    ],
+    faq: [
+      { question: 'Are you really open 24 hours?', answer: 'Yes. Engineers are on shift round the clock including bank holidays and Christmas Day.' },
+      { question: 'Do you charge more at night or on weekends?', answer: 'No. Same call-out fee, same hourly rate, every hour of every day.' },
+      { question: 'How quickly can someone reach me at 3am?', answer: 'Response targets are the same as daytime - typically 25 to 30 minutes from call to arrival depending on city.' },
+      { question: 'Will the engineer be Gas Safe registered?', answer: 'Yes. Every engineer attending gas work is Gas Safe registered regardless of shift.' },
+      { question: 'Can you handle commercial emergencies?', answer: 'Yes. We have separate commercial emergency capability with appropriate insurance and certifications.' },
+      { question: 'Do I need to wait for daylight for some repairs?', answer: 'For external drainage in dark and wet conditions sometimes we make-safe overnight and complete in daylight. This is judged case by case.' },
+      { question: 'What payment methods do you accept?', answer: 'Card on the job (we carry mobile terminals), bank transfer, and cash. Contactless and Apple Pay accepted.' },
+      { question: 'Will I get an itemised receipt?', answer: 'Yes. Itemised receipts are emailed within 24 hours and accepted by all major insurers.' },
+    ],
+    relatedServices: ['burst-pipe-repair', 'emergency-boiler-repair', 'leak-detection'],
+    startingPrice: '£89 call-out',
+  },
+];
+
+export const getServiceBySlug = (slug: string): Service | undefined =>
+  services.find((s) => s.slug === slug);
+
+export const getServiceSlugs = (): string[] => services.map((s) => s.slug);

@@ -1,0 +1,9 @@
+export const BRAND = 'RapidFix Plumbers';
+export const PHONE_DISPLAY = '0800 123 4567';
+export const PHONE_TEL = '+448001234567';
+export const EMAIL = 'help@example.co.uk';
+export const GAS_SAFE_NUMBER = '123456';
+export const SITE_URL = 'https://example.co.uk';
+export const DEFAULT_RESPONSE_TIME = '30 minutes';
+export const NATIONWIDE_RATING = 4.9;
+export const NATIONWIDE_REVIEW_COUNT = 2847;
