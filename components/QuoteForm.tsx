@@ -14,9 +14,23 @@ function SubmitButton({ label }: { label: string }) {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-5 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-primary-dark active:scale-[0.98] disabled:opacity-60"
+      className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-base font-bold text-white shadow-lg shadow-primary/30 transition hover:bg-primary-dark active:scale-[0.98] disabled:opacity-60"
     >
-      {pending ? 'Sending...' : label}
+      {pending ? (
+        <>
+          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeDasharray="40 60" />
+          </svg>
+          Sending...
+        </>
+      ) : (
+        <>
+          {label}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+            <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </>
+      )}
     </button>
   );
 }
@@ -47,9 +61,14 @@ export default function QuoteForm({
 
   if (state.ok) {
     return (
-      <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-900">
-        <strong className="block text-base">Got it.</strong>
-        <span>{state.message}</span>
+      <div className="rounded-2xl border-2 border-green/40 bg-green/5 p-6 text-center">
+        <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-green/15 text-green-dark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-6 w-6" aria-hidden>
+            <path strokeLinecap="round" d="M5 12l5 5L20 7" />
+          </svg>
+        </div>
+        <strong className="mt-3 block text-lg font-bold text-ink">Got it.</strong>
+        <p className="mt-1 text-sm text-gray-soft">{state.message}</p>
       </div>
     );
   }
@@ -58,7 +77,7 @@ export default function QuoteForm({
     <form
       action={formAction}
       onChange={(e) => update(readFormDraft(e.currentTarget))}
-      className={compact ? 'space-y-3' : 'space-y-4'}
+      className={compact ? 'space-y-3' : 'space-y-3.5'}
       noValidate
     >
       <input type="hidden" name="source_page" value={sourcePage} />
@@ -79,7 +98,7 @@ export default function QuoteForm({
         placeholder="Your name"
         required
         autoComplete="name"
-        className="w-full rounded-lg border border-gray-line bg-white px-3.5 py-2.5 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        className="w-full rounded-xl border-2 border-gray-line bg-white px-4 py-3 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 transition-colors"
       />
       <input
         type="tel"
@@ -87,7 +106,7 @@ export default function QuoteForm({
         placeholder="Phone number"
         required
         autoComplete="tel"
-        className="w-full rounded-lg border border-gray-line bg-white px-3.5 py-2.5 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        className="w-full rounded-xl border-2 border-gray-line bg-white px-4 py-3 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 transition-colors"
       />
       {!compact && (
         <input
@@ -95,7 +114,7 @@ export default function QuoteForm({
           name="email"
           placeholder="Email (optional)"
           autoComplete="email"
-          className="w-full rounded-lg border border-gray-line bg-white px-3.5 py-2.5 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="w-full rounded-xl border-2 border-gray-line bg-white px-4 py-3 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 transition-colors"
         />
       )}
       <textarea
@@ -103,17 +122,17 @@ export default function QuoteForm({
         required
         rows={compact ? 2 : 3}
         placeholder={cityName ? `What is the issue in ${cityName}?` : 'What is the issue?'}
-        className="w-full rounded-lg border border-gray-line bg-white px-3.5 py-2.5 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        className="w-full rounded-xl border-2 border-gray-line bg-white px-4 py-3 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 transition-colors"
       />
 
       {state.message && !state.ok && (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+        <p className="rounded-xl border-2 border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-800">
           {state.message}
         </p>
       )}
 
       <SubmitButton label={submitLabel} />
-      <p className="text-xs text-gray-soft">
+      <p className="text-xs text-gray-soft text-center">
         For emergencies, calling is faster. Quote replies within 1 hour during the day.
       </p>
     </form>

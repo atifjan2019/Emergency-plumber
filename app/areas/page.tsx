@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import CityCard from '@/components/CityCard';
 import BreadcrumbNav from '@/components/BreadcrumbNav';
 import CTASection from '@/components/CTASection';
@@ -6,6 +7,7 @@ import SchemaMarkup from '@/components/SchemaMarkup';
 import { cities } from '@/data/cities';
 import { breadcrumbSchema } from '@/lib/schema';
 import { BRAND } from '@/lib/constants';
+import { PLACEHOLDER_IMAGE } from '@/lib/plumbingContent';
 
 export const metadata: Metadata = {
   title: `UK Coverage Areas | 24/7 Emergency Plumbers | ${BRAND}`,
@@ -25,13 +27,38 @@ export default function AreasIndex() {
         <BreadcrumbNav items={crumbs} />
       </div>
 
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-off-white to-white">
+        <div className="absolute inset-0 opacity-[0.025] pointer-events-none" aria-hidden style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(30,115,190) 1px, transparent 0)',
+          backgroundSize: '32px 32px',
+        }} />
+        <div className="container-content relative py-14 md:py-20 grid gap-10 md:grid-cols-12 md:gap-12 items-center">
+          <div className="md:col-span-7">
+            <span className="eyebrow">Coverage</span>
+            <h1 className="mt-4">UK coverage areas</h1>
+            <p className="mt-5 max-w-2xl text-gray-soft text-lg leading-relaxed">
+              Twelve cities under live coverage. Click any city for local pricing, postcodes, recent jobs and customer reviews.
+            </p>
+          </div>
+          <div className="md:col-span-5">
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white shadow-xl">
+              <Image
+                src={PLACEHOLDER_IMAGE}
+                alt="UK plumber van on a local emergency callout"
+                fill
+                sizes="(max-width: 768px) 100vw, 600px"
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="section">
         <div className="container-content">
-          <h1>UK coverage areas</h1>
-          <p className="mt-4 max-w-2xl text-gray-soft text-lg">
-            Twelve cities under live coverage. Click any city for local pricing, postcodes, recent jobs and customer reviews.
-          </p>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {cities.map((c) => (
               <CityCard key={c.slug} slug={c.slug} name={c.name} region={c.region} responseTime={c.responseTime} />
             ))}

@@ -14,9 +14,23 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3.5 text-base font-semibold text-white shadow-lg transition hover:bg-primary-dark active:scale-[0.98] disabled:opacity-60"
+      className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-primary/30 transition hover:bg-primary-dark active:scale-[0.98] disabled:opacity-60"
     >
-      {pending ? 'Sending...' : 'Send message'}
+      {pending ? (
+        <>
+          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeDasharray="40 60" />
+          </svg>
+          Sending...
+        </>
+      ) : (
+        <>
+          Send message
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+            <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </>
+      )}
     </button>
   );
 }
@@ -32,9 +46,14 @@ export default function ContactForm({ sourcePage = '/contact' }: { sourcePage?: 
 
   if (state.ok) {
     return (
-      <div className="rounded-xl border border-green-200 bg-green-50 p-6">
-        <h3 className="text-lg font-semibold text-green-900">Message received</h3>
-        <p className="mt-2 text-sm text-green-800">{state.message}</p>
+      <div className="rounded-2xl border-2 border-green/40 bg-green/5 p-8 text-center">
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-green/15 text-green-dark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-7 w-7" aria-hidden>
+            <path strokeLinecap="round" d="M5 12l5 5L20 7" />
+          </svg>
+        </div>
+        <h3 className="mt-4 text-lg font-bold text-ink">Message received</h3>
+        <p className="mt-2 text-sm text-gray-soft">{state.message}</p>
       </div>
     );
   }
@@ -44,7 +63,7 @@ export default function ContactForm({ sourcePage = '/contact' }: { sourcePage?: 
       ref={formRef}
       action={formAction}
       onChange={(e) => update(readFormDraft(e.currentTarget))}
-      className="space-y-4"
+      className="space-y-5"
       noValidate
     >
       <input type="hidden" name="source_page" value={sourcePage} />
@@ -66,22 +85,22 @@ export default function ContactForm({ sourcePage = '/contact' }: { sourcePage?: 
       <Field label="City or postcode" name="city_slug" />
 
       <label className="block">
-        <span className="text-sm font-semibold text-ink">Message</span>
+        <span className="text-sm font-bold text-ink">Message</span>
         <textarea
           name="message"
           required
           rows={5}
-          className="mt-1.5 w-full rounded-lg border border-gray-line bg-white px-3.5 py-2.5 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="mt-2 w-full rounded-xl border-2 border-gray-line bg-white px-4 py-3 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 transition-colors"
         />
       </label>
 
       {state.message && !state.ok && (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
+        <p className="rounded-xl border-2 border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800">
           {state.message}
         </p>
       )}
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 pt-2">
         <SubmitButton />
         <p className="text-xs text-gray-soft">
           Reply within 1 working day. For emergencies, please call.
@@ -106,16 +125,16 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="text-sm font-semibold text-ink">
+      <span className="text-sm font-bold text-ink">
         {label}
-        {required && <span className="ml-0.5 text-primary">*</span>}
+        {required && <span className="ml-0.5 text-accent">*</span>}
       </span>
       <input
         type={type}
         name={name}
         required={required}
         autoComplete={autoComplete}
-        className="mt-1.5 w-full rounded-lg border border-gray-line bg-white px-3.5 py-2.5 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+        className="mt-2 w-full rounded-xl border-2 border-gray-line bg-white px-4 py-3 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 transition-colors"
       />
     </label>
   );

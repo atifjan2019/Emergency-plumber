@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import ServiceCard from '@/components/ServiceCard';
 import BreadcrumbNav from '@/components/BreadcrumbNav';
 import CTASection from '@/components/CTASection';
@@ -6,6 +7,7 @@ import SchemaMarkup from '@/components/SchemaMarkup';
 import { services } from '@/data/services';
 import { breadcrumbSchema } from '@/lib/schema';
 import { BRAND } from '@/lib/constants';
+import { PLACEHOLDER_IMAGE } from '@/lib/plumbingContent';
 
 export const metadata: Metadata = {
   title: `Emergency Plumbing Services | UK 24/7 | ${BRAND}`,
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/services' },
 };
 
-export default function ServicesIndex() {
+export default async function ServicesIndex() {
   const crumbs = [
     { label: 'Home', href: '/' },
     { label: 'Services' },
@@ -25,13 +27,39 @@ export default function ServicesIndex() {
         <BreadcrumbNav items={crumbs} />
       </div>
 
-      <section className="section">
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-off-white to-white">
+        <div className="absolute inset-0 opacity-[0.025] pointer-events-none" aria-hidden style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(30,115,190) 1px, transparent 0)',
+          backgroundSize: '32px 32px',
+        }} />
+        <div className="container-content relative py-14 md:py-20 grid gap-10 md:grid-cols-12 md:gap-12 items-center">
+          <div className="md:col-span-7">
+            <span className="eyebrow">Our services</span>
+            <h1 className="mt-4">Emergency plumbing services</h1>
+            <p className="mt-5 max-w-2xl text-gray-soft text-lg leading-relaxed">
+              Eight services, every engineer trained on every one. 24/7 response across 12 UK cities. Same rates day or night.
+            </p>
+          </div>
+          <div className="md:col-span-5">
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white shadow-xl">
+              <Image
+                src={PLACEHOLDER_IMAGE}
+                alt="Local plumber repairing pipework on an emergency callout"
+                fill
+                sizes="(max-width: 768px) 100vw, 600px"
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services grid */}
+      <section id="all-services" className="section">
         <div className="container-content">
-          <h1>Emergency plumbing services</h1>
-          <p className="mt-4 max-w-2xl text-gray-soft text-lg">
-            Eight services, every engineer trained on every one. 24/7 response across 12 UK cities. Same rates day or night.
-          </p>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((s) => (
               <ServiceCard
                 key={s.slug}

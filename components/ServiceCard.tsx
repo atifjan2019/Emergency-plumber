@@ -14,18 +14,21 @@ export default function ServiceCard({ slug, name, description, icon, cityContext
   return (
     <Link
       href={href || `/services/${slug}`}
-      className="group relative flex h-full flex-col rounded-xl border border-gray-line bg-white p-6 transition hover:border-primary hover:shadow-lg"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-gray-line bg-white p-6 transition hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-0.5"
     >
-      <div className="mb-4 grid h-12 w-12 place-items-center rounded-lg bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-white">
-        <ServiceIcon name={icon} className="h-6 w-6" />
+      <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-primary/5 transition group-hover:bg-primary/10" aria-hidden />
+      <div className="relative">
+        <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/30 transition group-hover:scale-110">
+          <ServiceIcon name={icon} className="h-7 w-7" />
+        </div>
+        <h3 className="mt-5 text-lg font-bold text-ink group-hover:text-primary transition-colors">{name}</h3>
+        <p className="mt-2 text-sm text-gray-soft leading-relaxed">
+          {cityContext ? `${name} in ${cityContext}. ${description}` : description}
+        </p>
       </div>
-      <h3 className="text-lg font-semibold text-ink">{name}</h3>
-      <p className="mt-2 text-sm text-gray-soft">
-        {cityContext ? `${name} in ${cityContext}. ${description}` : description}
-      </p>
-      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+      <span className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
         Learn more
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 transition group-hover:translate-x-0.5" aria-hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden>
           <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
         </svg>
       </span>
