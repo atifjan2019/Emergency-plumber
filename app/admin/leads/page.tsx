@@ -20,7 +20,7 @@ async function loadLeads(): Promise<AdminLead[]> {
     const supabase = getServiceClient();
     const { data, error } = await supabase
       .from('leads')
-      .select('id, name, phone, email, city_slug, message, source_page, status, earned, notes, created_at, closed_at')
+      .select('id, name, phone, email, city_slug, message, source_page, status, earned, notes, created_at, closed_at, admin_notified_at, user_notified_at')
       .order('created_at', { ascending: false })
       .limit(500);
     if (error) {
@@ -40,6 +40,8 @@ async function loadLeads(): Promise<AdminLead[]> {
       notes: row.notes ?? null,
       created_at: String(row.created_at),
       closed_at: row.closed_at ?? null,
+      admin_notified_at: row.admin_notified_at ?? null,
+      user_notified_at: row.user_notified_at ?? null,
     }));
   } catch (err) {
     console.warn('[admin] load leads exception:', err);

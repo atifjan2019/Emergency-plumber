@@ -23,6 +23,8 @@ export type AdminLead = {
   notes: string | null;
   created_at: string;
   closed_at: string | null;
+  admin_notified_at: string | null;
+  user_notified_at: string | null;
 };
 
 type FilterKey = 'all' | LeadStatus;
@@ -385,6 +387,22 @@ function LeadDetailModal({ lead, onClose }: { lead: AdminLead; onClose: () => vo
 
         <div className="max-h-[70vh] overflow-y-auto px-6 py-5 space-y-6">
           <section>
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-soft">Notifications</h3>
+            <div className="mt-2 grid gap-2 sm:grid-cols-2">
+              <NotifyPill
+                label="Admin email"
+                sentAt={lead.admin_notified_at}
+                fallback="Not sent — admin-created lead"
+              />
+              <NotifyPill
+                label="Customer confirmation"
+                sentAt={lead.user_notified_at}
+                fallback={lead.email ? 'Not sent — SMTP error or pending' : 'No email captured'}
+              />
+            </div>
+          </section>
+
+          <section>
             <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-soft">Contact</h3>
             <dl className="mt-2 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
               {lead.phone && (
@@ -534,6 +552,50 @@ function LeadDetailModal({ lead, onClose }: { lead: AdminLead; onClose: () => vo
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function NotifyPill({
+  label,
+  sentAt,
+  fallback,
+}: {
+  label: string;
+  sentAt: string | null;
+  fallback: string;
+}) {
+  if (sentAt) {
+    return (
+      <div className="rounded-lg border border-green-200 bg-green-50 p-3">
+        <div className="flex items-center gap-2 text-xs font-semibold text-green-900">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="h-4 w-4" aria-hidden>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 12l4 4L19 7" />
+          </svg>
+          {label} sent
+        </div>
+        <div className="mt-0.5 text-[11px] text-green-800">
+          {new Date(sentAt).toLocaleString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="rounded-lg border border-gray-line bg-off-white p-3">
+      <div className="flex items-center gap-2 text-xs font-semibold text-gray-soft">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+          <circle cx="12" cy="12" r="9" />
+          <path strokeLinecap="round" d="M12 8v5" />
+          <circle cx="12" cy="16.5" r="1" fill="currentColor" stroke="none" />
+        </svg>
+        {label}
+      </div>
+      <div className="mt-0.5 text-[11px] text-gray-soft">{fallback}</div>
     </div>
   );
 }

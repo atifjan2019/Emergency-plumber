@@ -1,6 +1,13 @@
 'use server';
 
 import { getServiceClient } from '@/lib/supabase/server';
+import { getSettings } from '@/lib/settings';
+import {
+  buildAdminLeadEmail,
+  buildUserConfirmationEmail,
+  getAlertRecipient,
+  sendMail,
+} from '@/lib/email';
 
 export type LeadFormState = {
   ok: boolean;
@@ -42,24 +49,85 @@ export async function submitLead(
 
   const draftId = trim(formData.get('draft_id'));
 
+  let leadId: string | undefined;
   try {
     const supabase = getServiceClient();
-    const { error } = await supabase.from('leads').insert({
-      name,
-      phone: phone || null,
-      email: email || null,
-      city_slug: citySlug || null,
-      message,
-      source_page: sourcePage || null,
-    });
+    const { data, error } = await supabase
+      .from('leads')
+      .insert({
+        name,
+        phone: phone || null,
+        email: email || null,
+        city_slug: citySlug || null,
+        message,
+        source_page: sourcePage || null,
+      })
+      .select('id, created_at')
+      .single();
 
     if (error) {
       console.error('[leads] insert error:', error.message);
       return { ok: false, message: 'Something went wrong on our end. Please call us instead.' };
     }
+    leadId = data?.id;
 
     if (draftId) {
       await supabase.from('form_drafts').delete().eq('draft_id', draftId);
+    }
+
+    // Fire emails after the lead is saved. Errors are logged but do not fail the user submission.
+    const settings = await getSettings();
+    const brand = {
+      brand: settings.brand,
+      phoneDisplay: settings.phoneDisplay,
+      phoneTel: settings.phoneTel,
+      email: settings.email,
+      siteUrl: settings.siteUrl,
+    };
+
+    const adminEmail = buildAdminLeadEmail(
+      {
+        id: leadId,
+        name,
+        phone,
+        email,
+        city_slug: citySlug,
+        message,
+        source_page: sourcePage,
+        created_at: data?.created_at,
+      },
+      brand
+    );
+    const adminResult = await sendMail({
+      to: getAlertRecipient(),
+      replyTo: email || undefined,
+      brand: settings.brand,
+      ...adminEmail,
+    });
+    if (adminResult.ok && leadId) {
+      await supabase
+        .from('leads')
+        .update({ admin_notified_at: new Date().toISOString() })
+        .eq('id', leadId);
+    }
+
+    if (email) {
+      const userEmail = buildUserConfirmationEmail(
+        { name, phone, email, city_slug: citySlug, message, source_page: sourcePage },
+        brand
+      );
+      const userResult = await sendMail({
+        to: email,
+        replyTo: settings.email,
+        brand: settings.brand,
+        ...userEmail,
+      });
+      if (userResult.ok && leadId) {
+        await supabase
+          .from('leads')
+          .update({ user_notified_at: new Date().toISOString() })
+          .eq('id', leadId);
+      }
     }
   } catch (err) {
     console.error('[leads] unexpected error:', err);

@@ -1,6 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { deleteDraft } from '@/app/admin/drafts/actions';
 
 export type AdminDraft = {
   draft_id: string;
@@ -130,6 +132,22 @@ export default function DraftsView({ drafts }: { drafts: AdminDraft[] }) {
 }
 
 function DraftCard({ draft, onOpen }: { draft: AdminDraft; onOpen: () => void }) {
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+
+  function onDelete(e: React.MouseEvent) {
+    e.stopPropagation();
+    const label = draft.name || draft.phone || draft.email || 'this draft';
+    if (!window.confirm(`Delete the abandoned draft from "${label}"? This cannot be undone.`)) return;
+    const fd = new FormData();
+    fd.set('draft_id', draft.draft_id);
+    fd.set('name_hint', draft.name);
+    startTransition(async () => {
+      await deleteDraft(fd);
+      router.refresh();
+    });
+  }
+
   const minutesAgo = Math.max(1, Math.round((Date.now() - new Date(draft.updated_at).getTime()) / 60000));
   const lastTyped = minutesAgo < 60
     ? `${minutesAgo}m ago`
@@ -140,10 +158,17 @@ function DraftCard({ draft, onOpen }: { draft: AdminDraft; onOpen: () => void })
   const messagePreview = (draft.message || '').slice(0, 120);
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={onOpen}
-      className="group flex h-full w-full flex-col rounded-xl border border-gray-line bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
+      className="group relative flex h-full w-full flex-col rounded-xl border border-gray-line bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md cursor-pointer"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
@@ -199,19 +224,45 @@ function DraftCard({ draft, onOpen }: { draft: AdminDraft; onOpen: () => void })
         </p>
       )}
 
-      <div className="mt-auto pt-4 flex items-center justify-between text-xs text-gray-soft">
+      <div className="mt-auto pt-4 flex items-center justify-between gap-2 text-xs text-gray-soft">
         <span className="truncate" title={draft.source_page}>
           {draft.source_page || '—'}
         </span>
-        <span className="font-semibold text-primary opacity-0 transition group-hover:opacity-100">
-          View →
-        </span>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={onDelete}
+            disabled={pending}
+            className="rounded-md border border-red-200 bg-white px-2 py-1 text-[11px] font-semibold text-red-700 hover:border-red-400 hover:bg-red-50 disabled:opacity-60"
+          >
+            {pending ? 'Deleting…' : 'Delete'}
+          </button>
+          <span className="font-semibold text-primary opacity-0 transition group-hover:opacity-100">
+            View →
+          </span>
+        </div>
       </div>
-    </button>
+    </div>
   );
 }
 
 function DraftDetailModal({ draft, onClose }: { draft: AdminDraft; onClose: () => void }) {
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+
+  function onDelete() {
+    const label = draft.name || draft.phone || draft.email || 'this draft';
+    if (!window.confirm(`Delete the abandoned draft from "${label}"? This cannot be undone.`)) return;
+    const fd = new FormData();
+    fd.set('draft_id', draft.draft_id);
+    fd.set('name_hint', draft.name);
+    startTransition(async () => {
+      await deleteDraft(fd);
+      router.refresh();
+      onClose();
+    });
+  }
+
   return (
     <div
       role="dialog"
@@ -315,30 +366,40 @@ function DraftDetailModal({ draft, onClose }: { draft: AdminDraft; onClose: () =
           </section>
         </div>
 
-        <div className="flex items-center justify-end gap-2 border-t border-gray-line bg-off-white px-6 py-4">
-          {draft.phone && (
-            <a
-              href={`tel:${draft.phone}`}
-              className="rounded-lg bg-primary px-3.5 py-2 text-sm font-semibold text-white shadow hover:bg-primary-dark"
-            >
-              Call now
-            </a>
-          )}
-          {draft.email && !draft.phone && (
-            <a
-              href={`mailto:${draft.email}`}
-              className="rounded-lg bg-primary px-3.5 py-2 text-sm font-semibold text-white shadow hover:bg-primary-dark"
-            >
-              Email now
-            </a>
-          )}
+        <div className="flex flex-col-reverse items-stretch gap-3 border-t border-gray-line bg-off-white px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"
-            onClick={onClose}
-            className="rounded-lg border border-gray-line bg-white px-3.5 py-2 text-sm font-semibold text-ink hover:border-primary hover:text-primary"
+            onClick={onDelete}
+            disabled={pending}
+            className="rounded-lg border border-red-200 bg-white px-3.5 py-2 text-sm font-semibold text-red-700 hover:border-red-400 hover:bg-red-50 disabled:opacity-60"
           >
-            Close
+            {pending ? 'Deleting…' : 'Delete draft'}
           </button>
+          <div className="flex items-center gap-2 sm:justify-end">
+            {draft.phone && (
+              <a
+                href={`tel:${draft.phone}`}
+                className="rounded-lg bg-primary px-3.5 py-2 text-sm font-semibold text-white shadow hover:bg-primary-dark"
+              >
+                Call now
+              </a>
+            )}
+            {draft.email && !draft.phone && (
+              <a
+                href={`mailto:${draft.email}`}
+                className="rounded-lg bg-primary px-3.5 py-2 text-sm font-semibold text-white shadow hover:bg-primary-dark"
+              >
+                Email now
+              </a>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-lg border border-gray-line bg-white px-3.5 py-2 text-sm font-semibold text-ink hover:border-primary hover:text-primary"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>

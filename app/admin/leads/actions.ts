@@ -4,7 +4,9 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { isAdmin } from '@/lib/admin/auth';
 import { getServiceClient } from '@/lib/supabase/server';
+import { getSettings } from '@/lib/settings';
 import { logActivity } from '@/lib/admin/activity';
+import { buildUserConfirmationEmail, sendMail } from '@/lib/email';
 import { LEAD_STATUSES, STATUS_LABEL, type LeadStatus } from '@/lib/admin/leadStatus';
 
 export type LeadActionState = {
@@ -61,6 +63,34 @@ export async function createLead(
       entityId: data?.id,
       metadata: { city_slug: citySlug, source: 'admin' },
     });
+
+    // Admin made this lead manually — no need to email admin. But if the customer
+    // left an email, still send them the confirmation that their job is logged.
+    if (email && data?.id) {
+      const settings = await getSettings();
+      const userEmail = buildUserConfirmationEmail(
+        { name, phone, email, city_slug: citySlug, message, source_page: sourcePage || 'admin' },
+        {
+          brand: settings.brand,
+          phoneDisplay: settings.phoneDisplay,
+          phoneTel: settings.phoneTel,
+          email: settings.email,
+          siteUrl: settings.siteUrl,
+        }
+      );
+      const result = await sendMail({
+        to: email,
+        replyTo: settings.email,
+        brand: settings.brand,
+        ...userEmail,
+      });
+      if (result.ok) {
+        await supabase
+          .from('leads')
+          .update({ user_notified_at: new Date().toISOString() })
+          .eq('id', data.id);
+      }
+    }
   } catch (err) {
     console.error('[leads] create exception:', err);
     return { ok: false, message: 'Could not save the lead.' };

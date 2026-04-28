@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServiceClient } from '@/lib/supabase/server';
+import { getSettings } from '@/lib/settings';
+import { buildAdminDraftEmail, getAlertRecipient, sendMail } from '@/lib/email';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -49,25 +51,71 @@ export async function POST(req: Request) {
       await supabase.from('form_drafts').delete().eq('draft_id', draftId);
       return NextResponse.json({ ok: true, cleared: true });
     }
-    const { error } = await supabase.from('form_drafts').upsert(
-      {
-        draft_id: draftId,
-        form_type: formType,
-        name,
-        phone,
-        email,
-        city_slug: citySlug,
-        message,
-        source_page: sourcePage,
-        user_agent: userAgent,
-        field_count: fieldCount,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: 'draft_id' }
-    );
+
+    // Look up previous notified state BEFORE the upsert so we can decide whether to send.
+    const { data: prev } = await supabase
+      .from('form_drafts')
+      .select('notified_at')
+      .eq('draft_id', draftId)
+      .maybeSingle();
+
+    const wasNotified = Boolean(prev?.notified_at);
+    const hasContact = Boolean(phone || email);
+    const shouldNotify = !wasNotified && hasContact;
+
+    const upsertRow: Record<string, unknown> = {
+      draft_id: draftId,
+      form_type: formType,
+      name,
+      phone,
+      email,
+      city_slug: citySlug,
+      message,
+      source_page: sourcePage,
+      user_agent: userAgent,
+      field_count: fieldCount,
+      updated_at: new Date().toISOString(),
+    };
+    if (shouldNotify) upsertRow.notified_at = new Date().toISOString();
+
+    const { error } = await supabase
+      .from('form_drafts')
+      .upsert(upsertRow, { onConflict: 'draft_id' });
     if (error) {
       console.warn('[draft] upsert error:', error.message);
       return NextResponse.json({ ok: false }, { status: 500 });
+    }
+
+    if (shouldNotify) {
+      const settings = await getSettings();
+      const alert = buildAdminDraftEmail(
+        {
+          draft_id: draftId,
+          form_type: formType,
+          name,
+          phone,
+          email,
+          city_slug: citySlug,
+          message,
+          source_page: sourcePage,
+          field_count: fieldCount,
+          updated_at: new Date().toISOString(),
+        },
+        {
+          brand: settings.brand,
+          phoneDisplay: settings.phoneDisplay,
+          phoneTel: settings.phoneTel,
+          email: settings.email,
+          siteUrl: settings.siteUrl,
+        }
+      );
+      // Fire-and-forget — never block the client response on SMTP.
+      sendMail({
+        to: getAlertRecipient(),
+        replyTo: email || undefined,
+        brand: settings.brand,
+        ...alert,
+      }).catch((err) => console.warn('[draft] email failed:', err));
     }
   } catch (err) {
     console.warn('[draft] unexpected error:', err);
