@@ -1,8 +1,10 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { submitLead, type LeadFormState } from '@/app/actions/leads';
+import { useDraftCapture, readFormDraft } from '@/lib/useDraftCapture';
 
 const initial: LeadFormState = { ok: false, message: '' };
 
@@ -21,6 +23,12 @@ function SubmitButton() {
 
 export default function ContactForm({ sourcePage = '/contact' }: { sourcePage?: string }) {
   const [state, formAction] = useActionState(submitLead, initial);
+  const { draftId, update, clearDraft } = useDraftCapture('contact');
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (state.ok) clearDraft();
+  }, [state.ok, clearDraft]);
 
   if (state.ok) {
     return (
@@ -32,8 +40,15 @@ export default function ContactForm({ sourcePage = '/contact' }: { sourcePage?: 
   }
 
   return (
-    <form action={formAction} className="space-y-4" noValidate>
+    <form
+      ref={formRef}
+      action={formAction}
+      onChange={(e) => update(readFormDraft(e.currentTarget))}
+      className="space-y-4"
+      noValidate
+    >
       <input type="hidden" name="source_page" value={sourcePage} />
+      <input type="hidden" name="draft_id" value={draftId} />
       <input
         type="text"
         name="company"

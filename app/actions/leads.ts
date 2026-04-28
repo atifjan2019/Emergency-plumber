@@ -40,6 +40,8 @@ export async function submitLead(
     return { ok: false, message: 'One of those fields is unusually long. Please shorten and resubmit.' };
   }
 
+  const draftId = trim(formData.get('draft_id'));
+
   try {
     const supabase = getServiceClient();
     const { error } = await supabase.from('leads').insert({
@@ -54,6 +56,10 @@ export async function submitLead(
     if (error) {
       console.error('[leads] insert error:', error.message);
       return { ok: false, message: 'Something went wrong on our end. Please call us instead.' };
+    }
+
+    if (draftId) {
+      await supabase.from('form_drafts').delete().eq('draft_id', draftId);
     }
   } catch (err) {
     console.error('[leads] unexpected error:', err);

@@ -78,7 +78,7 @@ export default function QuotePopup() {
               Tell us what is wrong and we will reply with a price within an hour.
             </p>
             <div className="mt-4">
-              <QuoteForm sourcePage={pathname || '/'} compact />
+              <QuoteForm sourcePage={pathname || '/'} compact draftKey="popup" />
             </div>
           </div>
         </div>

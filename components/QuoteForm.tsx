@@ -1,8 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { submitLead, type LeadFormState } from '@/app/actions/leads';
+import { useDraftCapture, readFormDraft } from '@/lib/useDraftCapture';
 
 const initial: LeadFormState = { ok: false, message: '' };
 
@@ -25,6 +27,7 @@ type Props = {
   cityName?: string;
   compact?: boolean;
   submitLabel?: string;
+  draftKey?: string;
 };
 
 export default function QuoteForm({
@@ -33,8 +36,14 @@ export default function QuoteForm({
   cityName,
   compact = false,
   submitLabel = 'Get a free quote',
+  draftKey = 'quote',
 }: Props) {
   const [state, formAction] = useActionState(submitLead, initial);
+  const { draftId, update, clearDraft } = useDraftCapture(draftKey);
+
+  useEffect(() => {
+    if (state.ok) clearDraft();
+  }, [state.ok, clearDraft]);
 
   if (state.ok) {
     return (
@@ -46,8 +55,14 @@ export default function QuoteForm({
   }
 
   return (
-    <form action={formAction} className={compact ? 'space-y-3' : 'space-y-4'} noValidate>
+    <form
+      action={formAction}
+      onChange={(e) => update(readFormDraft(e.currentTarget))}
+      className={compact ? 'space-y-3' : 'space-y-4'}
+      noValidate
+    >
       <input type="hidden" name="source_page" value={sourcePage} />
+      <input type="hidden" name="draft_id" value={draftId} />
       {citySlug && <input type="hidden" name="city_slug" value={citySlug} />}
       <input
         type="text"

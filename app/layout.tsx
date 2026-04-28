@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -12,6 +12,12 @@ const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
   variable: '--font-poppins',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -38,7 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const s = await getSettings();
   return (
-    <html lang="en-GB" className={poppins.variable}>
+    <html lang="en-GB" className={`${poppins.variable} ${inter.variable}`}>
       <body className="font-sans text-ink antialiased">
         <SiteChrome
           header={

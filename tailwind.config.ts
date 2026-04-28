@@ -18,7 +18,8 @@ const config: Config = {
         'gray-line': '#E5E7EB',
       },
       fontFamily: {
-        sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-poppins)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       maxWidth: {
         content: '1200px',

@@ -20,13 +20,13 @@ body {
 
 @layer base {
   h1 {
-    @apply text-h1-m md:text-h1-d text-ink;
+    @apply font-display text-h1-m md:text-h1-d text-ink;
   }
   h2 {
-    @apply text-h2-m md:text-h2-d text-ink;
+    @apply font-display text-h2-m md:text-h2-d text-ink;
   }
   h3 {
-    @apply text-h3-m md:text-h3-d text-ink;
+    @apply font-display text-h3-m md:text-h3-d text-ink;
   }
   p {
     @apply leading-relaxed;
