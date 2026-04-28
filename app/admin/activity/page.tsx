@@ -13,17 +13,24 @@ export const metadata: Metadata = {
 };
 
 const ACTION_BADGE: Record<string, string> = {
-  create: 'bg-green-100 text-green-800',
-  update: 'bg-amber-100 text-amber-800',
-  delete: 'bg-red-100 text-red-800',
-  login: 'bg-blue-100 text-blue-800',
-  upload: 'bg-purple-100 text-purple-800',
+  create: 'bg-green-50 text-green-800 border-green-200',
+  update: 'bg-amber-50 text-amber-800 border-amber-200',
+  delete: 'bg-red-50 text-red-700 border-red-200',
+  login: 'bg-blue-50 text-blue-700 border-blue-200',
+  upload: 'bg-purple-50 text-purple-700 border-purple-200',
 };
 
 export default async function AdminActivityPage() {
   if (!(await isAdmin())) redirect('/admin/login');
   const settings = await getSettings();
   const rows = await loadActivity(500);
+
+  const last24h = rows.filter(
+    (r) => Date.now() - new Date(r.created_at).getTime() < 86400_000
+  ).length;
+  const last7d = rows.filter(
+    (r) => Date.now() - new Date(r.created_at).getTime() < 7 * 86400_000
+  ).length;
 
   return (
     <AdminShell active="activity" brand={settings.brand} logoUrl={settings.logoUrl}>
@@ -32,6 +39,12 @@ export default async function AdminActivityPage() {
         <p className="mt-1 text-sm text-gray-soft">
           Last 15 days of admin actions. Older entries are deleted automatically on each new write.
         </p>
+      </div>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        <Stat label="Entries shown" value={rows.length.toString()} sub="Capped at 500 most recent" />
+        <Stat label="Last 7 days" value={last7d.toString()} />
+        <Stat label="Last 24 hours" value={last24h.toString()} />
       </div>
 
       <div className="mt-8 overflow-hidden rounded-xl border border-gray-line bg-white shadow-sm">
@@ -48,7 +61,7 @@ export default async function AdminActivityPage() {
             <tbody>
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-4 py-10 text-center text-gray-soft">
+                  <td colSpan={4} className="px-4 py-12 text-center text-gray-soft">
                     No activity recorded yet.
                   </td>
                 </tr>
@@ -65,8 +78,8 @@ export default async function AdminActivityPage() {
                   </td>
                   <td className="px-4 py-3">
                     <span
-                      className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold capitalize ${
-                        ACTION_BADGE[row.action] || 'bg-gray-100 text-gray-800'
+                      className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-semibold capitalize ${
+                        ACTION_BADGE[row.action] || 'bg-gray-50 text-gray-700 border-gray-200'
                       }`}
                     >
                       {row.action}
@@ -81,5 +94,15 @@ export default async function AdminActivityPage() {
         </div>
       </div>
     </AdminShell>
+  );
+}
+
+function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
+  return (
+    <div className="rounded-xl border border-gray-line bg-white p-5 shadow-sm">
+      <div className="text-xs font-semibold uppercase tracking-wide text-gray-soft">{label}</div>
+      <div className="mt-2 text-2xl font-extrabold text-ink tabular-nums">{value}</div>
+      {sub && <div className="mt-1 text-xs text-gray-soft">{sub}</div>}
+    </div>
   );
 }

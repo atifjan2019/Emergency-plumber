@@ -50,6 +50,11 @@ export default async function AdminDraftsPage() {
   const settings = await getSettings();
   const drafts = await loadDrafts();
 
+  const last24h = drafts.filter(
+    (d) => Date.now() - new Date(d.updated_at).getTime() < 86400_000
+  ).length;
+  const withContact = drafts.filter((d) => d.phone || d.email).length;
+
   return (
     <AdminShell active="drafts" brand={settings.brand} logoUrl={settings.logoUrl}>
       <div>
@@ -60,14 +65,20 @@ export default async function AdminDraftsPage() {
         </p>
       </div>
 
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        <Stat label="Total drafts" value={drafts.length.toString()} />
+        <Stat label="Last 24 hours" value={last24h.toString()} />
+        <Stat label="With contact info" value={withContact.toString()} sub="Phone or email captured" />
+      </div>
+
       <div className="mt-8 grid gap-4">
         {drafts.length === 0 && (
-          <div className="rounded-xl border border-gray-line bg-white p-10 text-center text-gray-soft">
+          <div className="rounded-xl border border-gray-line bg-white p-12 text-center text-gray-soft shadow-sm">
             No abandoned drafts yet.
           </div>
         )}
         {drafts.map((d) => (
-          <div key={d.draft_id} className="rounded-xl border border-gray-line bg-white p-5 shadow-sm">
+          <div key={d.draft_id} className="rounded-xl border border-gray-line bg-white p-5 shadow-sm transition hover:shadow-md">
             <div className="flex items-start justify-between flex-wrap gap-3">
               <div>
                 <div className="flex items-center gap-2">
@@ -149,5 +160,15 @@ export default async function AdminDraftsPage() {
         ))}
       </div>
     </AdminShell>
+  );
+}
+
+function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
+  return (
+    <div className="rounded-xl border border-gray-line bg-white p-5 shadow-sm">
+      <div className="text-xs font-semibold uppercase tracking-wide text-gray-soft">{label}</div>
+      <div className="mt-2 text-2xl font-extrabold text-ink tabular-nums">{value}</div>
+      {sub && <div className="mt-1 text-xs text-gray-soft">{sub}</div>}
+    </div>
   );
 }
