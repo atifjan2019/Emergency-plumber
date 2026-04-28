@@ -52,24 +52,35 @@ const NAV: { key: NavKey; label: string; href: string; icon: ReactNode }[] = [
 type Props = {
   active: NavKey;
   brand: string;
+  logoUrl?: string;
   children: ReactNode;
 };
 
-export default function AdminShell({ active, brand, children }: Props) {
+export default function AdminShell({ active, brand, logoUrl = '', children }: Props) {
   return (
     <div className="min-h-screen bg-off-white">
       <div className="flex flex-col md:flex-row md:items-stretch">
         <aside className="md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 border-b md:border-b-0 md:border-r border-gray-line bg-white">
-          <div className="flex h-16 items-center gap-2 border-b border-gray-line px-5">
-            <span className="grid h-9 w-9 place-items-center rounded-md bg-primary text-white">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
-                <path d="M12 2C8 6 6 9 6 13a6 6 0 0012 0c0-4-2-7-6-11z" />
-              </svg>
-            </span>
-            <div className="leading-tight">
-              <div className="text-sm font-bold text-ink">{brand}</div>
-              <div className="text-[11px] uppercase tracking-wider text-gray-soft">Admin console</div>
-            </div>
+          <div className="flex h-16 items-center gap-3 border-b border-gray-line px-5">
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                alt={brand}
+                className="h-9 w-auto max-w-[160px] object-contain"
+              />
+            ) : (
+              <>
+                <span className="grid h-9 w-9 place-items-center rounded-md bg-primary text-white">
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
+                    <path d="M12 2C8 6 6 9 6 13a6 6 0 0012 0c0-4-2-7-6-11z" />
+                  </svg>
+                </span>
+                <div className="leading-tight">
+                  <div className="text-sm font-bold text-ink">{brand}</div>
+                  <div className="text-[11px] uppercase tracking-wider text-gray-soft">Admin console</div>
+                </div>
+              </>
+            )}
           </div>
 
           <nav className="flex flex-row md:flex-col gap-1 overflow-x-auto p-3">

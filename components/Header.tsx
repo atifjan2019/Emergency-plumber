@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -29,24 +28,23 @@ export default function Header({ brand, phoneDisplay, phoneTel, logoUrl }: Props
       }`}
     >
       <div className="container-content flex h-16 items-center justify-between md:h-20">
-        <Link href="/" className="flex items-center gap-2 font-extrabold text-lg md:text-xl">
+        <Link href="/" aria-label={brand} className="flex items-center gap-2 font-extrabold text-lg md:text-xl">
           {logoUrl ? (
-            <Image
+            <img
               src={logoUrl}
               alt={brand}
-              width={36}
-              height={36}
-              className="h-9 w-9 rounded-md object-contain"
-              unoptimized
+              className="h-10 w-auto max-w-[200px] object-contain md:h-12"
             />
           ) : (
-            <span className="grid h-9 w-9 place-items-center rounded-md bg-primary text-white">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
-                <path d="M12 2C8 6 6 9 6 13a6 6 0 0012 0c0-4-2-7-6-11z" />
-              </svg>
-            </span>
+            <>
+              <span className="grid h-9 w-9 place-items-center rounded-md bg-primary text-white">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
+                  <path d="M12 2C8 6 6 9 6 13a6 6 0 0012 0c0-4-2-7-6-11z" />
+                </svg>
+              </span>
+              <span className="text-ink">{brand}</span>
+            </>
           )}
-          <span className="text-ink">{brand}</span>
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">

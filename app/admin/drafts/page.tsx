@@ -51,7 +51,7 @@ export default async function AdminDraftsPage() {
   const drafts = await loadDrafts();
 
   return (
-    <AdminShell active="drafts" brand={settings.brand}>
+    <AdminShell active="drafts" brand={settings.brand} logoUrl={settings.logoUrl}>
       <div>
         <h1 className="text-2xl font-bold text-ink">Abandoned drafts</h1>
         <p className="mt-1 text-sm text-gray-soft">

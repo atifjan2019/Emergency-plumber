@@ -47,7 +47,7 @@ export default async function EditLeadPage({ params }: { params: Promise<{ id: s
   if (!lead) notFound();
 
   return (
-    <AdminShell active="leads" brand={settings.brand}>
+    <AdminShell active="leads" brand={settings.brand} logoUrl={settings.logoUrl}>
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold text-ink">Edit lead</h1>

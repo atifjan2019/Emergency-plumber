@@ -26,7 +26,7 @@ export default async function AdminActivityPage() {
   const rows = await loadActivity(500);
 
   return (
-    <AdminShell active="activity" brand={settings.brand}>
+    <AdminShell active="activity" brand={settings.brand} logoUrl={settings.logoUrl}>
       <div>
         <h1 className="text-2xl font-bold text-ink">Activity log</h1>
         <p className="mt-1 text-sm text-gray-soft">

@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { cities } from '@/data/cities';
 import { services } from '@/data/services';
@@ -13,22 +12,21 @@ export default async function Footer() {
         <div>
           <div className="flex items-center gap-2 font-extrabold text-lg">
             {s.logoUrl ? (
-              <Image
+              <img
                 src={s.logoUrl}
                 alt={s.brand}
-                width={36}
-                height={36}
-                className="h-9 w-9 rounded-md object-contain"
-                unoptimized
+                className="h-12 w-auto max-w-[220px] object-contain"
               />
             ) : (
-              <span className="grid h-9 w-9 place-items-center rounded-md bg-primary text-white">
-                <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
-                  <path d="M12 2C8 6 6 9 6 13a6 6 0 0012 0c0-4-2-7-6-11z" />
-                </svg>
-              </span>
+              <>
+                <span className="grid h-9 w-9 place-items-center rounded-md bg-primary text-white">
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
+                    <path d="M12 2C8 6 6 9 6 13a6 6 0 0012 0c0-4-2-7-6-11z" />
+                  </svg>
+                </span>
+                <span>{s.brand}</span>
+              </>
             )}
-            <span>{s.brand}</span>
           </div>
           <p className="mt-4 text-sm text-gray-soft">
             24/7 emergency plumbing across the UK. Gas Safe registered. No call-out surcharge for nights or weekends.

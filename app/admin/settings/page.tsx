@@ -17,7 +17,7 @@ export default async function AdminSettingsPage() {
   const s = await getSettings();
 
   return (
-    <AdminShell active="settings" brand={s.brand}>
+    <AdminShell active="settings" brand={s.brand} logoUrl={s.logoUrl}>
       <div>
         <h1 className="text-2xl font-bold text-ink">Site settings</h1>
         <p className="mt-1 text-sm text-gray-soft">

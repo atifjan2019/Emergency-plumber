@@ -17,7 +17,7 @@ export default async function NewLeadPage() {
   if (!(await isAdmin())) redirect('/admin/login');
   const s = await getSettings();
   return (
-    <AdminShell active="leads" brand={s.brand}>
+    <AdminShell active="leads" brand={s.brand} logoUrl={s.logoUrl}>
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold text-ink">New lead</h1>
