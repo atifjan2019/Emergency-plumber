@@ -132,7 +132,7 @@ export default async function HomePage() {
               <span className="pulse-dot" /> 24/7 emergency response
             </div>
             <h1 className="mt-5 tracking-tight">
-              Local Plumbers Across the UK <span className="text-primary">- Emergency Repairs, Leaks &amp; Drains Fixed Today</span>
+              Local Emergency Plumbers Across the UK <span className="text-primary">— Burst Pipes, Drains and Leaks Fixed Fast</span>
             </h1>
             <p className="mt-5 max-w-xl text-base md:text-lg text-gray-soft">
               Burst pipes, blocked drains, dripping taps and low water pressure - fixed by Gas Safe plumbers across 12 UK cities. Transparent quotes, guaranteed workmanship, same rates day or night.
