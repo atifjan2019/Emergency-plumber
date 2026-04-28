@@ -9,7 +9,7 @@ import CTASection from '@/components/CTASection';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import CallButton from '@/components/CallButton';
 import RecentJobCard from '@/components/RecentJobCard';
-import ServiceIcon from '@/components/ServiceIcon';
+import UtilityIcon from '@/components/UtilityIcon';
 import { services } from '@/data/services';
 import { cities } from '@/data/cities';
 import { getFeaturedReviews } from '@/lib/reviews';
@@ -17,6 +17,15 @@ import { homeFaq } from '@/data/homeFaq';
 import { BRAND, PHONE_DISPLAY, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT } from '@/lib/constants';
 import { organizationSchema, faqSchema } from '@/lib/schema';
 import { getSettings } from '@/lib/settings';
+import {
+  problemRouter,
+  issueExplanations,
+  pricingFactors,
+  preventionTips,
+  trustReasons,
+  recentSamples,
+  toneClass,
+} from '@/lib/plumbingContent';
 
 export const revalidate = 3600;
 
@@ -25,72 +34,6 @@ export const metadata: Metadata = {
   description: `${BRAND} provides local and emergency plumbing services across 12 UK cities. Burst pipe repair, leak detection, drain unblocking, toilet and tap repairs, low water pressure diagnosis and bathroom plumbing. Transparent quotes, guaranteed workmanship, Gas Safe registered.`,
   alternates: { canonical: '/' },
 };
-
-const problemRouter = [
-  { slug: 'burst-pipe-repair', tone: 'emergency', icon: 'droplet', title: 'Burst pipe repair', blurb: 'Stop the flood, isolate the supply and replace the failed pipework before damage spreads.' },
-  { slug: 'blocked-drain', tone: 'standard', icon: 'pipe', title: 'Blocked drain unblocking', blurb: 'Clear sink, shower, soil and external drain blockages with jetting, rods and CCTV survey.' },
-  { slug: 'blocked-toilet', tone: 'standard', icon: 'toilet', title: 'Blocked toilet repair', blurb: 'Toilet blockages cleared cleanly past the trap and into the soil pipe without damage.' },
-  { slug: 'burst-pipe-repair', tone: 'standard', icon: 'leak', title: 'Leaking pipe repair', blurb: 'Visible drips, joint failures and pinhole leaks identified and repaired in copper or plastic.' },
-  { slug: 'burst-pipe-repair', tone: 'standard', icon: 'tap', title: 'Dripping tap repair', blurb: 'Worn washers, failed cartridges and seized valve seats replaced or refurbished.' },
-  { slug: 'leak-detection', tone: 'standard', icon: 'gauge', title: 'Low water pressure diagnosis', blurb: 'Diagnose closed valves, hidden leaks, blocked pipework and mains supply restrictions.' },
-  { slug: 'no-hot-water', tone: 'emergency', icon: 'shower', title: 'No hot water', blurb: 'Diverter valves, immersion elements, cylinder thermostats and motorised valves repaired.' },
-  { slug: 'leak-detection', tone: 'standard', icon: 'bath', title: 'Bathroom plumbing', blurb: 'Sinks, taps, showers, baths, toilets, traps and waste pipework installed and repaired.' },
-  { slug: 'leak-detection', tone: 'standard', icon: 'kitchen', title: 'Kitchen plumbing', blurb: 'Kitchen sinks, mixer taps, dishwasher and washing machine connections, isolation valves.' },
-  { slug: 'leak-detection', tone: 'maintenance', icon: 'plug', title: 'Appliance connections', blurb: 'Safe water supply and waste connections for dishwashers, washing machines and ice-makers.' },
-  { slug: 'central-heating-repair', tone: 'standard', icon: 'radiator', title: 'Radiator leak or valve issue', blurb: 'Leaking radiators, failed TRVs, cold spots, sludge and pressure problems diagnosed.' },
-  { slug: '24-hour-plumber', tone: 'emergency', icon: 'alert', title: 'Emergency plumbing callout', blurb: '24-hour response across 12 UK cities for floods, no supply and overflowing drains.' },
-];
-
-const issueExplanations = [
-  {
-    symptom: 'Dripping tap',
-    cause: 'Worn washer, failed cartridge, damaged valve seat or loose fitting',
-    risk: 'Wasted water, higher water bills, limescale staining and fixture damage',
-    service: 'Tap repair or replacement',
-  },
-  {
-    symptom: 'Burst pipe',
-    cause: 'Freezing, internal corrosion, pressure surges, joint failure or aged pipework',
-    risk: 'Flooding, ceiling collapse, damp, mould and structural damage',
-    service: 'Emergency pipe isolation and repair',
-  },
-  {
-    symptom: 'Blocked drain',
-    cause: 'Grease, hair, soap, food waste, limescale, foreign objects or root ingress',
-    risk: 'Slow drainage, foul smells, overflow at gullies and wastewater backup indoors',
-    service: 'Drain unblocking with CCTV survey for recurrence',
-  },
-  {
-    symptom: 'Blocked toilet',
-    cause: 'Wipes, paper overload, foreign objects, faulty flush or downstream soil-pipe restriction',
-    risk: 'Overflow, hygiene risk and bathroom water damage',
-    service: 'Toilet unblocking and soil-pipe clearance',
-  },
-  {
-    symptom: 'Hidden leak',
-    cause: 'Failed joint, pinhole pipe corrosion, seal failure or pressure damage in concealed pipework',
-    risk: 'Damp, mould, rot, ceiling staining and unexplained pressure loss',
-    service: 'Leak detection survey and pipe repair',
-  },
-  {
-    symptom: 'Low water pressure',
-    cause: 'Hidden leak, partially closed valve, blocked pipework, failed PRV or mains supply issue',
-    risk: 'Weak shower flow, slow-filling appliances and inefficient hot water systems',
-    service: 'Water pressure diagnosis and repair',
-  },
-  {
-    symptom: 'Cold radiator spots',
-    cause: 'Sludge accumulation, trapped air, restricted circulation or failed radiator valve',
-    risk: 'Inefficient heating, higher energy bills and uneven room temperatures',
-    service: 'Radiator service, balancing or powerflush',
-  },
-  {
-    symptom: 'Hard water and limescale',
-    cause: 'Mineral build-up in hard-water areas affecting pipework, fixtures and heat exchangers',
-    risk: 'Blocked aerators, damaged appliances, narrowed pipes and shortened boiler life',
-    service: 'Limescale treatment, filters and water softeners',
-  },
-];
 
 const processSteps = [
   { n: '01', t: 'Contact us', d: 'Call our 24/7 line, request a quote online or submit the emergency form. A real dispatcher answers - never a call centre.' },
@@ -102,76 +45,6 @@ const processSteps = [
   { n: '07', t: 'Test', d: 'We test water flow, drainage, pressure, valves and seals to confirm the repair holds before sign-off.' },
   { n: '08', t: 'Guarantee & aftercare', d: 'You receive a written workmanship guarantee, an itemised receipt for insurance and prevention advice tailored to your property.' },
 ];
-
-const pricingFactors = [
-  { factor: 'Type of problem', why: 'A tap washer is not the same job as a hidden leak or a burst supply pipe.', example: 'Tap repair is quicker and cheaper than excavation for a collapsed drain.' },
-  { factor: 'Emergency vs scheduled', why: 'Out-of-hours work needs an engineer dispatched immediately rather than booked in.', example: 'We charge the same rate day or night - many other operators surcharge nights.' },
-  { factor: 'Parts required', why: 'Replacement components affect the total cost of the repair.', example: 'A diverter valve costs more in parts than a thermostatic radiator valve.' },
-  { factor: 'Access to pipework', why: 'Concealed pipework behind tiling, under floors or inside walls takes longer.', example: 'Surface-mounted pipe repair is faster than chasing into masonry.' },
-  { factor: 'Water damage complexity', why: 'A long-running hidden leak may need additional drying and reinstatement.', example: 'A simple drip costs less than a leak that has saturated the floor structure.' },
-  { factor: 'Drain blockage severity', why: 'A surface blockage clears in minutes; a deep collapse needs excavation.', example: 'Auger clearance is cheaper than a CCTV-confirmed pipe relining job.' },
-  { factor: 'Out-of-hours callout', why: 'Some plumbing companies surcharge nights, weekends and bank holidays - we do not.', example: 'Our call-out fee is identical at 3am Sunday and 11am Tuesday.' },
-  { factor: 'Domestic vs commercial', why: 'Commercial premises need wider insurance, larger jetting equipment and scheduled access.', example: 'A restaurant grease-trap clearance differs from a domestic kitchen sink.' },
-];
-
-const trustReasons = [
-  {
-    icon: 'shield',
-    title: 'Local plumbing experience',
-    body: 'In-house plumbers covering 12 UK cities with knowledge of local housing stock, water hardness and common failure modes.',
-  },
-  {
-    icon: 'bolt',
-    title: 'Genuine emergency support',
-    body: '24/7/365 response including bank holidays. Engineers on shift through the night - not on-call from home.',
-  },
-  {
-    icon: 'tag',
-    title: 'Clear, honest pricing',
-    body: 'Fixed quotes confirmed before any work starts. The same rate applies day or night, weekday or weekend.',
-  },
-  {
-    icon: 'check',
-    title: 'Guaranteed workmanship',
-    body: 'Manufacturer parts warranty plus a 90-day workmanship guarantee on every repair we complete.',
-  },
-  {
-    icon: 'badge',
-    title: 'Licensed and insured',
-    body: 'Every engineer is Gas Safe registered for gas work, fully insured, directly employed and ID-carrying.',
-  },
-  {
-    icon: 'star',
-    title: 'Verified customer reviews',
-    body: `${NATIONWIDE_RATING}/5 across ${NATIONWIDE_REVIEW_COUNT.toLocaleString()}+ verified customer reviews from real jobs in the cities we serve.`,
-  },
-];
-
-const recentSamples = [
-  { date: '2026-04-26', postcode: 'SW4', issue: 'Burst lead supply pipe in basement', resolution: 'Isolated, replaced 2m lead with copper, made-good', duration: '2 hours' },
-  { date: '2026-04-24', postcode: 'M14', issue: 'HMO toilet blockage past the trap', resolution: 'Wipes cleared from soil pipe with electric rods', duration: '45 minutes' },
-  { date: '2026-04-22', postcode: 'B17', issue: 'Hidden leak under bathroom floor', resolution: 'Thermal imaging located, pinhole repaired, floor reinstated', duration: '3 hours' },
-  { date: '2026-04-19', postcode: 'LS17', issue: 'Cold radiators on first floor', resolution: 'Powerflush completed, sludge removed, inhibitor dosed', duration: '5 hours' },
-  { date: '2026-04-17', postcode: 'L18', issue: 'External drain backing up at gully', resolution: 'Jetted, root mat cleared, CCTV survey provided', duration: '90 minutes' },
-];
-
-const preventionTips = [
-  'Find your internal stop tap now and label it - in a flood you will not have time to search.',
-  'Lag exposed pipework in lofts, garages and external walls before the first frost of winter.',
-  'Avoid flushing wipes, sanitary products, kitchen roll or fats - they cause most blocked drains we attend.',
-  'Check under sinks, around toilets and at radiator valves once a month for early signs of leaks.',
-  'Run a water-softening filter or descaler in hard-water areas to protect taps, showers and the boiler.',
-  'Replace tap washers and silicone seals at the first sign of a drip - waiting almost always costs more.',
-  'Bleed radiators at the start of the heating season and book an annual service for older boilers.',
-  'For rental and commercial property, schedule a yearly plumbing inspection so small faults are caught early.',
-];
-
-const toneClass = (tone: string) =>
-  tone === 'emergency'
-    ? 'border-accent/30 bg-accent/5 hover:border-accent group-hover:bg-accent group-hover:text-white'
-    : tone === 'maintenance'
-    ? 'border-green/30 bg-green/5 hover:border-green group-hover:bg-green group-hover:text-white'
-    : 'border-primary/20 bg-primary/5 hover:border-primary group-hover:bg-primary group-hover:text-white';
 
 export default async function HomePage() {
   const featured = await getFeaturedReviews(6);
@@ -525,7 +398,7 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {trustReasons.map((b) => (
+            {trustReasons(NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT).map((b) => (
               <div key={b.title} className="rounded-xl border border-gray-line bg-white p-6">
                 <div className="grid h-11 w-11 place-items-center rounded-lg bg-primary/10 text-primary">
                   <UtilityIcon name={b.icon} />
@@ -734,44 +607,3 @@ function ServiceDeepBlock({
   );
 }
 
-function UtilityIcon({ name }: { name: string }) {
-  const c = { className: 'h-5 w-5', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
-  switch (name) {
-    case 'pin':
-      return (<svg {...c} aria-hidden><path d="M12 22s7-7.5 7-13a7 7 0 10-14 0c0 5.5 7 13 7 13z" /><circle cx="12" cy="9" r="2.5" /></svg>);
-    case 'bolt':
-      return (<svg {...c} aria-hidden><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" /></svg>);
-    case 'tag':
-      return (<svg {...c} aria-hidden><path d="M3 12V4h8l10 10-8 8L3 12z" /><circle cx="8" cy="8" r="1.5" fill="currentColor" /></svg>);
-    case 'check':
-      return (<svg {...c} aria-hidden><path d="M5 12l5 5L20 7" /></svg>);
-    case 'shield':
-      return (<svg {...c} aria-hidden><path d="M12 2L4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z" /></svg>);
-    case 'badge':
-      return (<svg {...c} aria-hidden><circle cx="12" cy="10" r="6" /><path d="M9 14l-2 7 5-3 5 3-2-7" /></svg>);
-    case 'star':
-      return (<svg {...c} aria-hidden><path d="M12 3l2.9 6.5L22 11l-5.5 4.5L18 22l-6-3.5L6 22l1.5-6.5L2 11l7.1-1.5L12 3z" /></svg>);
-    case 'leak':
-      return (<svg {...c} aria-hidden><path d="M12 3v6" /><path d="M8 9h8l-2 6a2 2 0 11-4 0L8 9z" /><circle cx="12" cy="20" r="1.5" fill="currentColor" /></svg>);
-    case 'tap':
-      return (<svg {...c} aria-hidden><path d="M6 6h6v4M12 8h6M18 6v6h-6" /><path d="M9 10v4M9 14h0M9 18h0" /></svg>);
-    case 'gauge':
-      return (<svg {...c} aria-hidden><path d="M3 14a9 9 0 0118 0" /><path d="M12 14l4-4" /><circle cx="12" cy="14" r="1.5" fill="currentColor" /></svg>);
-    case 'bath':
-      return (<svg {...c} aria-hidden><path d="M3 12h18v3a3 3 0 01-3 3H6a3 3 0 01-3-3v-3z" /><path d="M7 12V6a2 2 0 014 0" /><path d="M5 21l1-3M19 21l-1-3" /></svg>);
-    case 'kitchen':
-      return (<svg {...c} aria-hidden><path d="M5 4h6l1 4H4l1-4z" /><path d="M8 8v3" /><path d="M4 11h8v9H4z" /><path d="M16 4v16" /><path d="M14 8h4" /></svg>);
-    case 'plug':
-      return (<svg {...c} aria-hidden><path d="M9 4v6M15 4v6" /><path d="M6 10h12v3a6 6 0 01-12 0v-3z" /><path d="M12 19v3" /></svg>);
-    case 'alert':
-      return (<svg {...c} aria-hidden><path d="M12 3l10 18H2L12 3z" /><path d="M12 10v5" /><circle cx="12" cy="18" r="0.8" fill="currentColor" /></svg>);
-    case 'droplet':
-    case 'shower':
-    case 'pipe':
-    case 'toilet':
-    case 'radiator':
-      return <ServiceIcon name={name} className="h-5 w-5" />;
-    default:
-      return (<svg {...c} aria-hidden><circle cx="12" cy="12" r="9" /></svg>);
-  }
-}
