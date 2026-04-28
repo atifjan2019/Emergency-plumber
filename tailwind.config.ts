@@ -30,7 +30,7 @@ const config: Config = {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       maxWidth: {
-        content: '1200px',
+        content: '1280px',
       },
       fontSize: {
         'h1-d': ['48px', { lineHeight: '1.1', fontWeight: '800' }],
