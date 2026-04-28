@@ -81,7 +81,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </>
         )}
       </head>
-      <body className="font-sans text-ink antialiased">
+      <body className="font-sans text-ink antialiased" suppressHydrationWarning>
         {s.gtmId && (
           <noscript>
             <iframe

@@ -9,17 +9,21 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#0094D6',
-          dark: '#0d7cbb',
+          DEFAULT: '#1E73BE',
+          dark: '#155a96',
         },
         accent: {
-          DEFAULT: '#D71213',
-          dark: '#a80e0e',
+          DEFAULT: '#E53935',
+          dark: '#c62828',
         },
-        navy: '#030E17',
-        ink: '#030E17',
-        'off-white': '#F5F8FA',
-        'gray-soft': '#6B7280',
+        green: {
+          DEFAULT: '#2ECC71',
+          dark: '#27ae60',
+        },
+        navy: '#1E73BE',
+        ink: '#222222',
+        'off-white': '#F5F7FA',
+        'gray-soft': '#666666',
         'gray-line': '#E5E7EB',
       },
       fontFamily: {
