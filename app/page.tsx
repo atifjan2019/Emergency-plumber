@@ -219,48 +219,82 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {problemRouter.map((p) => (
-              <Link
-                key={p.title}
-                href={`/services/${p.slug}`}
-                className={`group relative flex h-full flex-col rounded-xl border bg-white p-5 transition hover:shadow-lg ${
-                  p.tone === 'emergency'
-                    ? 'border-accent/30 hover:border-accent'
-                    : p.tone === 'maintenance'
-                    ? 'border-green/30 hover:border-green'
-                    : 'border-gray-line hover:border-primary'
-                }`}
-              >
-                <div className={`mb-3 grid h-11 w-11 place-items-center rounded-lg border transition ${toneClass(p.tone)}`}>
-                  <UtilityIcon name={p.icon} />
-                </div>
-                <h3 className="text-base font-semibold text-ink leading-snug">{p.title}</h3>
-                <p className="mt-1.5 text-sm text-gray-soft leading-snug">{p.blurb}</p>
-                <span
-                  className={`mt-3 inline-flex items-center gap-1 text-sm font-semibold ${
-                    p.tone === 'emergency' ? 'text-accent' : p.tone === 'maintenance' ? 'text-green-dark' : 'text-primary'
-                  }`}
+            {problemRouter.map((p) => {
+              const isEmergency = p.tone === 'emergency';
+              const isMaintenance = p.tone === 'maintenance';
+              const cardBorder = isEmergency
+                ? 'border-accent/20 hover:border-accent'
+                : isMaintenance
+                ? 'border-green/30 hover:border-green'
+                : 'border-gray-line hover:border-primary';
+              const iconBg = isEmergency
+                ? 'bg-gradient-to-br from-accent to-accent-dark shadow-lg shadow-accent/30'
+                : isMaintenance
+                ? 'bg-gradient-to-br from-green to-green-dark shadow-lg shadow-green/30'
+                : 'bg-gradient-to-br from-primary to-primary-dark shadow-lg shadow-primary/30';
+              const linkColor = isEmergency ? 'text-accent' : isMaintenance ? 'text-green-dark' : 'text-primary';
+              const cardBlob = isEmergency
+                ? 'bg-accent/5 group-hover:bg-accent/10'
+                : isMaintenance
+                ? 'bg-green/5 group-hover:bg-green/10'
+                : 'bg-primary/5 group-hover:bg-primary/10';
+              return (
+                <Link
+                  key={p.title}
+                  href={`/services/${p.slug}`}
+                  className={`group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-5 transition hover:shadow-xl hover:-translate-y-0.5 ${cardBorder}`}
                 >
-                  Get help
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" aria-hidden>
-                    <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
-                  </svg>
-                </span>
-                {p.tone === 'emergency' && (
-                  <span className="absolute right-3 top-3 rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-accent">Urgent</span>
-                )}
-              </Link>
-            ))}
+                  <div className={`absolute -top-10 -right-10 h-28 w-28 rounded-full transition ${cardBlob}`} aria-hidden />
+                  <div className="relative">
+                    <div className={`grid h-12 w-12 place-items-center rounded-xl text-white transition group-hover:scale-110 ${iconBg}`}>
+                      <UtilityIcon name={p.icon} />
+                    </div>
+                    <h3 className="mt-4 text-base font-bold text-ink leading-snug">{p.title}</h3>
+                    <p className="mt-1.5 text-sm text-gray-soft leading-snug">{p.blurb}</p>
+                  </div>
+                  <span className={`relative mt-4 inline-flex items-center gap-1 text-sm font-bold ${linkColor}`}>
+                    Get help
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5 transition group-hover:translate-x-1" aria-hidden>
+                      <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                  {isEmergency && (
+                    <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shadow-md shadow-accent/30">
+                      <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                      Urgent
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </div>
 
-          <div className="mt-10 rounded-2xl bg-primary text-white p-6 sm:p-8 grid gap-5 md:grid-cols-12 items-center">
-            <div className="md:col-span-8">
-              <h3 className="text-h3-m md:text-h3-d text-white">Not sure which service fits? Get a free quote.</h3>
-              <p className="mt-2 text-sm text-white/85">Tell us the symptom, send a photo or video. We come back with a fixed quote within the hour.</p>
-            </div>
-            <div className="md:col-span-4 flex flex-col sm:flex-row gap-3">
-              <Link href="/quote" className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 font-semibold text-primary hover:bg-off-white">Get a quote</Link>
-              <CallButton size="md" variant="primary" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
+          <div className="mt-10 relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-primary-dark text-white p-6 sm:p-8 md:p-10 shadow-xl shadow-primary/20">
+            <div className="absolute -top-20 -right-20 h-72 w-72 rounded-full bg-white/10 blur-3xl" aria-hidden />
+            <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-white/5 blur-3xl" aria-hidden />
+            <div className="relative grid gap-6 md:gap-8 lg:grid-cols-12 items-center">
+              <div className="lg:col-span-7">
+                <span className="inline-flex items-center gap-2 rounded-full bg-white/15 backdrop-blur px-3 py-1 text-xs font-bold uppercase tracking-wider">
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5" aria-hidden>
+                    <path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1L12 2z" />
+                  </svg>
+                  Free quote
+                </span>
+                <h3 className="mt-3 text-h3-m md:text-h3-d text-white">Not sure which service fits? Get a free quote.</h3>
+                <p className="mt-3 text-base text-white/85 leading-relaxed">Tell us the symptom, send a photo or video. We come back with a fixed quote within the hour.</p>
+              </div>
+              <div className="lg:col-span-5 flex flex-col sm:flex-row gap-3 lg:justify-end">
+                <Link
+                  href="/quote"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-base font-bold text-primary shadow-lg hover:bg-off-white transition whitespace-nowrap"
+                >
+                  Get a quote
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+                    <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                  </svg>
+                </Link>
+                <CallButton size="lg" variant="primary" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
+              </div>
             </div>
           </div>
         </div>

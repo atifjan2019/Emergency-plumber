@@ -1,9 +1,30 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import CallButton from '@/components/CallButton';
+import { getSettings } from '@/lib/settings';
 import { PLACEHOLDER_IMAGE } from '@/lib/plumbingContent';
 
-export default function NotFound() {
+export default async function AdminNotFound() {
+  const s = await getSettings();
+  return (
+    <>
+      <Header
+        brand={s.brand}
+        phoneDisplay={s.phoneDisplay}
+        phoneTel={s.phoneTel}
+        logoUrl={s.logoUrl}
+      />
+      <main id="main">
+        <NotFoundBody s={s} />
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+async function NotFoundBody({ s }: { s: Awaited<ReturnType<typeof getSettings>> }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-white via-off-white to-white">
       <div className="absolute inset-0 opacity-[0.025] pointer-events-none" aria-hidden style={{
@@ -20,7 +41,7 @@ export default function NotFound() {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-start gap-3">
-              <CallButton size="lg" />
+              <CallButton size="lg" phoneTel={s.phoneTel} phoneDisplay={s.phoneDisplay} />
               <Link href="/" className="btn-ghost">Back to homepage</Link>
             </div>
 

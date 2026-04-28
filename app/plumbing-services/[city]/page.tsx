@@ -838,7 +838,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
           SECTION 12 — FAQ
       ══════════════════════════════════════════════════════════ */}
       <section className="section">
-        <div className="container-content max-w-3xl">
+        <div className="container-content">
           <h2>Plumbing Services FAQs</h2>
           <p className="mt-3 text-gray-soft">Common questions about our plumbing services in {city.name}.</p>
           <div className="mt-8">
