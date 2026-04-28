@@ -10,16 +10,18 @@ import PostcodeChips from '@/components/PostcodeChips';
 import FaqAccordion from '@/components/FaqAccordion';
 import BreadcrumbNav from '@/components/BreadcrumbNav';
 import CTASection from '@/components/CTASection';
+import QuoteForm from '@/components/QuoteForm';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import { cities, getCityBySlug, getCitySlugs } from '@/data/cities';
 import { services } from '@/data/services';
-import { getReviewsByCity } from '@/data/reviews';
+import { getReviewsByCity } from '@/lib/reviews';
 import { getRecentJobsByCity } from '@/data/recentJobs';
 import { buildCityFaq } from '@/lib/cityFaq';
 import { cityPlumberSchema, faqSchema, breadcrumbSchema } from '@/lib/schema';
 import { BRAND, SITE_URL } from '@/lib/constants';
 
 export const dynamicParams = false;
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return getCitySlugs().map((city) => ({ city }));
@@ -44,7 +46,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
   const city = getCityBySlug(slug);
   if (!city) notFound();
 
-  const cityReviews = getReviewsByCity(city.slug, 6);
+  const cityReviews = await getReviewsByCity(city.slug, 6);
   const recentJobs = getRecentJobsByCity(city.slug);
   const faq = buildCityFaq(city);
   const otherCities = cities.filter((c) => c.slug !== city.slug).slice(0, 6);
@@ -76,6 +78,38 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         responseTime={city.responseTime}
         cityName={city.name}
       />
+
+      <section className="section">
+        <div className="container-content grid gap-8 md:grid-cols-[1.5fr_1fr]">
+          <div>
+            <h2>Get a free quote in {city.name}</h2>
+            <p className="mt-3 text-gray-soft">
+              Tell us what is wrong and we will reply with a price within an hour. Or call now for an immediate dispatch.
+            </p>
+            <ul className="mt-6 space-y-2 text-sm text-ink">
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                Same rate for nights, weekends and bank holidays
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                Gas Safe registered, in-house engineers (no subcontracting)
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                Average response in {city.responseTime} across {city.name}
+              </li>
+            </ul>
+          </div>
+          <div className="rounded-xl border border-gray-line bg-white p-5 shadow-sm">
+            <QuoteForm
+              sourcePage={`/emergency-plumber/${city.slug}`}
+              citySlug={city.slug}
+              cityName={city.name}
+            />
+          </div>
+        </div>
+      </section>
 
       <section className="bg-off-white border-y border-gray-line">
         <div className="container-content py-8 grid grid-cols-2 md:grid-cols-4 gap-4">

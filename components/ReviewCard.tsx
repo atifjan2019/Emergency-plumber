@@ -1,4 +1,4 @@
-import type { Review } from '@/data/reviews';
+import type { Review } from '@/lib/reviews';
 
 type Props = { review: Review };
 

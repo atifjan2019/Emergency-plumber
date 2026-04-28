@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import BreadcrumbNav from '@/components/BreadcrumbNav';
 import CallButton from '@/components/CallButton';
+import ContactForm from '@/components/ContactForm';
 import CTASection from '@/components/CTASection';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import { breadcrumbSchema } from '@/lib/schema';
@@ -50,6 +51,16 @@ export default function ContactPage() {
                 {EMAIL}
               </a>
               <p className="mt-6 text-sm text-gray-soft">Reply within 1 working day, Monday to Friday.</p>
+            </div>
+          </div>
+
+          <div className="mt-12 rounded-xl border border-gray-line bg-white p-6 shadow-sm">
+            <h2 className="text-h3-m md:text-h3-d">Send us a message</h2>
+            <p className="mt-2 text-sm text-gray-soft">
+              For non-urgent enquiries. If your boiler is leaking right now, please call.
+            </p>
+            <div className="mt-6">
+              <ContactForm sourcePage="/contact" />
             </div>
           </div>
 

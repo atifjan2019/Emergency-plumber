@@ -9,10 +9,12 @@ import CTASection from '@/components/CTASection';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import { services } from '@/data/services';
 import { cities } from '@/data/cities';
-import { reviews } from '@/data/reviews';
+import { getFeaturedReviews } from '@/lib/reviews';
 import { homeFaq } from '@/data/homeFaq';
 import { BRAND } from '@/lib/constants';
 import { organizationSchema, faqSchema } from '@/lib/schema';
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: `24/7 Emergency Plumber UK | Gas Safe | ${BRAND}`,
@@ -20,8 +22,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 };
 
-export default function HomePage() {
-  const featured = [reviews[0], reviews[6], reviews[11], reviews[16], reviews[28], reviews[36]];
+export default async function HomePage() {
+  const featured = await getFeaturedReviews(6);
 
   return (
     <>
