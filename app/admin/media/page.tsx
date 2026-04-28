@@ -4,7 +4,7 @@ import { isAdmin } from '@/lib/admin/auth';
 import { getSettings } from '@/lib/settings';
 import { listMedia, getR2ConfigStatus } from '@/lib/r2';
 import AdminShell from '@/components/admin/AdminShell';
-import MediaGrid from './MediaGrid';
+import MediaGrid, { type MediaItemView } from './MediaGrid';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,6 +20,13 @@ export default async function AdminMediaPage() {
   const items = config.configured ? await listMedia() : [];
 
   const totalBytes = items.reduce((s, i) => s + i.size, 0);
+  const itemViews: MediaItemView[] = items.map((i) => ({
+    key: i.key,
+    url: i.url,
+    size: i.size,
+    uploaded_at: i.uploaded_at,
+    folder: i.folder,
+  }));
 
   return (
     <AdminShell active="media" brand={settings.brand} logoUrl={settings.logoUrl}>
@@ -89,7 +96,7 @@ export default async function AdminMediaPage() {
         />
       </div>
 
-      <MediaGrid items={items} configured={config.configured} />
+      <MediaGrid items={itemViews} configured={config.configured} />
     </AdminShell>
   );
 }

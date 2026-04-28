@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
-import { Inter, Poppins } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -9,15 +9,9 @@ import QuotePopup from '@/components/QuotePopup';
 import SiteChrome from '@/components/SiteChrome';
 import { getSettings } from '@/lib/settings';
 
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-poppins',
-  display: 'swap',
-});
-
 const inter = Inter({
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
   variable: '--font-inter',
   display: 'swap',
 });
@@ -68,7 +62,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const s = await getSettings();
   return (
-    <html lang="en-GB" className={`${poppins.variable} ${inter.variable}`}>
+    <html lang="en-GB" className={inter.variable}>
       <head>
         {s.gtmId && (
           <Script id="gtm" strategy="afterInteractive">
