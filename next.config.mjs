@@ -21,6 +21,11 @@ const nextConfig = {
         hostname: 'pub-d2063e290531450c8615a5e9338ff332.r2.dev',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'media.emergencyplumbernow.co.uk',
+        pathname: '/**',
+      },
     ],
   },
 };

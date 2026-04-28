@@ -14,7 +14,9 @@ import {
 let cached: S3Client | null = null;
 
 const BUCKET = process.env.R2_BUCKET || 'plumbers';
-const PUBLIC_URL = 'https://media.emergencyplumbernow.co.uk';
+const PUBLIC_URL =
+  process.env.R2_PUBLIC_URL ||
+  'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev';
 const ENDPOINT =
   process.env.R2_ENDPOINT ||
   'https://3c76920fa5848e9b288777b0edae64fa.r2.cloudflarestorage.com';
