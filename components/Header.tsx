@@ -27,13 +27,13 @@ export default function Header({ brand, phoneDisplay, phoneTel, logoUrl }: Props
         scrolled ? 'border-gray-line bg-white/95 backdrop-blur shadow-sm' : 'border-transparent bg-white'
       }`}
     >
-      <div className="container-content flex h-16 items-center justify-between md:h-20">
+      <div className="container-content flex h-20 items-center justify-between md:h-24">
         <Link href="/" aria-label={brand} className="flex items-center gap-2 font-extrabold text-lg md:text-xl">
           {logoUrl ? (
             <img
               src={logoUrl}
               alt={brand}
-              className="h-12 w-auto max-w-[280px] object-contain md:h-16"
+              className="h-16 w-auto max-w-[320px] object-contain md:h-20"
             />
           ) : (
             <>
