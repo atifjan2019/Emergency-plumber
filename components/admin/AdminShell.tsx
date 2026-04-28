@@ -61,12 +61,12 @@ export default function AdminShell({ active, brand, logoUrl = '', children }: Pr
     <div className="min-h-screen bg-off-white">
       <div className="flex flex-col md:flex-row md:items-stretch">
         <aside className="md:sticky md:top-0 md:h-screen md:w-64 md:shrink-0 border-b md:border-b-0 md:border-r border-gray-line bg-white">
-          <div className="flex h-16 items-center gap-3 border-b border-gray-line px-5">
+          <div className="flex h-20 items-center gap-3 border-b border-gray-line px-5">
             {logoUrl ? (
               <img
                 src={logoUrl}
                 alt={brand}
-                className="h-9 w-auto max-w-[160px] object-contain"
+                className="h-14 w-auto max-w-[210px] object-contain"
               />
             ) : (
               <>

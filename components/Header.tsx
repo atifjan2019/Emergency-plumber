@@ -33,7 +33,7 @@ export default function Header({ brand, phoneDisplay, phoneTel, logoUrl }: Props
             <img
               src={logoUrl}
               alt={brand}
-              className="h-10 w-auto max-w-[200px] object-contain md:h-12"
+              className="h-12 w-auto max-w-[280px] object-contain md:h-16"
             />
           ) : (
             <>

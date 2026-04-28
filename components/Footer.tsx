@@ -15,7 +15,7 @@ export default async function Footer() {
               <img
                 src={s.logoUrl}
                 alt={s.brand}
-                className="h-12 w-auto max-w-[220px] object-contain"
+                className="h-16 w-auto max-w-[280px] object-contain"
               />
             ) : (
               <>
