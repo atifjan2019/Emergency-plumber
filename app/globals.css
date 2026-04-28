@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --foreground: #0A0A0A;
+  --foreground: #030E17;
   --background: #FFFFFF;
+  --primary: #0094D6;
+  --primary-dark: #0d7cbb;
+  --accent: #D71213;
+  --accent-dark: #a80e0e;
+  --navy: #030E17;
 }
 
 html {
@@ -56,10 +61,10 @@ body {
     @apply inline-flex items-center gap-1.5 rounded-full border border-gray-line bg-white px-3 py-1 text-sm font-medium text-gray-soft;
   }
   .pulse-dot {
-    @apply relative inline-block h-2.5 w-2.5 rounded-full bg-primary;
+    @apply relative inline-block h-2.5 w-2.5 rounded-full bg-accent;
   }
   .pulse-dot::after {
     content: '';
-    @apply absolute inset-0 animate-ping rounded-full bg-primary opacity-75;
+    @apply absolute inset-0 animate-ping rounded-full bg-accent opacity-75;
   }
 }

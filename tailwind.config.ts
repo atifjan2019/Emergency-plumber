@@ -9,11 +9,16 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#DC2626',
-          dark: '#991B1B',
+          DEFAULT: '#0094D6',
+          dark: '#0d7cbb',
         },
-        ink: '#0A0A0A',
-        'off-white': '#FAFAFA',
+        accent: {
+          DEFAULT: '#D71213',
+          dark: '#a80e0e',
+        },
+        navy: '#030E17',
+        ink: '#030E17',
+        'off-white': '#F5F8FA',
         'gray-soft': '#6B7280',
         'gray-line': '#E5E7EB',
       },

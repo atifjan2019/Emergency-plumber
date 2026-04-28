@@ -21,9 +21,9 @@ const sizeMap: Record<NonNullable<Props['size']>, string> = {
 };
 
 const variantMap: Record<NonNullable<Props['variant']>, string> = {
-  primary: 'bg-primary text-white shadow-lg hover:bg-primary-dark',
+  primary: 'bg-accent text-white shadow-lg hover:bg-accent-dark',
   ghost: 'bg-white border border-gray-line text-ink hover:border-ink',
-  white: 'bg-white text-primary hover:bg-off-white',
+  white: 'bg-white text-accent hover:bg-off-white',
 };
 
 function citySlugFromPath(pathname: string | null): string | null {

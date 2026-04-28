@@ -10,7 +10,7 @@ export default async function MobileStickyBar() {
       <a
         href={`tel:${s.phoneTel}`}
         aria-label={`Call ${s.phoneDisplay} - 24/7 emergency plumber`}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3.5 text-base font-semibold text-white"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-accent py-3.5 text-base font-semibold text-white"
       >
         <span className="pulse-dot bg-white" />
         <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
