@@ -226,7 +226,7 @@ function DraftCard({ draft, onOpen }: { draft: AdminDraft; onOpen: () => void })
 
       <div className="mt-auto pt-4 flex items-center justify-between gap-2 text-xs text-gray-soft">
         <span className="truncate" title={draft.source_page}>
-          {draft.source_page || '—'}
+          {draft.source_page || 'n/a'}
         </span>
         <div className="flex items-center gap-2 shrink-0">
           <button
@@ -362,7 +362,7 @@ function DraftDetailModal({ draft, onClose }: { draft: AdminDraft; onClose: () =
 
           <section>
             <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-soft">Page</h3>
-            <p className="mt-1 break-all text-sm text-ink">{draft.source_page || '—'}</p>
+            <p className="mt-1 break-all text-sm text-ink">{draft.source_page || 'n/a'}</p>
           </section>
         </div>
 

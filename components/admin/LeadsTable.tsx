@@ -392,12 +392,12 @@ function LeadDetailModal({ lead, onClose }: { lead: AdminLead; onClose: () => vo
               <NotifyPill
                 label="Admin email"
                 sentAt={lead.admin_notified_at}
-                fallback="Not sent — admin-created lead"
+                fallback="Not sent - admin-created lead"
               />
               <NotifyPill
                 label="Customer confirmation"
                 sentAt={lead.user_notified_at}
-                fallback={lead.email ? 'Not sent — SMTP error or pending' : 'No email captured'}
+                fallback={lead.email ? 'Not sent - SMTP error or pending' : 'No email captured'}
               />
             </div>
           </section>

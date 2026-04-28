@@ -110,10 +110,10 @@ export function buildAdminLeadEmail(lead: LeadPayload, brand: BrandPayload) {
     `New lead from your website.`,
     ``,
     `Name: ${lead.name}`,
-    `Phone: ${lead.phone || '—'}`,
-    `Email: ${lead.email || '—'}`,
-    `City: ${lead.city_slug || '—'}`,
-    `Source: ${lead.source_page || '—'}`,
+    `Phone: ${lead.phone || 'n/a'}`,
+    `Email: ${lead.email || 'n/a'}`,
+    `City: ${lead.city_slug || 'n/a'}`,
+    `Source: ${lead.source_page || 'n/a'}`,
     `Submitted: ${submitted}`,
     ``,
     `Message:`,
@@ -130,10 +130,10 @@ export function buildAdminLeadEmail(lead: LeadPayload, brand: BrandPayload) {
   </div>
   <table style="width:100%;border-collapse:collapse;font-size:14px;">
     <tr><td style="padding:6px 0;color:#6b7280;width:90px;">Name</td><td style="padding:6px 0;font-weight:600;">${escape(lead.name)}</td></tr>
-    <tr><td style="padding:6px 0;color:#6b7280;">Phone</td><td style="padding:6px 0;">${lead.phone ? `<a href="tel:${escape(lead.phone)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escape(lead.phone)}</a>` : '—'}</td></tr>
-    <tr><td style="padding:6px 0;color:#6b7280;">Email</td><td style="padding:6px 0;">${lead.email ? `<a href="mailto:${escape(lead.email)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escape(lead.email)}</a>` : '—'}</td></tr>
-    <tr><td style="padding:6px 0;color:#6b7280;">City</td><td style="padding:6px 0;text-transform:capitalize;">${escape(lead.city_slug || '—')}</td></tr>
-    <tr><td style="padding:6px 0;color:#6b7280;">Source</td><td style="padding:6px 0;color:#374151;">${escape(lead.source_page || '—')}</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;">Phone</td><td style="padding:6px 0;">${lead.phone ? `<a href="tel:${escape(lead.phone)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escape(lead.phone)}</a>` : 'n/a'}</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;">Email</td><td style="padding:6px 0;">${lead.email ? `<a href="mailto:${escape(lead.email)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escape(lead.email)}</a>` : 'n/a'}</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;">City</td><td style="padding:6px 0;text-transform:capitalize;">${escape(lead.city_slug || 'n/a')}</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;">Source</td><td style="padding:6px 0;color:#374151;">${escape(lead.source_page || 'n/a')}</td></tr>
     <tr><td style="padding:6px 0;color:#6b7280;">Submitted</td><td style="padding:6px 0;color:#374151;">${escape(submitted)}</td></tr>
   </table>
   <div style="margin-top:18px;padding:14px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;">
@@ -150,7 +150,7 @@ export function buildAdminLeadEmail(lead: LeadPayload, brand: BrandPayload) {
 }
 
 export function buildUserConfirmationEmail(lead: LeadPayload, brand: BrandPayload) {
-  const subject = `We got your message — ${brand.brand}`;
+  const subject = `We got your message from ${brand.brand}`;
   const text = [
     `Hi ${lead.name},`,
     ``,
@@ -161,7 +161,7 @@ export function buildUserConfirmationEmail(lead: LeadPayload, brand: BrandPayloa
     ``,
     `If this is an emergency right now, please call us on ${brand.phoneDisplay} - we answer 24/7 with no surcharge for nights or weekends.`,
     ``,
-    `— ${brand.brand}`,
+    `${brand.brand}`,
     `${brand.phoneDisplay} | ${brand.email}`,
   ].join('\n');
 
@@ -192,7 +192,7 @@ export function buildUserConfirmationEmail(lead: LeadPayload, brand: BrandPayloa
     <a href="tel:${escape(brand.phoneTel)}" style="display:inline-block;background:#dc2626;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px;">Call ${escape(brand.phoneDisplay)}</a>
   </div>
 
-  <p style="font-size:13px;color:#6b7280;margin:28px 0 0;">— The ${escape(brand.brand)} team<br>${escape(brand.phoneDisplay)} · ${escape(brand.email)}</p>
+  <p style="font-size:13px;color:#6b7280;margin:28px 0 0;">The ${escape(brand.brand)} team<br>${escape(brand.phoneDisplay)} · ${escape(brand.email)}</p>
 </div>`.trim();
 
   return { subject, text, html };
@@ -213,16 +213,16 @@ type DraftPayload = {
 
 export function buildAdminDraftEmail(draft: DraftPayload, brand: BrandPayload) {
   const headline = draft.name || draft.phone || draft.email || 'Unnamed visitor';
-  const subject = `Abandoned form — ${headline}`;
+  const subject = `Abandoned form: ${headline}`;
   const text = [
     `A visitor started filling a form but did not submit.`,
     ``,
     `Name: ${draft.name || '(no name)'}`,
-    `Phone: ${draft.phone || '—'}`,
-    `Email: ${draft.email || '—'}`,
-    `City: ${draft.city_slug || '—'}`,
+    `Phone: ${draft.phone || 'n/a'}`,
+    `Email: ${draft.email || 'n/a'}`,
+    `City: ${draft.city_slug || 'n/a'}`,
     `Form type: ${draft.form_type}`,
-    `Source: ${draft.source_page || '—'}`,
+    `Source: ${draft.source_page || 'n/a'}`,
     ``,
     `Partial message:`,
     draft.message || '(none yet)',
@@ -241,11 +241,11 @@ export function buildAdminDraftEmail(draft: DraftPayload, brand: BrandPayload) {
   <p style="font-size:14px;color:#374151;margin:0 0 14px;">They captured contact info but never submitted. A quick callback often converts these.</p>
   <table style="width:100%;border-collapse:collapse;font-size:14px;">
     <tr><td style="padding:6px 0;color:#6b7280;width:90px;">Name</td><td style="padding:6px 0;font-weight:600;">${escape(draft.name || '(no name)')}</td></tr>
-    <tr><td style="padding:6px 0;color:#6b7280;">Phone</td><td style="padding:6px 0;">${draft.phone ? `<a href="tel:${escape(draft.phone)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escape(draft.phone)}</a>` : '—'}</td></tr>
-    <tr><td style="padding:6px 0;color:#6b7280;">Email</td><td style="padding:6px 0;">${draft.email ? `<a href="mailto:${escape(draft.email)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escape(draft.email)}</a>` : '—'}</td></tr>
-    <tr><td style="padding:6px 0;color:#6b7280;">City</td><td style="padding:6px 0;text-transform:capitalize;">${escape(draft.city_slug || '—')}</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;">Phone</td><td style="padding:6px 0;">${draft.phone ? `<a href="tel:${escape(draft.phone)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escape(draft.phone)}</a>` : 'n/a'}</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;">Email</td><td style="padding:6px 0;">${draft.email ? `<a href="mailto:${escape(draft.email)}" style="color:#dc2626;text-decoration:none;font-weight:600;">${escape(draft.email)}</a>` : 'n/a'}</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;">City</td><td style="padding:6px 0;text-transform:capitalize;">${escape(draft.city_slug || 'n/a')}</td></tr>
     <tr><td style="padding:6px 0;color:#6b7280;">Form</td><td style="padding:6px 0;text-transform:capitalize;">${escape(draft.form_type)}</td></tr>
-    <tr><td style="padding:6px 0;color:#6b7280;">Source</td><td style="padding:6px 0;color:#374151;">${escape(draft.source_page || '—')}</td></tr>
+    <tr><td style="padding:6px 0;color:#6b7280;">Source</td><td style="padding:6px 0;color:#374151;">${escape(draft.source_page || 'n/a')}</td></tr>
   </table>
   ${draft.message ? `<div style="margin-top:18px;padding:14px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#6b7280;margin-bottom:6px;">Partial message</div><div style="white-space:pre-wrap;">${lineBreak(draft.message)}</div></div>` : ''}
   <div style="margin-top:24px;">

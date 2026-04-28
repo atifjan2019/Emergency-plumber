@@ -74,14 +74,14 @@ function buildFaq(city: City, s: SiteSettings) {
     { question: 'Can you unblock drains and toilets?', answer: `Yes. We clear blocked sinks, shower drains, bath drains, toilets, and external gully drains across ${city.name}. For accessible blockages we use rods, plungers, or mechanical clearance tools. For recurring or suspected deep blockages we can arrange a CCTV drain inspection to identify the cause inside the pipework.` },
     { question: 'Can you detect hidden leaks?', answer: `Yes. We use moisture meters, acoustic listening equipment, and thermal imaging where appropriate to locate leaks inside walls, under floors, or above ceilings. Finding the exact location reduces the disruption needed to access and repair the pipe.` },
     { question: 'What should I do before the plumber arrives?', answer: `If there is an active leak, turn off the stop tap (usually under the kitchen sink or near the water meter) to stop the flow. If water is near electrics, isolate the circuit if safe to do so. If a drain is overflowing, do not use connected fixtures. Note when you first noticed the problem and any unusual sounds, smells, or pressure changes.` },
-    { question: 'Do you provide fixed quotes?', answer: `We provide a clear quote before beginning any repair. For straightforward jobs we can often give a firm price. For more complex work where the full extent is unknown until inspection, we explain what we have found and the likely cost before proceeding — no work starts without your agreement.` },
+    { question: 'Do you provide fixed quotes?', answer: `We provide a clear quote before beginning any repair. For straightforward jobs we can often give a firm price. For more complex work where the full extent is unknown until inspection, we explain what we have found and the likely cost before proceeding; no work starts without your agreement.` },
     { question: 'Are your plumbers licensed and insured?', answer: `Yes. All plumbing work is carried out by experienced plumbers who hold public liability insurance. We work in compliance with Water Regulations and notify Building Control where required for notifiable plumbing work.` },
     { question: 'Do you guarantee the repair?', answer: `Yes. Our repairs are backed by a workmanship guarantee. If the same fault recurs as a result of our repair work within the guarantee period, we will return and put it right at no additional charge.` },
     { question: `Can you help landlords and property managers in ${city.name}?`, answer: `Yes. We regularly work with landlords and property managers across ${city.name} to carry out routine inspections, emergency repairs, and maintenance between tenancies. We provide job reports and invoices suitable for property management records.` },
     { question: 'Do you handle commercial plumbing?', answer: `Yes. We carry out plumbing repairs and maintenance for commercial premises including offices, retail units, and mixed-use properties across ${city.name}. Commercial plumbing requirements, including compliance with Water Regulations, are addressed in all work we carry out.` },
-    { question: 'Can you repair hot water or radiator plumbing issues?', answer: `Yes, for the plumbing elements. We repair and replace radiator valves, hot water cylinder valves and connections, immersion heaters, and related plumbing components. Any work involving gas appliances — including gas boilers — must be carried out by a Gas Safe registered engineer.` },
+    { question: 'Can you repair hot water or radiator plumbing issues?', answer: `Yes, for the plumbing elements. We repair and replace radiator valves, hot water cylinder valves and connections, immersion heaters, and related plumbing components. Any work involving gas appliances, including gas boilers, must be carried out by a Gas Safe registered engineer.` },
     { question: 'What causes low water pressure?', answer: `Low water pressure can be caused by a leaking pipe reducing system pressure, a partially closed isolation or service valve, scale buildup restricting flow inside the pipe, a faulty pressure regulator, or a low-pressure supply from the mains. We diagnose the cause before recommending a repair.` },
-    { question: 'Why does my drain keep blocking?', answer: `Recurring drain blockages usually indicate either a behavioural cause — fat, wipes, or hair consistently entering the drain — or a structural drainage problem such as a partial collapse, root intrusion, or a joint defect catching waste. A CCTV drain inspection lets us confirm the cause so the correct solution is applied.` },
+    { question: 'Why does my drain keep blocking?', answer: `Recurring drain blockages usually indicate either a behavioural cause (fat, wipes, or hair consistently entering the drain) or a structural drainage problem such as a partial collapse, root intrusion, or a joint defect catching waste. A CCTV drain inspection lets us confirm the cause so the correct solution is applied.` },
     { question: 'How can I prevent plumbing emergencies?', answer: `Know where your stop tap is and make sure it operates freely. Have leaking taps and weeping joints repaired promptly. Insulate pipes in cold areas before winter. Avoid putting grease, wipes, or food waste into drains. Book an annual plumbing inspection to check valves, pipework, and drainage before problems escalate.` },
   ];
 }
@@ -232,7 +232,7 @@ const processSteps = [
   { title: 'Inspection',        desc: 'Our plumber inspects visible pipework, fixtures, drains, valves, pressure, and all affected areas.' },
   { title: 'Diagnosis',         desc: 'We explain the likely cause, the failed component, what options exist for repair, and the risk of delay.' },
   { title: 'Clear Quote',       desc: 'We provide a transparent quote before any work begins. The price you agree is the price you pay.' },
-  { title: 'Repair',            desc: 'We carry out the agreed repair — replacing, sealing, clearing, flushing, or installing as required.' },
+  { title: 'Repair',            desc: 'We carry out the agreed repair, replacing, sealing, clearing, flushing, or installing as required.' },
   { title: 'Testing',           desc: 'Flow, pressure, drainage, seals, valves, and repaired joints are all tested before the job is considered complete.' },
   { title: 'Guarantee',         desc: 'We explain what was done, provide a workmanship guarantee, and advise on preventing recurrence.' },
 ];
@@ -268,12 +268,12 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
   ];
 
   const issues = [
-    { symptom: 'Dripping Tap',         cause: 'Worn washer, damaged cartridge, corroded valve seat, loose packing nut, or worn O-ring', risk: 'Continuous water loss, higher bills, staining, and eventual fixture damage', service: 'Tap service — washer, cartridge, or valve replacement; full tap replacement if body is corroded' },
-    { symptom: 'Burst Pipe',           cause: 'Freezing and expansion in cold weather, internal corrosion, high water pressure, physical impact, deteriorated joints, or aged pipework', risk: 'Rapid flooding, ceiling and floor damage, damp, mould growth, and structural property damage', service: 'Emergency pipe repair — isolate supply, replace damaged section, test and restore' },
+    { symptom: 'Dripping Tap',         cause: 'Worn washer, damaged cartridge, corroded valve seat, loose packing nut, or worn O-ring', risk: 'Continuous water loss, higher bills, staining, and eventual fixture damage', service: 'Tap service: washer, cartridge, or valve replacement; full tap replacement if body is corroded' },
+    { symptom: 'Burst Pipe',           cause: 'Freezing and expansion in cold weather, internal corrosion, high water pressure, physical impact, deteriorated joints, or aged pipework', risk: 'Rapid flooding, ceiling and floor damage, damp, mould growth, and structural property damage', service: 'Emergency pipe repair: isolate supply, replace damaged section, test and restore' },
     { symptom: 'Blocked Drain',        cause: 'Accumulated grease, food waste, hair, soap residue, limescale buildup, foreign objects, or root intrusion in external drainage', risk: 'Slow drainage leading to overflow, foul odours from trapped waste, wastewater backup, and hygiene hazard', service: 'Drain unblocking using rods, jetting, or mechanical clearance; CCTV inspection for recurring blockages' },
     { symptom: 'Blocked Toilet',       cause: 'Excessive paper, wet wipes, sanitary products, or foreign objects causing a waste restriction; deep sewer-line blockage', risk: 'Overflow onto bathroom floor, hygiene risk, water damage, and backing up from connected drainage', service: 'Toilet drain clearance; replacement of flush mechanism or internal components if faulty' },
     { symptom: 'Hidden Leak',          cause: 'Failed pipe joint, pin-hole corrosion, seal failure on a fitting, deteriorated flexi hose, or slow pressure damage to pipework behind walls or under floors', risk: 'Damp patches, rising mould, rotting timber, damaged plaster, and significant hidden structural damage', service: 'Leak detection using moisture measurement, acoustic equipment, or thermal imaging; targeted pipe repair' },
-    { symptom: 'Low Water Pressure',   cause: 'Leaking pipe reducing system pressure, partially closed service valve, blocked or scaled pipework, faulty pressure regulator, or mains supply restriction', risk: 'Poor shower and tap performance, slow-filling appliances, heating inefficiency', service: 'Pressure diagnosis — checking valves, testing at multiple points, identifying leaks, recommending repair' },
+    { symptom: 'Low Water Pressure',   cause: 'Leaking pipe reducing system pressure, partially closed service valve, blocked or scaled pipework, faulty pressure regulator, or mains supply restriction', risk: 'Poor shower and tap performance, slow-filling appliances, heating inefficiency', service: 'Pressure diagnosis: checking valves, testing at multiple points, identifying leaks, recommending repair' },
     { symptom: 'Cold Radiator Spots',  cause: 'Trapped air at the top of a radiator, sludge and magnetite deposits at the bottom, faulty thermostatic valve, or flow restriction in the circulation system', risk: 'Uneven heating, increased energy consumption, and progressive buildup leading to system damage', service: 'Radiator bleeding for air; powerflush or inhibitor treatment for sludge; valve replacement if faulty' },
     { symptom: `Limescale (${city.waterHardness} water)`, cause: `Dissolved calcium and magnesium minerals from ${city.name}'s ${city.waterHardness} water depositing inside pipework, taps, shower heads, and appliance connections`, risk: 'Restricted flow through scaled pipes and fixtures, reduced appliance efficiency, premature tap and valve failure', service: 'Scale removal from fixtures; water filter or softener installation; limescale inhibitor fitting' },
   ];
@@ -315,7 +315,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
                 Burst pipe? Blocked drain? Leaking tap? {s.brand} provides local plumbing repairs and emergency callouts across {city.name}. Clear quotes before any work starts. Guaranteed workmanship.
               </p>
               <p className="mt-3 max-w-lg text-sm text-white/65">
-                Whether you have a dripping tap, a blocked toilet, low water pressure, or a leaking pipe causing property damage, our local plumbers diagnose the problem, explain the cause, and repair it correctly. Domestic and commercial — from routine tap replacements to same-day emergency pipe repairs.
+                Whether you have a dripping tap, a blocked toilet, low water pressure, or a leaking pipe causing property damage, our local plumbers diagnose the problem, explain the cause, and repair it correctly. Domestic and commercial, from routine tap replacements to same-day emergency pipe repairs.
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -367,7 +367,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
             {/* Right — quote form */}
             <div id="quote" className="rounded-2xl border border-white/15 bg-white p-6 shadow-2xl">
               <div className="mb-1 text-base font-bold text-ink">Get a Free Quote in {city.name}</div>
-              <p className="mb-5 text-sm text-gray-soft">Tell us the issue — we reply within 1 hour. For emergencies, call directly.</p>
+              <p className="mb-5 text-sm text-gray-soft">Tell us the issue and we will reply within 1 hour. For emergencies, call directly.</p>
               <QuoteForm sourcePage={`/plumbing-services/${city.slug}`} citySlug={city.slug} cityName={city.name} submitLabel="Get a free quote" />
             </div>
           </div>
@@ -381,14 +381,14 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
         <div className="container-content">
           <div className="text-center">
             <h2>What Plumbing Problem Do You Need Help With?</h2>
-            <p className="mt-3 text-gray-soft">Select your issue below and we will tell you how we can help — or call us now if it is urgent.</p>
+            <p className="mt-3 text-gray-soft">Select your issue below and we will tell you how we can help, or call us now if it is urgent.</p>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <ProblemCard icon={<IconPipe />}     label="Burst Pipe Repair"             desc="Water escaping from a split or fractured pipe — turn off the stop tap and call immediately." urgency="red"    href={`/emergency-plumber/${city.slug}`} />
+            <ProblemCard icon={<IconPipe />}     label="Burst Pipe Repair"             desc="Water escaping from a split or fractured pipe. Turn off the stop tap and call immediately." urgency="red"    href={`/emergency-plumber/${city.slug}`} />
             <ProblemCard icon={<IconDrain />}    label="Blocked Drain Unblocking"       desc="Slow drainage, bad smells, or water pooling in sinks, showers, or outside gullies." urgency="orange" />
             <ProblemCard icon={<IconToilet />}   label="Blocked Toilet Repair"          desc="Toilet not flushing, overflowing, or backing up despite multiple flushes." urgency="orange" />
             <ProblemCard icon={<IconLeak />}     label="Leaking Pipe Repair"            desc="Visible or suspected pipe leak under floors, behind walls, or under the sink." urgency="orange" />
-            <ProblemCard icon={<IconTap />}      label="Dripping Tap Repair"            desc="A tap that will not fully close — wasting water and driving up bills." urgency="blue" />
+            <ProblemCard icon={<IconTap />}      label="Dripping Tap Repair"            desc="A tap that will not fully close, wasting water and driving up bills." urgency="blue" />
             <ProblemCard icon={<IconGauge />}    label="Low Water Pressure Diagnosis"   desc="Weak flow from taps or showers, or pressure that has dropped suddenly." urgency="blue" />
             <ProblemCard icon={<IconFlame />}    label="No Hot Water / Hot Water Issue" desc="Hot water cylinder, immersion heater, or heating-related plumbing issue." urgency="orange" />
             <ProblemCard icon={<IconBath />}     label="Bathroom Plumbing"              desc="Sink, toilet, bath, or shower installation, repair, or replacement." urgency="blue" />
@@ -434,7 +434,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
           </div>
 
           <p className="mt-6 text-sm italic text-gray-soft">
-            Each of these problems follows a chain: a component fails or a restriction develops, a symptom appears, and the risk to the property increases the longer the repair is delayed. Identifying the cause — not just the symptom — is what drives a lasting repair.
+            Each of these problems follows a chain: a component fails or a restriction develops, a symptom appears, and the risk to the property increases the longer the repair is delayed. Identifying the cause, not just the symptom, is what drives a lasting repair.
           </p>
         </div>
       </section>
@@ -452,7 +452,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
       <ServiceBlock id="emergency" heading="Emergency Plumbing Repairs" imageAlt={`Emergency plumber repairing burst pipe in ${city.name}`} imageRight alt={false}>
         <p>A plumbing emergency requires fast attendance and a calm, systematic response. Burst pipes, major leaks, toilet overflows, and sudden loss of water supply all carry a risk of property damage that worsens with every minute.</p>
         <p>Our local plumbers respond to urgent callouts across {city.name} for burst or fractured pipes, major leaks requiring immediate isolation, overflowing toilets, loss of cold or hot water supply, and flooding situations where water cannot be safely stopped at the stop tap.</p>
-        <p><strong>Before we arrive:</strong> Turn off the main stop tap — usually under the kitchen sink or near the water meter — to stop the flow and limit damage while we travel to you.</p>
+        <p><strong>Before we arrive:</strong> Turn off the main stop tap (usually under the kitchen sink or near the water meter) to stop the flow and limit damage while we travel to you.</p>
         <Link href={`/emergency-plumber/${city.slug}`} className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">
           View emergency plumber {city.name} →
         </Link>
@@ -466,12 +466,12 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
       </ServiceBlock>
 
       <ServiceBlock id="drains" heading="Drain Cleaning &amp; Unblocking" imageAlt={`Drain unblocking with rods in ${city.name}`} imageRight alt={false}>
-        <p>A blocked drain does not only slow the water flow — it can create foul odours, cause wastewater to back up into the property, and, if the blockage is in external drainage, create overflow at ground level.</p>
+        <p>A blocked drain does not only slow the water flow; it can create foul odours, cause wastewater to back up into the property, and, if the blockage is in external drainage, create overflow at ground level.</p>
         <ul className="ml-4 space-y-1 list-disc marker:text-primary">
-          <li>Kitchen sinks — grease, food waste, detergent residue</li>
-          <li>Bathroom sinks and showers — hair, soap, conditioner buildup</li>
-          <li>Toilets — waste, wipes, foreign objects</li>
-          <li>External gulley drains — leaves, silt, root intrusion</li>
+          <li>Kitchen sinks: grease, food waste, detergent residue</li>
+          <li>Bathroom sinks and showers: hair, soap, conditioner buildup</li>
+          <li>Toilets: waste, wipes, foreign objects</li>
+          <li>External gulley drains: leaves, silt, root intrusion</li>
         </ul>
         <p>For recurring blockages we recommend a CCTV drain inspection to view the pipework from inside and identify cracks, root penetration, or collapsed sections.</p>
         <Link href="#quote" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">Book drain unblocking →</Link>
@@ -498,7 +498,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
       </ServiceBlock>
 
       <ServiceBlock id="pressure" heading="Water Pressure Problems" imageAlt={`Water pressure diagnosis in ${city.name}`} imageRight={false} alt>
-        <p>Low water pressure affects shower performance, tap flow, appliance function, and — if the central heating system is pressure-dependent — can affect heating too. Pressure problems are rarely random; they have a cause that can be traced.</p>
+        <p>Low water pressure affects shower performance, tap flow, appliance function, and if the central heating system is pressure-dependent, it can affect heating too. Pressure problems are rarely random; they have a cause that can be traced.</p>
         <ul className="ml-4 space-y-1 list-disc marker:text-primary">
           <li>Checking all service and isolation valves are fully open</li>
           <li>Testing pressure at multiple outlets to identify where the drop occurs</li>
@@ -512,7 +512,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
       <ServiceBlock id="hot-water" heading="Hot Water &amp; Heating-Related Plumbing" imageAlt={`Hot water cylinder and radiator plumbing in ${city.name}`} imageRight alt={false}>
         <p>Many heating and hot water faults have a plumbing component that does not require a gas engineer. {s.brand} handles hot water cylinders (replacing faulty valves and connections), radiator repairs (leaking valves, TRV replacement), system powerflush to clear sludge and restore circulation efficiency, inhibitor dosing, and pipe connections to heat exchangers, cylinders, and underfloor heating manifolds.</p>
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-amber-900 text-sm">
-          <strong>Important:</strong> Any work involving a gas appliance — boiler repair, gas pipe, or gas valve — must be completed by a Gas Safe registered engineer. We will advise clearly which part falls under plumbing and which requires a registered gas engineer.
+          <strong>Important:</strong> Any work involving a gas appliance (boiler repair, gas pipe, or gas valve) must be completed by a Gas Safe registered engineer. We will advise clearly which part falls under plumbing and which requires a registered gas engineer.
         </div>
         <Link href="#quote" className="inline-flex items-center gap-1 font-semibold text-primary hover:underline">Get help with heating plumbing →</Link>
       </ServiceBlock>
@@ -538,7 +538,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
         <div className="container-content">
           <div className="text-center">
             <h2>How Our Plumbing Repair Process Works</h2>
-            <p className="mt-3 text-gray-soft">Every job follows the same clear process — from your first call to the final test after repair.</p>
+            <p className="mt-3 text-gray-soft">Every job follows the same clear process, from your first call to the final test after repair.</p>
           </div>
 
           {/* Desktop — horizontal timeline */}
@@ -599,17 +599,17 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
             <div>
               <h2 className="text-white">Need an Emergency Plumber in {city.name} Today?</h2>
               <p className="mt-4 max-w-xl text-base text-white/90">
-                If you are dealing with a burst pipe, a serious water leak, a blocked toilet that has overflowed, a flooded room, or a complete loss of water supply — this is a plumbing emergency. Every minute the water continues to run increases the damage to your floors, ceilings, and structure.
+                If you are dealing with a burst pipe, a serious water leak, a blocked toilet that has overflowed, a flooded room, or a complete loss of water supply, this is a plumbing emergency. Every minute the water continues to run increases the damage to your floors, ceilings, and structure.
               </p>
               <ol className="mt-5 space-y-2 text-sm text-white/90 list-decimal list-inside">
-                <li>Find your stop tap — usually under the kitchen sink or near the water meter — and turn it off clockwise to stop the flow.</li>
+                <li>Find your stop tap (usually under the kitchen sink or near the water meter) and turn it off clockwise to stop the flow.</li>
                 <li>Turn off any electrical supplies near the leak if it is safe to do so.</li>
-                <li>Call us immediately — we attend {city.name} emergencies as fast as possible.</li>
+                <li>Call us immediately. We attend {city.name} emergencies as fast as possible.</li>
               </ol>
               <div className="mt-8">
                 <a href={`tel:${s.phoneTel}`} className="inline-flex items-center gap-3 rounded-lg bg-white px-7 py-4 text-lg font-bold text-accent shadow-lg transition hover:bg-off-white active:scale-[0.98]">
                   <IconPhone />
-                  Call {s.phoneDisplay} — Emergency Help
+                  Call {s.phoneDisplay} for Emergency Help
                 </a>
               </div>
             </div>
@@ -701,11 +701,11 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
       <section className="section">
         <div className="container-content">
           <h2>Why Choose {s.brand} for Plumbing Services in {city.name}?</h2>
-          <p className="mt-3 max-w-2xl text-gray-soft">Real experience, transparent pricing, and guaranteed workmanship — not just promises.</p>
+          <p className="mt-3 max-w-2xl text-gray-soft">Real experience, transparent pricing, and guaranteed workmanship. Not just promises.</p>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <TrustCard icon={<IconPin />}    heading="Local Plumbing Experience"         body={`${s.brand} serves homeowners, landlords, and businesses across ${city.name}. We understand the local property types, housing stock, water hardness (${city.waterHardness}), and drainage infrastructure common to this area.`} />
             <TrustCard icon={<IconAlert />}  heading="Emergency Attendance"              body={`When a plumbing problem cannot wait, we attend urgent callouts across ${city.name} as quickly as possible. We carry common parts and repair materials to handle most urgent repairs on the same visit.`} />
-            <TrustCard icon={<IconPrice />}  heading="Clear Pricing — No Hidden Charges" body="We explain the problem, the options, and the cost before we begin. The price you agree is the price you pay. No surprises on the invoice." />
+            <TrustCard icon={<IconPrice />}  heading="Clear Pricing, No Hidden Charges" body="We explain the problem, the options, and the cost before we begin. The price you agree is the price you pay. No surprises on the invoice." />
             <TrustCard icon={<IconShield />} heading="Guaranteed Workmanship"            body="All repairs completed by our plumbers are backed by a workmanship guarantee. If the same fault returns due to our repair work, we come back and put it right." />
             <TrustCard icon={<IconCheck />}  heading="Insured &amp; Compliant"           body="Our plumbers carry public liability insurance and carry out all work in compliance with Water Regulations and Building Regulations where applicable." />
             <TrustCard icon={<IconStar />}   heading="Verified Customer Reviews"         body={`${s.brand} is rated ${NATIONWIDE_RATING} stars across ${NATIONWIDE_REVIEW_COUNT.toLocaleString()} verified customer reviews. Real customers, real jobs, real feedback from across the UK.`} />
@@ -814,7 +814,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
                   : 'Watch for internal copper pitting',
                 desc: city.waterHardness === 'hard' || city.waterHardness === 'very hard'
                   ? `${city.name} has ${city.waterHardness} water. Reducing limescale extends the life of taps, appliances, and pipework significantly.`
-                  : `${city.name}'s ${city.waterHardness} water can cause slow internal pipe corrosion — look for discoloured water or pinhole leaks in older copper installations.`,
+                  : `${city.name}'s ${city.waterHardness} water can cause slow internal pipe corrosion. Look for discoloured water or pinhole leaks in older copper installations.`,
               },
             ].map(({ tip, desc }) => (
               <div key={tip} className="flex items-start gap-3 rounded-xl border border-gray-line bg-white p-4">
@@ -870,7 +870,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
             {[
               `Local plumbers in ${city.name}`,
               'Emergency callouts available',
-              'Clear quotes — no hidden charges',
+              'Clear quotes, no hidden charges',
               'Guaranteed workmanship',
             ].map((label) => (
               <div key={label} className="flex items-center gap-1.5">

@@ -84,7 +84,7 @@ export default async function AdminDraftsPage() {
           tone="amber"
           label="Last 24 hours"
           value={last24h.toString()}
-          sub={drafts.length > 0 ? `${Math.round((last24h / drafts.length) * 100)}% of all drafts` : '—'}
+          sub={drafts.length > 0 ? `${Math.round((last24h / drafts.length) * 100)}% of all drafts` : 'n/a'}
           icon={
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5" aria-hidden>
               <circle cx="12" cy="12" r="9" />
