@@ -18,6 +18,7 @@ import { getFeaturedReviews } from '@/lib/reviews';
 import { serviceSchema, faqSchema, breadcrumbSchema } from '@/lib/schema';
 import { getSettings } from '@/lib/settings';
 import { BRAND, SITE_URL, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT } from '@/lib/constants';
+import Image from 'next/image';
 import {
   problemRouter,
   issueExplanations,
@@ -26,6 +27,7 @@ import {
   trustReasons,
   recentSamples,
   toneClass,
+  PLACEHOLDER_IMAGE,
 } from '@/lib/plumbingContent';
 
 export const dynamicParams = false;
@@ -101,6 +103,20 @@ export default async function ServicePage({ params }: { params: Promise<{ servic
               <span className="font-semibold text-ink">{b.t}</span>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* FEATURE IMAGE */}
+      <section className="container-content pt-10 md:pt-14">
+        <div className="relative aspect-[16/7] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white">
+          <Image
+            src={PLACEHOLDER_IMAGE}
+            alt={`Local Gas Safe plumber carrying out ${service.shortName.toLowerCase()} in a UK home`}
+            fill
+            sizes="(max-width: 1280px) 100vw, 1280px"
+            className="object-cover"
+            priority
+          />
         </div>
       </section>
 
@@ -237,9 +253,20 @@ export default async function ServicePage({ params }: { params: Promise<{ servic
       {/* SECTION 4: SERVICE DEEP DIVE - the focal service */}
       <section className="section bg-off-white">
         <div className="container-content">
-          <div className="max-w-3xl">
-            <h2>{service.name} explained</h2>
-            <p className="mt-3 text-gray-soft">{service.longDescription}</p>
+          <div className="grid gap-8 lg:grid-cols-12 items-start">
+            <div className="lg:col-span-7">
+              <h2>{service.name} explained</h2>
+              <p className="mt-3 text-gray-soft">{service.longDescription}</p>
+            </div>
+            <div className="lg:col-span-5 relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-white">
+              <Image
+                src={PLACEHOLDER_IMAGE}
+                alt={`Engineer diagnosing and repairing ${service.shortName.toLowerCase()} on site`}
+                fill
+                sizes="(max-width: 1024px) 100vw, 520px"
+                className="object-cover"
+              />
+            </div>
           </div>
 
           <div className="mt-10 grid gap-6 lg:grid-cols-2">

@@ -17,6 +17,7 @@ import { homeFaq } from '@/data/homeFaq';
 import { BRAND, PHONE_DISPLAY, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT } from '@/lib/constants';
 import { organizationSchema, faqSchema } from '@/lib/schema';
 import { getSettings } from '@/lib/settings';
+import Image from 'next/image';
 import {
   problemRouter,
   issueExplanations,
@@ -25,6 +26,7 @@ import {
   trustReasons,
   recentSamples,
   toneClass,
+  PLACEHOLDER_IMAGE,
 } from '@/lib/plumbingContent';
 
 export const revalidate = 3600;
@@ -76,6 +78,20 @@ export default async function HomePage() {
               <span className="font-semibold text-ink">{b.t}</span>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* FEATURE IMAGE */}
+      <section className="container-content pt-12 md:pt-16">
+        <div className="relative aspect-[16/7] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white">
+          <Image
+            src={PLACEHOLDER_IMAGE}
+            alt="Local Gas Safe plumber repairing pipework under a kitchen sink"
+            fill
+            sizes="(max-width: 1280px) 100vw, 1280px"
+            className="object-cover"
+            priority
+          />
         </div>
       </section>
 
@@ -391,11 +407,22 @@ export default async function HomePage() {
       {/* SECTION 8: WHY CHOOSE US */}
       <section className="section bg-off-white">
         <div className="container-content">
-          <div className="max-w-3xl">
-            <h2>Why choose {BRAND} for plumbing services in the UK?</h2>
-            <p className="mt-3 text-gray-soft">
-              We are a directly employed team of plumbers, drainage specialists and Gas Safe engineers covering 12 UK cities. No subcontracting, no agency chains, no surcharges and no surprises.
-            </p>
+          <div className="grid gap-8 lg:grid-cols-12 items-center">
+            <div className="lg:col-span-7">
+              <h2>Why choose {BRAND} for plumbing services in the UK?</h2>
+              <p className="mt-3 text-gray-soft">
+                We are a directly employed team of plumbers, drainage specialists and Gas Safe engineers covering 12 UK cities. No subcontracting, no agency chains, no surcharges and no surprises.
+              </p>
+            </div>
+            <div className="lg:col-span-5 relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-white">
+              <Image
+                src={PLACEHOLDER_IMAGE}
+                alt={`${BRAND} engineer next to a sign-written plumbing van, ready for a 24/7 emergency callout`}
+                fill
+                sizes="(max-width: 1024px) 100vw, 480px"
+                className="object-cover"
+              />
+            </div>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {trustReasons(NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT).map((b) => (
@@ -472,7 +499,16 @@ export default async function HomePage() {
       <section className="section">
         <div className="container-content grid gap-10 lg:grid-cols-12 items-start">
           <div className="lg:col-span-5">
-            <h2>How to prevent common plumbing problems</h2>
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white">
+              <Image
+                src={PLACEHOLDER_IMAGE}
+                alt="Plumber inspecting pipework and valves during a routine plumbing maintenance visit"
+                fill
+                sizes="(max-width: 1024px) 100vw, 480px"
+                className="object-cover"
+              />
+            </div>
+            <h2 className="mt-6">How to prevent common plumbing problems</h2>
             <p className="mt-3 text-gray-soft">
               Regular plumbing maintenance helps identify worn valves, leaking joints, blocked waste pipes, pressure irregularities and early signs of pipe corrosion before they turn into emergency repairs. A handful of low-effort habits prevents the majority of the call-outs we attend.
             </p>

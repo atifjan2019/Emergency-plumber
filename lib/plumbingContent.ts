@@ -1,3 +1,5 @@
+export const PLACEHOLDER_IMAGE = 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/1.jpg';
+
 export type ProblemRoute = {
   slug: string;
   tone: 'emergency' | 'standard' | 'maintenance';
