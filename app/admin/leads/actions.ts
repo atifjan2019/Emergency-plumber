@@ -75,8 +75,8 @@ export async function createLead(
     return { ok: false, message: 'Could not save the lead.' };
   }
 
-  revalidatePath('/admin');
-  redirect('/admin');
+  revalidatePath('/admin', 'layout');
+  redirect('/admin/leads');
 }
 
 export async function updateLead(
@@ -127,8 +127,8 @@ export async function updateLead(
     return { ok: false, message: 'Could not save changes.' };
   }
 
-  revalidatePath('/admin');
-  redirect('/admin');
+  revalidatePath('/admin', 'layout');
+  redirect('/admin/leads');
 }
 
 export async function deleteLead(formData: FormData): Promise<void> {
@@ -154,7 +154,7 @@ export async function deleteLead(formData: FormData): Promise<void> {
     console.error('[leads] delete exception:', err);
   }
 
-  revalidatePath('/admin');
+  revalidatePath('/admin', 'layout');
 }
 
 export type StatusActionState = {
@@ -220,6 +220,6 @@ export async function updateLeadStatus(
     return { ok: false, message: 'Could not update status.' };
   }
 
-  revalidatePath('/admin');
+  revalidatePath('/admin', 'layout');
   return { ok: true, message: 'Saved.' };
 }
