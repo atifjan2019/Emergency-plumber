@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/plumbing-services' },
   openGraph: {
     title: `Plumbing Services UK | ${BRAND}`,
-    description: `Local plumbing services across the UK — emergency repairs, leak detection, drain unblocking, and installations. Clear quotes, guaranteed workmanship.`,
+    description: `Local plumbing services across the UK: emergency repairs, leak detection, drain unblocking, and installations. Clear quotes, guaranteed workmanship.`,
     url: `${SITE_URL}/plumbing-services`,
     type: 'website',
   },
