@@ -50,6 +50,7 @@ export default function Header({ brand, phoneDisplay, phoneTel, logoUrl }: Props
         <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
           <Link href="/services" className="text-sm font-medium text-ink hover:text-primary">Services</Link>
           <Link href="/areas" className="text-sm font-medium text-ink hover:text-primary">Areas</Link>
+          <Link href="/quote" className="text-sm font-semibold text-primary hover:text-primary-dark">Get a quote</Link>
           <Link href="/about" className="text-sm font-medium text-ink hover:text-primary">About</Link>
           <Link href="/contact" className="text-sm font-medium text-ink hover:text-primary">Contact</Link>
         </nav>
@@ -87,6 +88,7 @@ export default function Header({ brand, phoneDisplay, phoneTel, logoUrl }: Props
           <div className="container-content py-3 flex flex-col">
             <Link onClick={() => setOpen(false)} href="/services" className="py-3 text-base font-medium border-b border-gray-line">Services</Link>
             <Link onClick={() => setOpen(false)} href="/areas" className="py-3 text-base font-medium border-b border-gray-line">Areas</Link>
+            <Link onClick={() => setOpen(false)} href="/quote" className="py-3 text-base font-semibold text-primary border-b border-gray-line">Get a quote</Link>
             <Link onClick={() => setOpen(false)} href="/about" className="py-3 text-base font-medium border-b border-gray-line">About</Link>
             <Link onClick={() => setOpen(false)} href="/contact" className="py-3 text-base font-medium">Contact</Link>
             <a
