@@ -6,7 +6,7 @@ import { getServiceClient } from '@/lib/supabase/server';
 import { getSettings } from '@/lib/settings';
 import AdminShell from '@/components/admin/AdminShell';
 import LeadsTable, { type AdminLead } from '@/components/admin/LeadsTable';
-import type { LeadStatus } from '@/app/admin/leads/actions';
+import type { LeadStatus } from '@/lib/admin/leadStatus';
 
 export const dynamic = 'force-dynamic';
 

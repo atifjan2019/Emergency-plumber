@@ -5,20 +5,11 @@ import { redirect } from 'next/navigation';
 import { isAdmin } from '@/lib/admin/auth';
 import { getServiceClient } from '@/lib/supabase/server';
 import { logActivity } from '@/lib/admin/activity';
+import { LEAD_STATUSES, STATUS_LABEL, type LeadStatus } from '@/lib/admin/leadStatus';
 
 export type LeadActionState = {
   ok: boolean;
   message: string;
-};
-
-export const LEAD_STATUSES = ['new', 'contacted', 'complete', 'lost'] as const;
-export type LeadStatus = (typeof LEAD_STATUSES)[number];
-
-const STATUS_LABEL: Record<LeadStatus, string> = {
-  new: 'New',
-  contacted: 'In progress',
-  complete: 'Complete',
-  lost: 'Lost',
 };
 
 const trim = (v: FormDataEntryValue | null) =>

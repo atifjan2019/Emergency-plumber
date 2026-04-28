@@ -5,10 +5,9 @@ import { useRouter } from 'next/navigation';
 import {
   deleteLead,
   updateLeadStatus,
-  LEAD_STATUSES,
-  type LeadStatus,
   type StatusActionState,
 } from '@/app/admin/leads/actions';
+import { LEAD_STATUSES, type LeadStatus } from '@/lib/admin/leadStatus';
 import StatusBadge from './StatusBadge';
 
 export type AdminLead = {

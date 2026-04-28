@@ -1,4 +1,4 @@
-import type { LeadStatus } from '@/app/admin/leads/actions';
+import type { LeadStatus } from '@/lib/admin/leadStatus';
 
 const MAP: Record<LeadStatus, { label: string; classes: string }> = {
   new: { label: 'New', classes: 'bg-blue-50 text-blue-700 border-blue-200' },

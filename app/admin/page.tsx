@@ -7,7 +7,7 @@ import { getSettings } from '@/lib/settings';
 import { loadActivity } from '@/lib/admin/activity';
 import AdminShell from '@/components/admin/AdminShell';
 import StatusBadge from '@/components/admin/StatusBadge';
-import type { LeadStatus } from '@/app/admin/leads/actions';
+import type { LeadStatus } from '@/lib/admin/leadStatus';
 
 export const dynamic = 'force-dynamic';
 
