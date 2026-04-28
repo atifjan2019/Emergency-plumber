@@ -1,4 +1,4 @@
-export const BRAND = 'RapidFix Plumbers';
+export const BRAND = 'Emergency Plumber Now';
 export const PHONE_DISPLAY = '0800 123 4567';
 export const PHONE_TEL = '+448001234567';
 export const EMAIL = 'help@example.co.uk';

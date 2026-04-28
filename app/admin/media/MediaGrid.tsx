@@ -382,21 +382,43 @@ function UploadProgress() {
 function DeleteButton({ item }: { item: MediaItemView }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const [confirming, setConfirming] = useState(false);
 
-  function onClick() {
-    if (!window.confirm(`Delete ${fileName(item.key)} permanently? This cannot be undone.`)) return;
+  function handleDelete() {
     const fd = new FormData();
     fd.set('key', item.key);
+    setConfirming(false);
     startTransition(async () => {
       await deleteMedia(fd);
       router.refresh();
     });
   }
 
+  if (confirming) {
+    return (
+      <div className="flex items-center gap-1">
+        <button
+          type="button"
+          onClick={() => setConfirming(false)}
+          className="inline-flex items-center gap-1 rounded-md border border-gray-line bg-white px-2 py-1 text-[11px] font-semibold text-gray-soft hover:border-ink"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          onClick={handleDelete}
+          className="inline-flex items-center gap-1 rounded-md border border-red-400 bg-red-50 px-2 py-1 text-[11px] font-semibold text-red-700 hover:bg-red-100"
+        >
+          Confirm
+        </button>
+      </div>
+    );
+  }
+
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={() => setConfirming(true)}
       disabled={pending}
       className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-white px-2 py-1 text-[11px] font-semibold text-red-700 hover:border-red-400 hover:bg-red-50 disabled:opacity-60"
     >
