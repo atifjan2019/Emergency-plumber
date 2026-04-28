@@ -232,9 +232,12 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             data-lng={city.geo.lng}
           >
             <div className="text-center px-4">
-              <div className="text-3xl">📍</div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto h-10 w-10 text-primary" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s-7-7.16-7-12a7 7 0 1114 0c0 4.84-7 12-7 12z" />
+                <circle cx="12" cy="9" r="2.5" />
+              </svg>
               <p className="mt-3 text-sm">Coverage map for {city.name} ({city.geo.lat.toFixed(3)}, {city.geo.lng.toFixed(3)})</p>
-              <p className="text-xs">Map embed placeholder - swap for Google Maps or Mapbox in production.</p>
+              <p className="text-xs">Map embed placeholder. Swap for Google Maps or Mapbox in production.</p>
             </div>
           </div>
         </div>

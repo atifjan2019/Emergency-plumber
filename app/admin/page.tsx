@@ -132,8 +132,8 @@ export default async function AdminPage() {
                     </a>
                   )}
                 </td>
-                <td className="px-4 py-3 capitalize text-ink">{lead.city_slug || '—'}</td>
-                <td className="px-4 py-3 text-xs text-gray-soft">{lead.source_page || '—'}</td>
+                <td className="px-4 py-3 capitalize text-ink">{lead.city_slug || '-'}</td>
+                <td className="px-4 py-3 text-xs text-gray-soft">{lead.source_page || '-'}</td>
                 <td className="px-4 py-3 max-w-md text-ink">{lead.message}</td>
               </tr>
             ))}

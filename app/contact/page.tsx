@@ -5,15 +5,21 @@ import ContactForm from '@/components/ContactForm';
 import CTASection from '@/components/CTASection';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import { breadcrumbSchema } from '@/lib/schema';
-import { BRAND, PHONE_DISPLAY, PHONE_TEL, EMAIL, GAS_SAFE_NUMBER } from '@/lib/constants';
+import { getSettings } from '@/lib/settings';
 
-export const metadata: Metadata = {
-  title: `Contact ${BRAND} | 24/7 Emergency Line`,
-  description: `Contact ${BRAND} - 24/7 emergency plumbing line, email, and live UK coverage details. Call now or send us a non-urgent message.`,
-  alternates: { canonical: '/contact' },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSettings();
+  return {
+    title: `Contact ${s.brand} | 24/7 Emergency Line`,
+    description: `Contact ${s.brand} - 24/7 emergency plumbing line, email, and live UK coverage details. Call now or send us a non-urgent message.`,
+    alternates: { canonical: '/contact' },
+  };
+}
 
-export default function ContactPage() {
+export const revalidate = 3600;
+
+export default async function ContactPage() {
+  const s = await getSettings();
   const crumbs = [
     { label: 'Home', href: '/' },
     { label: 'Contact' },
@@ -37,18 +43,18 @@ export default function ContactPage() {
               <div className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
                 <span className="pulse-dot" /> 24/7 Emergency Line
               </div>
-              <p className="mt-3 text-3xl font-extrabold text-ink">{PHONE_DISPLAY}</p>
+              <p className="mt-3 text-3xl font-extrabold text-ink">{s.phoneDisplay}</p>
               <p className="mt-2 text-sm text-gray-soft">Real dispatcher answers within three rings, every hour of every day.</p>
               <div className="mt-5">
-                <CallButton size="lg" />
+                <CallButton size="lg" phoneTel={s.phoneTel} phoneDisplay={s.phoneDisplay} />
               </div>
             </div>
 
             <div className="rounded-xl border border-gray-line bg-white p-6">
               <h2 className="text-h3-m md:text-h3-d">Non-urgent enquiries</h2>
               <p className="mt-3 text-sm text-gray-soft">For quotes, scheduled work, account queries or general questions:</p>
-              <a href={`mailto:${EMAIL}`} className="mt-4 inline-block text-lg font-semibold text-primary hover:text-primary-dark">
-                {EMAIL}
+              <a href={`mailto:${s.email}`} className="mt-4 inline-block text-lg font-semibold text-primary hover:text-primary-dark">
+                {s.email}
               </a>
               <p className="mt-6 text-sm text-gray-soft">Reply within 1 working day, Monday to Friday.</p>
             </div>
@@ -67,10 +73,11 @@ export default function ContactPage() {
           <div className="mt-10 rounded-xl border border-gray-line bg-off-white p-6">
             <h2 className="text-h3-m md:text-h3-d">Company details</h2>
             <dl className="mt-4 grid gap-3 sm:grid-cols-2 text-sm">
-              <div><dt className="font-semibold text-ink">Trading name</dt><dd className="text-gray-soft">{BRAND}</dd></div>
-              <div><dt className="font-semibold text-ink">Phone</dt><dd><a href={`tel:${PHONE_TEL}`} className="text-primary">{PHONE_DISPLAY}</a></dd></div>
-              <div><dt className="font-semibold text-ink">Email</dt><dd><a href={`mailto:${EMAIL}`} className="text-primary">{EMAIL}</a></dd></div>
-              <div><dt className="font-semibold text-ink">Gas Safe Reg</dt><dd className="text-gray-soft">#{GAS_SAFE_NUMBER}</dd></div>
+              <div><dt className="font-semibold text-ink">Trading name</dt><dd className="text-gray-soft">{s.brand}</dd></div>
+              <div><dt className="font-semibold text-ink">Phone</dt><dd><a href={`tel:${s.phoneTel}`} className="text-primary">{s.phoneDisplay}</a></dd></div>
+              <div><dt className="font-semibold text-ink">Email</dt><dd><a href={`mailto:${s.email}`} className="text-primary">{s.email}</a></dd></div>
+              {s.address && <div><dt className="font-semibold text-ink">Address</dt><dd className="text-gray-soft">{s.address}</dd></div>}
+              <div><dt className="font-semibold text-ink">Gas Safe Reg</dt><dd className="text-gray-soft">#{s.gasSafeNumber}</dd></div>
               <div><dt className="font-semibold text-ink">Coverage</dt><dd className="text-gray-soft">UK nationwide (12 live cities)</dd></div>
               <div><dt className="font-semibold text-ink">Hours</dt><dd className="text-gray-soft">24 hours a day, 7 days a week</dd></div>
             </dl>

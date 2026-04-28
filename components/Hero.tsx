@@ -1,5 +1,6 @@
 import CallButton from './CallButton';
 import TrustBar from './TrustBar';
+import { getSettings } from '@/lib/settings';
 
 type Props = {
   variant?: 'home' | 'city' | 'service';
@@ -9,7 +10,8 @@ type Props = {
   cityName?: string;
 };
 
-export default function Hero({ variant = 'home', title, subtitle, responseTime }: Props) {
+export default async function Hero({ variant = 'home', title, subtitle, responseTime }: Props) {
+  const s = await getSettings();
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-off-white">
       <div className="container-content py-14 md:py-24 grid gap-10 md:grid-cols-12 md:gap-12 items-center">
@@ -24,7 +26,7 @@ export default function Hero({ variant = 'home', title, subtitle, responseTime }
             <p className="mt-5 max-w-xl text-base md:text-lg text-gray-soft">{subtitle}</p>
           )}
           <div className="mt-7 flex flex-col sm:flex-row gap-3">
-            <CallButton size="xl" />
+            <CallButton size="xl" phoneTel={s.phoneTel} phoneDisplay={s.phoneDisplay} />
             <a href="#how-it-works" className="btn-ghost">How it works</a>
           </div>
           <div className="mt-8">

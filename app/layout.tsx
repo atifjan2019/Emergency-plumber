@@ -5,7 +5,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileStickyBar from '@/components/MobileStickyBar';
 import QuotePopup from '@/components/QuotePopup';
-import { BRAND, SITE_URL } from '@/lib/constants';
+import SiteChrome from '@/components/SiteChrome';
+import { getSettings } from '@/lib/settings';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -14,31 +15,46 @@ const poppins = Poppins({
   display: 'swap',
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: `${BRAND} - 24/7 Emergency Plumber UK`,
-    template: `%s | ${BRAND}`,
-  },
-  description: `${BRAND} - 24/7 emergency plumbing across the UK. Burst pipes, boiler repair, blocked drains. Gas Safe registered. Same-rate nights and weekends.`,
-  openGraph: {
-    type: 'website',
-    locale: 'en_GB',
-    siteName: BRAND,
-  },
-  twitter: { card: 'summary_large_image' },
-  robots: { index: true, follow: true },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const s = await getSettings();
+  return {
+    metadataBase: new URL(s.siteUrl),
+    title: {
+      default: `${s.brand} - 24/7 Emergency Plumber UK`,
+      template: `%s | ${s.brand}`,
+    },
+    description: `${s.brand} - 24/7 emergency plumbing across the UK. Burst pipes, boiler repair, blocked drains. Gas Safe registered. Same-rate nights and weekends.`,
+    icons: s.faviconUrl ? { icon: s.faviconUrl } : undefined,
+    openGraph: {
+      type: 'website',
+      locale: 'en_GB',
+      siteName: s.brand,
+    },
+    twitter: { card: 'summary_large_image' },
+    robots: { index: true, follow: true },
+  };
+}
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const s = await getSettings();
   return (
     <html lang="en-GB" className={poppins.variable}>
       <body className="font-sans text-ink antialiased">
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-        <MobileStickyBar />
-        <QuotePopup />
+        <SiteChrome
+          header={
+            <Header
+              brand={s.brand}
+              phoneDisplay={s.phoneDisplay}
+              phoneTel={s.phoneTel}
+              logoUrl={s.logoUrl}
+            />
+          }
+          footer={<Footer />}
+          stickyBar={<MobileStickyBar />}
+          popup={<QuotePopup />}
+        >
+          {children}
+        </SiteChrome>
       </body>
     </html>
   );
