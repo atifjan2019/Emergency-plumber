@@ -14,9 +14,11 @@ import {
 let cached: S3Client | null = null;
 
 const BUCKET = process.env.R2_BUCKET || 'plumbers';
-const PUBLIC_URL =
-  process.env.R2_PUBLIC_URL ||
-  'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev';
+// Strip any accidental path from the public URL — only the origin is valid as a base.
+const PUBLIC_URL = (() => {
+  const raw = process.env.R2_PUBLIC_URL || 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev';
+  try { return `${new URL(raw).origin}`; } catch { return raw; }
+})();
 const ENDPOINT =
   process.env.R2_ENDPOINT ||
   'https://3c76920fa5848e9b288777b0edae64fa.r2.cloudflarestorage.com';
