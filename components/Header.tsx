@@ -1,10 +1,17 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { BRAND, PHONE_DISPLAY, PHONE_TEL } from '@/lib/constants';
 
-export default function Header() {
+type Props = {
+  brand: string;
+  phoneDisplay: string;
+  phoneTel: string;
+  logoUrl: string;
+};
+
+export default function Header({ brand, phoneDisplay, phoneTel, logoUrl }: Props) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -23,12 +30,23 @@ export default function Header() {
     >
       <div className="container-content flex h-16 items-center justify-between md:h-20">
         <Link href="/" className="flex items-center gap-2 font-extrabold text-lg md:text-xl">
-          <span className="grid h-9 w-9 place-items-center rounded-md bg-primary text-white">
-            <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
-              <path d="M12 2C8 6 6 9 6 13a6 6 0 0012 0c0-4-2-7-6-11z" />
-            </svg>
-          </span>
-          <span className="text-ink">{BRAND}</span>
+          {logoUrl ? (
+            <Image
+              src={logoUrl}
+              alt={brand}
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-md object-contain"
+              unoptimized
+            />
+          ) : (
+            <span className="grid h-9 w-9 place-items-center rounded-md bg-primary text-white">
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5" aria-hidden>
+                <path d="M12 2C8 6 6 9 6 13a6 6 0 0012 0c0-4-2-7-6-11z" />
+              </svg>
+            </span>
+          )}
+          <span className="text-ink">{brand}</span>
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
@@ -40,13 +58,13 @@ export default function Header() {
 
         <div className="flex items-center gap-3">
           <a
-            href={`tel:${PHONE_TEL}`}
+            href={`tel:${phoneTel}`}
             className="hidden md:inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-primary-dark"
           >
             <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4" aria-hidden>
               <path d="M2.5 4.75A2.25 2.25 0 014.75 2.5h2.27a2.25 2.25 0 012.226 1.929l.43 3.014a2.25 2.25 0 01-.65 1.97l-1.2 1.2a14.25 14.25 0 006.06 6.06l1.2-1.2a2.25 2.25 0 011.97-.65l3.014.43a2.25 2.25 0 011.929 2.227V19.25A2.25 2.25 0 0119.5 21.5h-1.25C9.7 21.5 2.5 14.3 2.5 5.75V4.75z" />
             </svg>
-            {PHONE_DISPLAY}
+            {phoneDisplay}
           </a>
           <button
             type="button"
@@ -74,10 +92,10 @@ export default function Header() {
             <Link onClick={() => setOpen(false)} href="/about" className="py-3 text-base font-medium border-b border-gray-line">About</Link>
             <Link onClick={() => setOpen(false)} href="/contact" className="py-3 text-base font-medium">Contact</Link>
             <a
-              href={`tel:${PHONE_TEL}`}
+              href={`tel:${phoneTel}`}
               className="mt-3 mb-3 inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-base font-semibold text-white"
             >
-              Call {PHONE_DISPLAY}
+              Call {phoneDisplay}
             </a>
           </div>
         </nav>
