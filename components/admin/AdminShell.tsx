@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
-type NavKey = 'dashboard' | 'leads' | 'drafts' | 'activity' | 'settings';
+type NavKey = 'dashboard' | 'leads' | 'drafts' | 'media' | 'activity' | 'settings';
 
 const NAV: { key: NavKey; label: string; href: string; icon: ReactNode }[] = [
   {
@@ -33,6 +33,18 @@ const NAV: { key: NavKey; label: string; href: string; icon: ReactNode }[] = [
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5" aria-hidden>
         <path strokeLinecap="round" strokeLinejoin="round" d="M14 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M14 3v6h6" />
+      </svg>
+    ),
+  },
+  {
+    key: 'media',
+    label: 'Media',
+    href: '/admin/media',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5" aria-hidden>
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <circle cx="9" cy="9" r="2" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 15l-5-5L5 21" />
       </svg>
     ),
   },
