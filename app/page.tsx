@@ -189,7 +189,7 @@ export default async function HomePage() {
             <div className="relative">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white shadow-xl">
                 <Image
-                  src={PLACEHOLDER_IMAGE}
+                  src="https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/hero.png"
                   alt="Local Gas Safe plumber repairing pipework under a kitchen sink in a UK home"
                   fill
                   sizes="(max-width: 768px) 100vw, 600px"
@@ -245,14 +245,14 @@ export default async function HomePage() {
       <section aria-label="Expert reviewer" className="section bg-white">
         <div className="container-content">
           <div className="rounded-3xl border border-gray-line bg-gradient-to-br from-white to-off-white p-6 sm:p-8 md:p-10 shadow-sm">
-            <div className="grid gap-6 md:gap-x-[50px] md:grid-cols-12 items-center">
+            <div className="grid gap-6 md:gap-x-16 md:grid-cols-12 items-center">
               <div className="md:col-span-3 flex md:block items-center gap-4">
-                <div className="relative h-40 w-40 sm:h-56 sm:w-56 md:h-72 md:w-72 lg:h-80 lg:w-80 shrink-0 overflow-hidden rounded-2xl border-2 border-primary/20 bg-off-white">
+                <div className="relative h-72 w-72 shrink-0 overflow-hidden rounded-2xl border-2 border-primary/20 bg-off-white">
                   <Image
                     src={REVIEWER.photoUrl}
                     alt={`${REVIEWER.name}, ${REVIEWER.role} at ${BRAND}`}
                     fill
-                    sizes="(max-width: 640px) 160px, (max-width: 768px) 224px, (max-width: 1024px) 288px, 320px"
+                    sizes="288px"
                     className="object-cover"
                   />
                 </div>
