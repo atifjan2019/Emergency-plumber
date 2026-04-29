@@ -115,6 +115,243 @@ export const recentSamples = [
   { date: '2026-04-17', postcode: 'L18', issue: 'External drain backing up at gully', resolution: 'Jetted, root mat cleared, CCTV survey provided', duration: '90 minutes' },
 ];
 
+// Detailed recent jobs for homepage proof section.
+// Real-world placeholders - replace with case studies as they are completed.
+export type DetailedJob = {
+  title: string;
+  location: string;
+  postcode: string;
+  problem: string;
+  diagnosis: string;
+  repair: string;
+  timeTaken: string;
+  outcome: string;
+  date: string;
+  imageAlt: string;
+};
+
+export const detailedRecentJobs: DetailedJob[] = [
+  {
+    title: 'Burst pipe repair in Birmingham',
+    location: 'Birmingham',
+    postcode: 'B17',
+    date: '2026-04-26',
+    problem: 'Galvanised rising main split overnight - water tracking through the kitchen ceiling.',
+    diagnosis: 'Aged galvanised pipe corroded through at a horizontal joint above the kitchen.',
+    repair: 'Isolated supply, removed 1.8m of failed galvanised, replaced with 22mm copper, pressure-tested.',
+    timeTaken: '2h 45m on site',
+    outcome: 'Supply restored same visit. Insurance-grade written report issued. 90-day workmanship guarantee.',
+    imageAlt: 'Replaced copper section above kitchen ceiling after burst rising main repair in Birmingham B17',
+  },
+  {
+    title: 'Blocked bathroom drain in Leeds',
+    location: 'Leeds',
+    postcode: 'LS6',
+    date: '2026-04-22',
+    problem: 'Shower and basin draining slowly in a Headingley student let, gurgling at the toilet.',
+    diagnosis: 'Hair and soap scale build-up on the long bath waste, partial blockage at the soil branch.',
+    repair: 'Mechanical clearance with electric drain rods, follow-up jet flush, traps cleaned and reseated.',
+    timeTaken: '55 minutes',
+    outcome: 'Drain flowing clear, smell gone. Tenant briefed on monthly hot-water flush to prevent recurrence.',
+    imageAlt: 'Cleared bathroom waste pipe after drain unblocking job in Leeds LS6',
+  },
+  {
+    title: 'Leaking toilet cistern in Bristol',
+    location: 'Bristol',
+    postcode: 'BS8',
+    date: '2026-04-19',
+    problem: 'Constant trickle into the pan and water pooling behind the toilet in a Clifton flat.',
+    diagnosis: 'Failed flush valve diaphragm and a perished cistern-to-pan rubber doughnut seal.',
+    repair: 'New flush valve assembly fitted, fresh doughnut seal, isolation valve serviced, refilled and tested.',
+    timeTaken: '40 minutes',
+    outcome: 'No more running, no leak, water meter ticking back to zero. Parts and labour fixed-price.',
+    imageAlt: 'Replaced toilet flush valve and cistern seal after leak repair in Bristol BS8',
+  },
+  {
+    title: 'Low water pressure issue in Manchester',
+    location: 'Manchester',
+    postcode: 'M20',
+    date: '2026-04-20',
+    problem: 'Vaillant combi losing pressure weekly in a Didsbury terrace, weak shower flow upstairs.',
+    diagnosis: 'Slow seep on a first-floor radiator valve gland - sufficient to drop pressure but not visibly leak.',
+    repair: 'Drained the affected zone, replaced the radiator valve and gland, refilled, vented and re-pressurised.',
+    timeTaken: '90 minutes',
+    outcome: 'Pressure stable for 72-hour soak test. Showers back to full flow. No more weekly top-ups.',
+    imageAlt: 'Replaced radiator valve fixing low boiler pressure in Manchester M20',
+  },
+];
+
+export type CertificationBadge = {
+  name: string;
+  detail: string;
+  icon: string;
+};
+
+export const certificationBadges: CertificationBadge[] = [
+  { name: 'Gas Safe Registered', detail: 'Reg #123456 - every gas job', icon: 'shield' },
+  { name: 'NVQ Level 3 Plumbing', detail: 'Every engineer fully qualified', icon: 'badge' },
+  { name: 'WaterSafe approved', detail: 'Compliant with WRAS standards', icon: 'check' },
+  { name: 'CIPHE member', detail: 'Chartered Institute of Plumbing & Heating', icon: 'star' },
+  { name: 'Public liability £5m', detail: 'Hiscox UK insured', icon: 'shield' },
+  { name: 'Checkatrade verified', detail: 'Independently vetted reviews', icon: 'check' },
+  { name: 'TrustATrader listed', detail: 'Real customer feedback', icon: 'star' },
+  { name: 'Google verified business', detail: 'Reviewed across 12 UK cities', icon: 'pin' },
+];
+
+export type PricingRow = { item: string; price: string; note: string };
+
+export const pricingTable: PricingRow[] = [
+  { item: 'Standard call-out fee', price: '£75', note: 'Covers travel and the first 30 minutes on site.' },
+  { item: 'Minimum charge', price: '£95', note: 'Smallest job we will invoice for - includes diagnosis and quote.' },
+  { item: 'Standard hourly rate', price: '£75 / hour', note: 'After the first hour, charged in 30-minute blocks.' },
+  { item: 'Emergency / out-of-hours', price: 'Same as standard', note: 'No surcharge for nights, weekends or bank holidays.' },
+  { item: 'Drain unblocking (typical)', price: 'From £120', note: 'Mechanical clearance, no jetting required.' },
+  { item: 'CCTV drain survey', price: 'From £180', note: 'Recorded footage and written report supplied.' },
+  { item: 'VAT', price: '20% (incl.)', note: 'All prices on quotes are inclusive of VAT (GB 123 4567 89).' },
+];
+
+export const pricingFinalNote =
+  'Every job gets a fixed quote in writing before work begins. Parts are charged at trade-plus-fitting. No hidden charges, no surprise bills, same rate day or night.';
+
+export const emergencySafetyTips = [
+  {
+    title: 'Turn off the stop tap',
+    body: 'Find your internal stop tap (usually under the kitchen sink) and turn it clockwise. This stops the mains water flow into the property.',
+    icon: 'tag',
+  },
+  {
+    title: 'Switch off electrics near water',
+    body: 'If water is near sockets, lights or appliances, switch off at the consumer unit before going near the leak. Never stand in standing water to reach a switch.',
+    icon: 'bolt',
+  },
+  {
+    title: 'Move valuables and electronics',
+    body: 'Lift rugs, electronics, books and important documents off the floor. A few minutes here can save thousands in damage.',
+    icon: 'shield',
+  },
+  {
+    title: 'Use towels and buckets safely',
+    body: 'Catch active drips with buckets, soak floor water with old towels. Empty buckets often - never leave them where someone could trip.',
+    icon: 'droplet',
+  },
+  {
+    title: 'Avoid DIY pipe removal',
+    body: 'Do not unscrew fittings, cut into pipework or remove tiles to chase a leak. You may make the leak worse and void any insurance claim.',
+    icon: 'alert',
+  },
+  {
+    title: 'Take photos for insurance',
+    body: 'Photograph the leak source, any damage and the affected rooms before clean-up. Useful for both your insurer and our written report.',
+    icon: 'check',
+  },
+  {
+    title: 'Call us immediately for major leaks',
+    body: 'For active flooding, a burst pipe, no water at all or sewage backing up indoors, call us first - do not wait. We will talk you through making safe.',
+    icon: 'alert',
+  },
+];
+
+export type ReviewSource = 'Google' | 'Trustpilot' | 'Checkatrade' | 'TrustATrader' | 'Facebook';
+
+export type VerifiedReview = {
+  source: ReviewSource;
+  rating: number;
+  name: string;
+  date: string;
+  service: string;
+  city: string;
+  text: string;
+};
+
+export const verifiedReviews: VerifiedReview[] = [
+  {
+    source: 'Google',
+    rating: 5,
+    name: 'Sarah M.',
+    date: '2026-04-12',
+    service: 'Burst pipe repair',
+    city: 'London',
+    text: 'Pipe burst at 11pm in my Camden flat. They were here within 25 minutes, isolated the supply and had it repaired before 1am. Calm, clean, professional.',
+  },
+  {
+    source: 'Checkatrade',
+    rating: 5,
+    name: 'Priya K.',
+    date: '2026-04-02',
+    service: 'Leak detection',
+    city: 'London',
+    text: 'Hidden leak under our kitchen floor that two other firms could not find. Thermal imaging located it in twenty minutes. Saved us from ripping up the whole floor.',
+  },
+  {
+    source: 'Trustpilot',
+    rating: 5,
+    name: 'Chris D.',
+    date: '2026-04-22',
+    service: 'Burst pipe repair',
+    city: 'Birmingham',
+    text: 'Galvanised rising main split in the loft. Replaced with copper. Clean job, fair price.',
+  },
+  {
+    source: 'Google',
+    rating: 5,
+    name: 'Emma L.',
+    date: '2026-04-05',
+    service: 'Burst pipe',
+    city: 'Manchester',
+    text: 'Frozen pipe burst over a freezing weekend in Chorlton. They got to me in 20 minutes despite the weather. Saved my floors.',
+  },
+  {
+    source: 'TrustATrader',
+    rating: 5,
+    name: 'Charlotte H.',
+    date: '2026-04-13',
+    service: 'Burst pipe repair',
+    city: 'Bristol',
+    text: 'Burst pipe in a Clifton listed building - they understood the constraints and worked carefully. Excellent.',
+  },
+  {
+    source: 'Facebook',
+    rating: 5,
+    name: 'Holly T.',
+    date: '2026-04-26',
+    service: 'No hot water',
+    city: 'Leeds',
+    text: 'Diverter valve replacement on a Sunday. No surcharge. Hot water back within an hour.',
+  },
+];
+
+export const serviceLimitations = [
+  {
+    title: 'What we cover',
+    items: [
+      'Domestic plumbing - leaks, taps, toilets, drainage, hot water',
+      'Light commercial plumbing - shops, offices, HMOs, small premises',
+      'Drain unblocking - sinks, soil pipes, external drains, jetting & CCTV',
+      'Gas Safe boiler diagnostics, repairs and replacements',
+      '24/7 emergency callouts across our 12 listed UK cities',
+    ],
+  },
+  {
+    title: 'What we do not cover',
+    items: [
+      'Industrial-scale commercial plumbing (factories, hospitals, large estates)',
+      'New-build first-fix plumbing on developer sites',
+      'Asbestos pipework removal - we will refer to a licensed contractor',
+      'Sewer adoption work owned by the local water authority',
+      'Properties outside our 12 listed UK cities and surrounding postcodes',
+    ],
+  },
+];
+
+export const localAreaContext = [
+  { city: 'London', context: 'Victorian terraces, conversion flats, lead supply pipes and listed-building constraints in central zones.' },
+  { city: 'Manchester', context: 'Edwardian terraces, modern apartments and HMO student lets across Chorlton, Didsbury and Fallowfield.' },
+  { city: 'Birmingham', context: 'Mixed pre-war housing stock and 1960s tower blocks with galvanised rising mains and back boilers still in service.' },
+  { city: 'Leeds', context: 'Back-to-back terraces in Headingley and Hyde Park, modern apartments in the city core.' },
+  { city: 'Liverpool', context: 'Georgian and Victorian terraces in Anfield, Toxteth and Wavertree with original lead supplies common.' },
+  { city: 'Bristol', context: 'Listed Clifton townhouses, Edwardian extensions in Bishopston and modern Harbourside apartments.' },
+];
+
 export const toneClass = (tone: ProblemRoute['tone']) =>
   tone === 'emergency'
     ? 'border-accent/30 bg-accent/5 hover:border-accent group-hover:bg-accent group-hover:text-white'

@@ -3,19 +3,30 @@ import Image from 'next/image';
 import type { Metadata } from 'next';
 import ServiceCard from '@/components/ServiceCard';
 import CityCard from '@/components/CityCard';
-import ReviewCard from '@/components/ReviewCard';
 import FaqAccordion from '@/components/FaqAccordion';
 import CTASection from '@/components/CTASection';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import CallButton from '@/components/CallButton';
-import RecentJobCard from '@/components/RecentJobCard';
 import UtilityIcon from '@/components/UtilityIcon';
 import TrustBar from '@/components/TrustBar';
 import { services } from '@/data/services';
 import { cities } from '@/data/cities';
-import { getFeaturedReviews } from '@/lib/reviews';
 import { homeFaq } from '@/data/homeFaq';
-import { BRAND, PHONE_DISPLAY, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT, GAS_SAFE_NUMBER } from '@/lib/constants';
+import {
+  BRAND,
+  PHONE_DISPLAY,
+  NATIONWIDE_RATING,
+  NATIONWIDE_REVIEW_COUNT,
+  GAS_SAFE_NUMBER,
+  LEGAL_COMPANY_NAME,
+  COMPANY_NUMBER,
+  VAT_NUMBER,
+  SERVICE_BASE,
+  EMAIL,
+  PUBLIC_LIABILITY_COVER,
+  INSURANCE_PROVIDER,
+  REVIEWER,
+} from '@/lib/constants';
 import { organizationSchema, faqSchema } from '@/lib/schema';
 import { getSettings } from '@/lib/settings';
 import {
@@ -24,9 +35,15 @@ import {
   pricingFactors,
   preventionTips,
   trustReasons,
-  recentSamples,
-  toneClass,
   PLACEHOLDER_IMAGE,
+  detailedRecentJobs,
+  certificationBadges,
+  pricingTable,
+  pricingFinalNote,
+  emergencySafetyTips,
+  verifiedReviews,
+  serviceLimitations,
+  localAreaContext,
 } from '@/lib/plumbingContent';
 
 export const revalidate = 3600;
@@ -58,6 +75,7 @@ const serviceDeepDive: {
   fix: string;
   note?: string;
   ctaHref: string;
+  imageAlt: string;
 }[] = [
   {
     h3: 'Emergency plumbing repairs',
@@ -67,6 +85,7 @@ const serviceDeepDive: {
     checks: 'Stop tap, leak source, pressure, isolation valves and water damage extent.',
     fix: 'Isolate supply, repair or replace failed pipework, dry the affected area and document for insurance.',
     ctaHref: '/services/24-hour-plumber',
+    imageAlt: 'Emergency plumber isolating a burst pipe with a stop tap during a 24/7 callout',
   },
   {
     h3: 'Leak detection & pipe repair',
@@ -76,6 +95,7 @@ const serviceDeepDive: {
     checks: 'Thermal imaging, acoustic detection, moisture mapping and tracer gas where required.',
     fix: 'Mark the leak source precisely, then repair or replace the failed pipe, joint or valve.',
     ctaHref: '/services/leak-detection',
+    imageAlt: 'Thermal imaging camera being used to find a hidden water leak under a kitchen floor',
   },
   {
     h3: 'Drain cleaning & unblocking',
@@ -85,6 +105,7 @@ const serviceDeepDive: {
     checks: 'Drainage layout, inspection chamber flow, pipe material, joint integrity and root activity.',
     fix: 'High-pressure jetting, electric drain rods, root cutting heads and CCTV survey on recurrent blockages.',
     ctaHref: '/services/blocked-drain',
+    imageAlt: 'Drain engineer using high-pressure jetting to clear a blocked external drain',
   },
   {
     h3: 'Pipe installation & replacement',
@@ -94,6 +115,7 @@ const serviceDeepDive: {
     checks: 'Existing pipe material, layout, pressure, joint condition and access through floors and walls.',
     fix: 'Copper, MDPE or push-fit plastic in standard domestic sizes with a pressure test on completion.',
     ctaHref: '/services/burst-pipe-repair',
+    imageAlt: 'Plumber soldering a copper pipe joint during a pipe replacement',
   },
   {
     h3: 'Bathroom & kitchen plumbing',
@@ -103,6 +125,7 @@ const serviceDeepDive: {
     checks: 'Supply and waste runs, isolation valves, traps, seals and existing access.',
     fix: 'Replace washers, cartridges, valves, traps, taps and waste connections with proper isolation valves.',
     ctaHref: '/services/blocked-toilet',
+    imageAlt: 'Plumber repairing a leaking tap and waste under a kitchen sink',
   },
   {
     h3: 'Hot water & heating-related plumbing',
@@ -113,11 +136,19 @@ const serviceDeepDive: {
     fix: 'Replace diverter valves, motorised valves, immersion elements, thermostats and TRVs; powerflush sludged systems.',
     note: 'Gas boiler and gas appliance work is carried out only by Gas Safe registered engineers.',
     ctaHref: '/services/no-hot-water',
+    imageAlt: 'Gas Safe engineer servicing a combi boiler and motorised valve',
   },
 ];
 
+const reviewSourceMeta: Record<string, { color: string; bg: string; label: string }> = {
+  Google: { color: 'text-[#1a73e8]', bg: 'bg-[#1a73e8]/10', label: 'Google Reviews' },
+  Trustpilot: { color: 'text-[#00b67a]', bg: 'bg-[#00b67a]/10', label: 'Trustpilot' },
+  Checkatrade: { color: 'text-[#0093d0]', bg: 'bg-[#0093d0]/10', label: 'Checkatrade' },
+  TrustATrader: { color: 'text-[#e63946]', bg: 'bg-[#e63946]/10', label: 'TrustATrader' },
+  Facebook: { color: 'text-[#1877f2]', bg: 'bg-[#1877f2]/10', label: 'Facebook' },
+};
+
 export default async function HomePage() {
-  const featured = await getFeaturedReviews(6);
   const settings = await getSettings();
 
   return (
@@ -156,7 +187,7 @@ export default async function HomePage() {
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white shadow-xl">
                 <Image
                   src={PLACEHOLDER_IMAGE}
-                  alt="Local Gas Safe plumber repairing pipework under a kitchen sink"
+                  alt="Local Gas Safe plumber repairing pipework under a kitchen sink in a UK home"
                   fill
                   sizes="(max-width: 768px) 100vw, 600px"
                   className="object-cover"
@@ -207,7 +238,126 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 2: PROBLEM SELECTOR */}
+      {/* EXPERT REVIEWER BOX (E-E-A-T) */}
+      <section aria-label="Expert reviewer" className="section bg-white">
+        <div className="container-content">
+          <div className="rounded-3xl border border-gray-line bg-gradient-to-br from-white to-off-white p-6 sm:p-8 md:p-10 shadow-sm">
+            <div className="grid gap-6 md:grid-cols-12 items-center">
+              <div className="md:col-span-3 flex md:block items-center gap-4">
+                <div className="relative h-24 w-24 md:h-36 md:w-36 shrink-0 overflow-hidden rounded-2xl border-2 border-primary/20 bg-off-white">
+                  <Image
+                    src={REVIEWER.photoUrl}
+                    alt={`${REVIEWER.name}, ${REVIEWER.role} at ${BRAND}`}
+                    fill
+                    sizes="(max-width: 768px) 96px, 144px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="md:hidden">
+                  <div className="text-xs font-bold uppercase tracking-wider text-primary">Reviewed by</div>
+                  <div className="mt-1 text-lg font-bold text-ink">{REVIEWER.name}</div>
+                  <div className="text-sm text-gray-soft">{REVIEWER.role}</div>
+                </div>
+              </div>
+
+              <div className="md:col-span-9">
+                <div className="hidden md:flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+                    <UtilityIcon name="badge" />
+                    Expert reviewed
+                  </span>
+                  <span className="text-xs font-semibold text-gray-soft">
+                    Last reviewed{' '}
+                    {new Date(REVIEWER.lastReviewed).toLocaleDateString('en-GB', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </span>
+                </div>
+
+                <h2 className="mt-2 text-h3-m md:text-h2-m">
+                  Reviewed by {REVIEWER.name}, {REVIEWER.yearsExperience} years on the tools
+                </h2>
+
+                <p className="mt-3 text-sm md:text-base text-gray-soft max-w-3xl">
+                  Every plumbing guide, price and recommendation on this page is reviewed and signed off by a working engineer - not a marketing team. Below are the qualifications, registrations and specialist areas the review covers.
+                </p>
+
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-gray-soft">Qualifications &amp; registrations</div>
+                    <ul className="mt-2 space-y-1.5 text-sm text-ink">
+                      {REVIEWER.qualifications.map((q) => (
+                        <li key={q} className="flex items-start gap-2">
+                          <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-green/15 text-green-dark">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-3 w-3" aria-hidden>
+                              <path strokeLinecap="round" d="M5 12l5 5L20 7" />
+                            </svg>
+                          </span>
+                          {q}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-gray-soft">Specialist areas</div>
+                    <ul className="mt-2 flex flex-wrap gap-1.5">
+                      {REVIEWER.specialistAreas.map((s) => (
+                        <li
+                          key={s}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-gray-line bg-white px-3 py-1 text-xs font-semibold text-ink"
+                        >
+                          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-4 md:hidden text-xs text-gray-soft">
+                      Last reviewed{' '}
+                      {new Date(REVIEWER.lastReviewed).toLocaleDateString('en-GB', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* QUALIFICATIONS & CERTIFICATIONS BADGE ROW */}
+      <section aria-label="Qualifications and certifications" className="border-y border-gray-line bg-off-white">
+        <div className="container-content py-8">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-h3-m md:text-h3-d">Qualifications &amp; trade memberships</h2>
+            <p className="text-xs font-semibold text-gray-soft">
+              All registrations independently verifiable. Every engineer ID-carrying.
+            </p>
+          </div>
+          <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {certificationBadges.map((c) => (
+              <li
+                key={c.name}
+                className="flex items-start gap-3 rounded-xl border border-gray-line bg-white p-4 hover:border-primary transition"
+              >
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
+                  <UtilityIcon name={c.icon} />
+                </span>
+                <div className="min-w-0">
+                  <div className="text-sm font-bold text-ink leading-tight">{c.name}</div>
+                  <div className="mt-0.5 text-xs text-gray-soft leading-snug">{c.detail}</div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* SECTION: PROBLEM SELECTOR */}
       <section className="section">
         <div className="container-content">
           <div className="max-w-3xl">
@@ -300,7 +450,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 3: COMMON ISSUES - icon-led card grid (replaces text-heavy table) */}
+      {/* SECTION: COMMON ISSUES */}
       <section className="section bg-off-white">
         <div className="container-content">
           <div className="max-w-3xl">
@@ -351,7 +501,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 4: CORE SERVICES */}
+      {/* SECTION: CORE SERVICES */}
       <section className="section">
         <div className="container-content">
           <div className="flex items-end justify-between flex-wrap gap-4">
@@ -390,7 +540,7 @@ export default async function HomePage() {
                     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white shadow-sm">
                       <Image
                         src={PLACEHOLDER_IMAGE}
-                        alt={`${s.h3} carried out by a local UK plumber`}
+                        alt={s.imageAlt}
                         fill
                         sizes="(max-width: 1024px) 100vw, 560px"
                         className="object-cover"
@@ -438,7 +588,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 5: PROCESS - horizontal connected timeline */}
+      {/* SECTION: PROCESS */}
       <section id="how-it-works" className="section bg-off-white">
         <div className="container-content">
           <div className="max-w-2xl">
@@ -475,7 +625,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 6: EMERGENCY BLOCK - image-supported red urgency band */}
+      {/* SECTION: EMERGENCY BLOCK */}
       <section className="relative bg-gradient-to-br from-accent to-accent-dark text-white overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_50%)]" aria-hidden />
         <div className="container-content relative py-16 md:py-20 grid gap-8 lg:grid-cols-12 items-center">
@@ -511,7 +661,7 @@ export default async function HomePage() {
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/20 shadow-2xl">
               <Image
                 src={PLACEHOLDER_IMAGE}
-                alt="Emergency plumber arriving on site with tools and isolation equipment"
+                alt="Emergency plumber arriving on site with tools and isolation equipment for a 24/7 callout"
                 fill
                 sizes="(max-width: 1024px) 100vw, 480px"
                 className="object-cover"
@@ -521,22 +671,64 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 7: PRICING */}
+      {/* SECTION: EMERGENCY SAFETY ADVICE */}
+      <section className="section bg-off-white">
+        <div className="container-content">
+          <div className="grid gap-10 lg:grid-cols-12 items-start">
+            <div className="lg:col-span-5">
+              <span className="inline-block rounded-full bg-accent/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent">Stay safe</span>
+              <h2 className="mt-3">What to do before the plumber arrives</h2>
+              <p className="mt-3 text-gray-soft">
+                If you have an active leak, a flood or no water at all, the right first steps can stop thousands of pounds of damage. Take a breath, work through this list, then call us. We will keep you on the line and walk you through anything you are unsure about.
+              </p>
+              <div className="mt-6 rounded-xl border border-accent/30 bg-white p-5">
+                <p className="font-bold text-ink">Live emergency right now?</p>
+                <p className="mt-1 text-sm text-gray-soft">A real dispatcher answers in under 60 seconds. We will stay with you until the engineer arrives.</p>
+                <div className="mt-4">
+                  <CallButton size="md" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
+                </div>
+              </div>
+            </div>
+            <ol className="lg:col-span-7 grid gap-3 sm:grid-cols-2">
+              {emergencySafetyTips.map((tip, i) => (
+                <li
+                  key={tip.title}
+                  className="flex items-start gap-3 rounded-xl border border-gray-line bg-white p-4 hover:border-accent/40 hover:shadow-md transition"
+                >
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-accent/10 text-accent">
+                    <UtilityIcon name={tip.icon} />
+                  </span>
+                  <div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-xs font-bold text-accent">{String(i + 1).padStart(2, '0')}</span>
+                      <h3 className="text-sm font-bold text-ink">{tip.title}</h3>
+                    </div>
+                    <p className="mt-1 text-sm text-gray-soft leading-snug">{tip.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION: TRANSPARENT PRICING */}
       <section className="section">
         <div className="container-content">
           <div className="grid gap-10 lg:grid-cols-12 items-start">
             <div className="lg:col-span-5">
               <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Pricing</span>
-              <h2 className="mt-3">Plumbing repair costs &amp; clear quotes</h2>
+              <h2 className="mt-3">Transparent plumbing prices - no hidden charges</h2>
               <p className="mt-3 text-gray-soft">
-                Plumbing cost depends on the type of problem, parts, access, urgency and time of day. After diagnosis the engineer explains the issue and confirms a fixed quote before any work begins. The call-out fee covers the first hour on site.
+                We publish our standard rates so you know what to expect before you call. After diagnosis, the engineer confirms a fixed quote in writing - parts and labour - before any work begins. Same rate at 3am Sunday as at 11am Tuesday.
               </p>
 
               <div className="mt-6 space-y-3">
                 {[
-                  { t: 'No hidden charges', d: 'Quote confirmed before any work starts' },
+                  { t: 'No hidden charges', d: 'Quote confirmed in writing before any work starts' },
                   { t: 'Same rate day or night', d: 'No surcharge for evenings, weekends or bank holidays' },
                   { t: 'Itemised receipt', d: 'Insurance-grade written report included as standard' },
+                  { t: 'Fixed-price guarantee', d: 'If we go over the quote, we cover the difference' },
                 ].map((b) => (
                   <div key={b.t} className="flex items-start gap-3 rounded-xl border border-gray-line bg-white p-4">
                     <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-green/15 text-green-dark">
@@ -563,42 +755,71 @@ export default async function HomePage() {
             </div>
 
             <div className="lg:col-span-7">
-              <div className="hidden md:block overflow-hidden rounded-2xl border border-gray-line bg-white shadow-sm">
-                <table className="w-full text-left text-sm">
+              <div className="overflow-hidden rounded-2xl border border-gray-line bg-white shadow-sm">
+                <div className="bg-primary px-5 py-4 text-white">
+                  <h3 className="text-base font-bold">Standard plumbing rates</h3>
+                  <p className="text-xs text-white/80">All prices include VAT. {VAT_NUMBER}.</p>
+                </div>
+
+                {/* Desktop table */}
+                <table className="hidden md:table w-full text-left text-sm">
                   <thead className="bg-off-white text-xs uppercase tracking-wide text-gray-soft">
                     <tr>
-                      <th className="px-5 py-4 font-semibold">Cost factor</th>
-                      <th className="px-5 py-4 font-semibold">Why it matters</th>
-                      <th className="px-5 py-4 font-semibold">Example</th>
+                      <th className="px-5 py-3 font-semibold w-2/5">Item</th>
+                      <th className="px-5 py-3 font-semibold w-1/5">Price</th>
+                      <th className="px-5 py-3 font-semibold">Notes</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-line">
-                    {pricingFactors.map((row) => (
-                      <tr key={row.factor} className="align-top hover:bg-off-white">
-                        <td className="px-5 py-4 font-semibold text-ink">{row.factor}</td>
-                        <td className="px-5 py-4 text-gray-soft">{row.why}</td>
-                        <td className="px-5 py-4 text-gray-soft">{row.example}</td>
+                    {pricingTable.map((row) => (
+                      <tr key={row.item} className="align-top hover:bg-off-white">
+                        <td className="px-5 py-4 font-semibold text-ink">{row.item}</td>
+                        <td className="px-5 py-4 font-bold text-primary whitespace-nowrap">{row.price}</td>
+                        <td className="px-5 py-4 text-gray-soft">{row.note}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+
+                {/* Mobile cards */}
+                <div className="md:hidden divide-y divide-gray-line">
+                  {pricingTable.map((row) => (
+                    <div key={row.item} className="p-5">
+                      <div className="flex items-baseline justify-between gap-3">
+                        <h4 className="text-sm font-semibold text-ink">{row.item}</h4>
+                        <div className="text-base font-bold text-primary whitespace-nowrap">{row.price}</div>
+                      </div>
+                      <p className="mt-1.5 text-xs text-gray-soft leading-snug">{row.note}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div className="grid gap-3 md:hidden">
-                {pricingFactors.map((row) => (
-                  <div key={row.factor} className="rounded-xl border border-gray-line bg-white p-5">
-                    <h3 className="text-base font-semibold text-ink">{row.factor}</h3>
-                    <p className="mt-2 text-sm text-gray-soft"><span className="font-semibold text-ink">Why: </span>{row.why}</p>
-                    <p className="mt-1 text-sm text-gray-soft"><span className="font-semibold text-ink">Example: </span>{row.example}</p>
-                  </div>
-                ))}
+              <p className="mt-4 text-xs text-gray-soft leading-relaxed">
+                <span className="font-semibold text-ink">What affects the final price:</span> {pricingFinalNote}
+              </p>
+
+              <div className="mt-6 rounded-2xl border border-gray-line bg-off-white p-5">
+                <h3 className="text-sm font-bold text-ink">Cost factors that may apply</h3>
+                <p className="mt-1 text-xs text-gray-soft">Used to calculate your fixed quote.</p>
+                <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                  {pricingFactors.slice(0, 6).map((f) => (
+                    <li key={f.factor} className="flex items-start gap-2 text-xs">
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      <span>
+                        <span className="font-semibold text-ink">{f.factor}:</span>{' '}
+                        <span className="text-gray-soft">{f.why}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 8: WHY CHOOSE US */}
+      {/* SECTION: WHY CHOOSE US */}
       <section className="section bg-off-white">
         <div className="container-content">
           <div className="grid gap-10 lg:grid-cols-12 items-center">
@@ -659,77 +880,188 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
-
-          <div className="mt-12">
-            <h3 className="text-h3-m md:text-h3-d">What customers say</h3>
-            <p className="mt-2 max-w-xl text-sm text-gray-soft">{NATIONWIDE_REVIEW_COUNT.toLocaleString()}+ verified reviews across our 12 cities. Average rating {NATIONWIDE_RATING}/5.</p>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {featured.map((r) => (
-                <ReviewCard key={r.id} review={r} />
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* SECTION 9: RECENT JOBS - thumbnail-led cards */}
+      {/* SECTION: RECENT PLUMBING JOBS */}
       <section className="section">
         <div className="container-content">
           <div className="flex items-end justify-between flex-wrap gap-4">
             <div className="max-w-2xl">
               <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Recent work</span>
-              <h2 className="mt-3">Recent plumbing jobs across the UK</h2>
+              <h2 className="mt-3">Recent plumbing jobs we completed</h2>
               <p className="mt-3 text-gray-soft">
-                A snapshot of work completed across our 12 city coverage zones in the last fortnight. Real symptoms, real diagnoses, real repairs.
+                Real symptoms, real diagnoses, real repairs. A snapshot of recent jobs from our 12 city coverage zones - the same engineers and the same fixed-quote process you would get if you called now.
               </p>
             </div>
             <Link href="/areas" className="text-sm font-semibold text-primary hover:text-primary-dark">View by city →</Link>
           </div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {recentSamples.slice(0, 3).map((j) => (
-              <article key={j.postcode + j.date} className="group flex h-full flex-col overflow-hidden rounded-xl border border-gray-line bg-white hover:border-primary hover:shadow-md transition">
-                <div className="relative aspect-[16/10] overflow-hidden bg-off-white">
+          <div className="mt-10 grid gap-6 sm:grid-cols-2">
+            {detailedRecentJobs.map((j) => (
+              <article
+                key={j.title}
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-line bg-white hover:border-primary hover:shadow-lg transition"
+              >
+                <div className="relative aspect-[16/9] overflow-hidden bg-off-white">
                   <Image
                     src={PLACEHOLDER_IMAGE}
-                    alt={`${j.issue} completed in postcode ${j.postcode}`}
+                    alt={j.imageAlt}
                     fill
-                    sizes="(max-width: 1024px) 100vw, 400px"
+                    sizes="(max-width: 1024px) 100vw, 600px"
                     className="object-cover transition group-hover:scale-105"
                   />
-                  <span className="absolute left-3 top-3 rounded-md bg-white/95 backdrop-blur px-2 py-0.5 font-mono text-xs font-bold text-ink">{j.postcode}</span>
-                </div>
-                <div className="p-5 flex flex-col flex-1">
-                  <div className="text-xs font-semibold text-gray-soft">
+                  <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur px-3 py-1 text-xs font-bold text-ink shadow-sm">
+                    <UtilityIcon name="pin" />
+                    {j.location} · {j.postcode}
+                  </span>
+                  <span className="absolute right-3 top-3 rounded-full bg-primary/90 backdrop-blur px-3 py-1 text-xs font-bold text-white">
                     {new Date(j.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
-                  </div>
-                  <h3 className="mt-2 text-base font-semibold text-ink">{j.issue}</h3>
-                  <p className="mt-2 text-sm text-gray-soft">{j.resolution}</p>
-                  <div className="mt-auto pt-4 text-xs text-gray-soft border-t border-gray-line">
-                    Resolved in <span className="font-semibold text-ink">{j.duration}</span>
+                  </span>
+                </div>
+
+                <div className="p-6 flex flex-col flex-1">
+                  <h3 className="text-lg font-bold text-ink">{j.title}</h3>
+
+                  <dl className="mt-4 space-y-3 text-sm">
+                    <div>
+                      <dt className="text-xs font-bold uppercase tracking-wider text-accent">Problem</dt>
+                      <dd className="mt-0.5 text-ink leading-snug">{j.problem}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs font-bold uppercase tracking-wider text-primary">Diagnosis</dt>
+                      <dd className="mt-0.5 text-ink leading-snug">{j.diagnosis}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs font-bold uppercase tracking-wider text-primary">Repair completed</dt>
+                      <dd className="mt-0.5 text-ink leading-snug">{j.repair}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs font-bold uppercase tracking-wider text-green-dark">Outcome</dt>
+                      <dd className="mt-0.5 text-ink leading-snug">{j.outcome}</dd>
+                    </div>
+                  </dl>
+
+                  <div className="mt-auto pt-4 flex items-center justify-between border-t border-gray-line text-xs">
+                    <span className="inline-flex items-center gap-1.5 text-gray-soft">
+                      <UtilityIcon name="bolt" />
+                      <span className="font-semibold text-ink">{j.timeTaken}</span>
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-green/10 px-2.5 py-1 font-semibold text-green-dark">
+                      <span className="h-1.5 w-1.5 rounded-full bg-green-dark" />
+                      Resolved &amp; guaranteed
+                    </span>
                   </div>
                 </div>
               </article>
             ))}
           </div>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            {recentSamples.slice(3).map((j) => (
-              <RecentJobCard key={j.postcode + j.date} job={j} />
-            ))}
+          <div className="mt-10 rounded-2xl bg-gradient-to-r from-primary to-primary-dark p-6 sm:p-8 text-white flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="flex-1">
+              <p className="text-lg font-bold">Got a similar problem? We can usually be on site within the hour.</p>
+              <p className="mt-1 text-sm text-white/85">Photo or video, fixed quote, same engineers as the jobs above.</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Link href="/quote" className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-primary hover:bg-off-white">
+                Request a quote
+              </Link>
+              <CallButton size="md" variant="white" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 10: SERVICE AREAS - chips + cards + map illustration */}
+      {/* SECTION: VERIFIED REVIEWS */}
       <section className="section bg-off-white">
+        <div className="container-content">
+          <div className="flex items-end justify-between flex-wrap gap-4">
+            <div className="max-w-2xl">
+              <span className="inline-block rounded-full bg-yellow-500/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-yellow-700">
+                Verified reviews
+              </span>
+              <h2 className="mt-3">{NATIONWIDE_RATING}/5 from {NATIONWIDE_REVIEW_COUNT.toLocaleString()}+ verified customers</h2>
+              <p className="mt-3 text-gray-soft">
+                Every review below is published on a third-party platform - we cannot edit them, hide them or write them ourselves. Click through to read the original review on the source platform.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              {(['Google', 'Trustpilot', 'Checkatrade', 'TrustATrader', 'Facebook'] as const).map((p) => (
+                <span key={p} className={`rounded-full px-3 py-1 text-xs font-bold ${reviewSourceMeta[p].bg} ${reviewSourceMeta[p].color}`}>
+                  {reviewSourceMeta[p].label}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {verifiedReviews.map((r, idx) => {
+              const meta = reviewSourceMeta[r.source];
+              return (
+                <article
+                  key={`${r.name}-${idx}`}
+                  className="relative flex h-full flex-col rounded-2xl border border-gray-line bg-white p-6 hover:shadow-md transition"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${meta.bg} ${meta.color}`}>
+                      <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                      {meta.label}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-green-dark">
+                      <svg viewBox="0 0 24 24" fill="currentColor" className="h-3 w-3" aria-hidden>
+                        <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" fill="none" />
+                      </svg>
+                      Verified
+                    </span>
+                  </div>
+
+                  <div className="mt-3 flex items-center gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <svg
+                        key={i}
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className={`h-4 w-4 ${i < r.rating ? 'text-yellow-500' : 'text-gray-line'}`}
+                        aria-hidden
+                      >
+                        <path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+
+                  <p className="mt-3 text-sm leading-relaxed text-ink">"{r.text}"</p>
+
+                  <div className="mt-5 flex items-center justify-between gap-3 border-t border-gray-line pt-4 text-xs">
+                    <div className="flex items-center gap-2.5">
+                      <span className="grid h-9 w-9 place-items-center rounded-full bg-primary/10 text-primary font-bold text-sm">
+                        {r.name.charAt(0).toUpperCase()}
+                      </span>
+                      <div>
+                        <div className="font-bold text-ink text-sm">{r.name}</div>
+                        <div className="text-gray-soft">
+                          {r.service} · {r.city} ·{' '}
+                          {new Date(r.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION: SERVICE AREAS - chips + cards + map illustration + local proof */}
+      <section className="section">
         <div className="container-content">
           <div className="grid gap-10 lg:grid-cols-12 items-start">
             <div className="lg:col-span-5">
               <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Service areas</span>
               <h2 className="mt-3">Plumbers across 12 UK cities and surrounding postcodes</h2>
               <p className="mt-3 text-gray-soft">
-                We provide plumbing repairs, leak detection, drain unblocking, emergency plumbing and bathroom and kitchen plumbing across the cities below and their surrounding postcodes.
+                We provide plumbing repairs, leak detection, drain unblocking, emergency plumbing and bathroom and kitchen plumbing across the cities below and their surrounding postcodes. Each city has its own dedicated page with local jobs, postcodes and reviews.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-2">
@@ -757,32 +1089,113 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="lg:col-span-7 grid gap-4 sm:grid-cols-2">
-              {cities.slice(0, 6).map((c) => (
-                <CityCard key={c.slug} slug={c.slug} name={c.name} region={c.region} responseTime={c.responseTime} />
-              ))}
-              <Link
-                href="/areas"
-                className="sm:col-span-2 group flex items-center justify-between rounded-xl border-2 border-dashed border-primary/30 bg-white p-5 hover:border-primary hover:bg-primary/5 transition"
-              >
-                <div>
-                  <div className="text-sm font-bold text-primary">View all service areas</div>
-                  <div className="text-xs text-gray-soft">{cities.length} cities and surrounding postcodes</div>
-                </div>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5 text-primary transition group-hover:translate-x-1" aria-hidden>
-                  <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+            <div className="lg:col-span-7">
+              {/* Map illustration with city pins */}
+              <div className="relative overflow-hidden rounded-2xl border border-gray-line bg-gradient-to-br from-primary/5 via-off-white to-primary/10 aspect-[5/3]">
+                <svg
+                  viewBox="0 0 500 300"
+                  className="absolute inset-0 h-full w-full"
+                  aria-label="Map of UK service area cities"
+                >
+                  {/* Simplified UK outline */}
+                  <path
+                    d="M180 30 Q160 20 150 50 Q140 80 130 110 Q110 140 130 170 Q140 200 160 230 Q180 260 220 270 Q260 275 290 260 Q320 245 330 215 Q345 185 345 155 Q350 125 335 95 Q320 65 290 50 Q260 35 220 30 Z M210 280 Q220 290 240 290 Q260 290 270 280 Z"
+                    fill="rgba(30, 115, 190, 0.08)"
+                    stroke="rgba(30, 115, 190, 0.3)"
+                    strokeWidth="1.5"
+                  />
+                  {/* City pins */}
+                  {[
+                    { x: 240, y: 240, name: 'London', big: true },
+                    { x: 215, y: 165, name: 'Birmingham', big: true },
+                    { x: 215, y: 130, name: 'Manchester', big: true },
+                    { x: 230, y: 120, name: 'Leeds' },
+                    { x: 198, y: 130, name: 'Liverpool' },
+                    { x: 220, y: 220, name: 'Bristol' },
+                    { x: 235, y: 140, name: 'Sheffield' },
+                    { x: 200, y: 75, name: 'Edinburgh' },
+                    { x: 175, y: 80, name: 'Glasgow' },
+                    { x: 240, y: 100, name: 'Newcastle' },
+                    { x: 235, y: 175, name: 'Nottingham' },
+                    { x: 195, y: 215, name: 'Cardiff' },
+                  ].map((c) => (
+                    <g key={c.name}>
+                      <circle cx={c.x} cy={c.y} r={c.big ? 7 : 5} fill="#1E73BE" />
+                      <circle cx={c.x} cy={c.y} r={c.big ? 12 : 9} fill="#1E73BE" fillOpacity="0.2">
+                        <animate attributeName="r" values={`${c.big ? 12 : 9};${c.big ? 18 : 14};${c.big ? 12 : 9}`} dur="2.5s" repeatCount="indefinite" />
+                        <animate attributeName="fill-opacity" values="0.3;0;0.3" dur="2.5s" repeatCount="indefinite" />
+                      </circle>
+                      <text x={c.x + (c.big ? 12 : 10)} y={c.y + 4} fontSize="11" fontWeight="700" fill="#222">
+                        {c.name}
+                      </text>
+                    </g>
+                  ))}
                 </svg>
-              </Link>
+                <div className="absolute bottom-3 right-3 rounded-lg bg-white/95 backdrop-blur px-3 py-2 text-xs font-bold text-ink shadow-md flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                  12 cities · live coverage
+                </div>
+              </div>
+
+              {/* City cards */}
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                {cities.slice(0, 6).map((c) => (
+                  <CityCard key={c.slug} slug={c.slug} name={c.name} region={c.region} responseTime={c.responseTime} />
+                ))}
+                <Link
+                  href="/areas"
+                  className="sm:col-span-2 group flex items-center justify-between rounded-xl border-2 border-dashed border-primary/30 bg-white p-5 hover:border-primary hover:bg-primary/5 transition"
+                >
+                  <div>
+                    <div className="text-sm font-bold text-primary">View all service areas</div>
+                    <div className="text-xs text-gray-soft">{cities.length} cities and surrounding postcodes</div>
+                  </div>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5 text-primary transition group-hover:translate-x-1" aria-hidden>
+                    <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Local property-type context cards - unique per city, anti-doorway */}
+          <div className="mt-12">
+            <h3 className="text-h3-m md:text-h3-d">Local property knowledge in every city</h3>
+            <p className="mt-2 max-w-3xl text-sm text-gray-soft">
+              Different housing stock means different plumbing problems. Our engineers know the quirks of each area - the pipework, the common failures and the property-type context.
+            </p>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {localAreaContext.map((a) => (
+                <Link
+                  key={a.city}
+                  href={`/emergency-plumber/${a.city.toLowerCase()}`}
+                  className="group rounded-xl border border-gray-line bg-white p-5 hover:border-primary hover:shadow-md transition"
+                >
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-base font-bold text-ink">{a.city}</h4>
+                    <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition">
+                      <UtilityIcon name="pin" />
+                    </span>
+                  </div>
+                  <p className="mt-2 text-xs text-gray-soft leading-snug">{a.context}</p>
+                  <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-primary">
+                    See local jobs &amp; reviews
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3 w-3 transition group-hover:translate-x-1" aria-hidden>
+                      <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 11: PREVENTION */}
-      <section className="section">
+      {/* SECTION: PREVENTION */}
+      <section className="section bg-off-white">
         <div className="container-content grid gap-10 lg:grid-cols-12 items-start">
           <div className="lg:col-span-5">
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white">
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-white">
               <Image
                 src={PLACEHOLDER_IMAGE}
                 alt="Plumber inspecting pipework and valves during a routine plumbing maintenance visit"
@@ -816,7 +1229,95 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 12: FAQ */}
+      {/* SECTION: SERVICE LIMITATIONS */}
+      <section className="section">
+        <div className="container-content">
+          <div className="max-w-3xl">
+            <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Scope of work</span>
+            <h2 className="mt-3">What we cover - and what we do not</h2>
+            <p className="mt-3 text-gray-soft">
+              Honest scope, no time-wasting callouts. If your job sits outside our coverage we will tell you on the phone before sending an engineer.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            {serviceLimitations.map((s, i) => {
+              const isCover = i === 0;
+              return (
+                <div
+                  key={s.title}
+                  className={`rounded-2xl border p-6 ${isCover ? 'border-green/30 bg-green/5' : 'border-accent/20 bg-accent/5'}`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`grid h-9 w-9 place-items-center rounded-lg ${
+                        isCover ? 'bg-green text-white' : 'bg-accent text-white'
+                      }`}
+                    >
+                      {isCover ? (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-5 w-5" aria-hidden>
+                          <path strokeLinecap="round" d="M5 12l5 5L20 7" />
+                        </svg>
+                      ) : (
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-5 w-5" aria-hidden>
+                          <path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" />
+                        </svg>
+                      )}
+                    </span>
+                    <h3 className="text-lg font-bold text-ink">{s.title}</h3>
+                  </div>
+                  <ul className="mt-4 space-y-2.5 text-sm">
+                    {s.items.map((item) => (
+                      <li key={item} className="flex items-start gap-2.5">
+                        <span
+                          className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${
+                            isCover ? 'bg-green' : 'bg-accent'
+                          }`}
+                        />
+                        <span className="text-ink leading-snug">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+
+          <p className="mt-5 text-xs text-gray-soft max-w-3xl">
+            Gas Safe: gas appliance work (boilers, gas hobs, gas fires) is carried out only by our Gas Safe registered engineers (Reg #{GAS_SAFE_NUMBER}). All gas work is logged on the Gas Safe register on completion.
+          </p>
+        </div>
+      </section>
+
+      {/* SECTION: TRUST DETAILS BAND */}
+      <section aria-label="Company trust details" className="bg-ink text-white">
+        <div className="container-content py-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <div className="text-xs font-bold uppercase tracking-wider text-white/60">Legal company</div>
+            <div className="mt-2 text-base font-bold">{LEGAL_COMPANY_NAME}</div>
+            <div className="mt-1 text-xs text-white/70">Company number {COMPANY_NUMBER} · {SERVICE_BASE}</div>
+          </div>
+          <div>
+            <div className="text-xs font-bold uppercase tracking-wider text-white/60">VAT &amp; tax</div>
+            <div className="mt-2 text-base font-bold">VAT registered</div>
+            <div className="mt-1 text-xs text-white/70">{VAT_NUMBER} · prices include VAT</div>
+          </div>
+          <div>
+            <div className="text-xs font-bold uppercase tracking-wider text-white/60">Insurance</div>
+            <div className="mt-2 text-base font-bold">{PUBLIC_LIABILITY_COVER} public liability</div>
+            <div className="mt-1 text-xs text-white/70">Underwritten by {INSURANCE_PROVIDER}</div>
+          </div>
+          <div>
+            <div className="text-xs font-bold uppercase tracking-wider text-white/60">Emergency contact</div>
+            <a href={`tel:${settings.phoneTel}`} className="mt-2 inline-block text-base font-bold text-white hover:text-primary transition">
+              {settings.phoneDisplay}
+            </a>
+            <div className="mt-1 text-xs text-white/70">24/7 · email <a className="underline hover:text-white" href={`mailto:${EMAIL}`}>{EMAIL}</a></div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION: FAQ */}
       <section className="section bg-off-white">
         <div className="container-content">
           <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">FAQs</span>
@@ -835,7 +1336,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 13: FINAL CTA */}
+      {/* SECTION: FINAL CTA */}
       <section className="section">
         <div className="container-content">
           <div className="relative overflow-hidden rounded-3xl bg-primary text-white p-8 md:p-12 grid gap-8 lg:grid-cols-12 items-center">
