@@ -156,7 +156,10 @@ export default async function HomePage() {
       <SchemaMarkup data={[organizationSchema(), faqSchema(homeFaq)]} />
 
       {/* HERO - image-led, conversion-focused */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-white to-off-white">
+      <section
+        data-hide-sticky="hero"
+        className="relative overflow-hidden bg-gradient-to-br from-white via-white to-off-white"
+      >
         <div className="container-content py-12 md:py-20 grid gap-10 md:grid-cols-12 md:gap-12 items-center">
           <div className="md:col-span-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3 py-1 text-sm font-semibold text-accent">
