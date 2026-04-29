@@ -2,7 +2,8 @@ import Image from 'next/image';
 import CallButton from './CallButton';
 import TrustBar from './TrustBar';
 import { getSettings } from '@/lib/settings';
-import { PLACEHOLDER_IMAGE } from '@/lib/plumbingContent';
+
+const HERO_IMAGE = 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/hero.png';
 
 type Props = {
   variant?: 'home' | 'city' | 'service';
@@ -44,7 +45,7 @@ export default async function Hero({ variant = 'home', title, subtitle, response
           <div className="relative">
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white shadow-xl">
               <Image
-                src={PLACEHOLDER_IMAGE}
+                src={HERO_IMAGE}
                 alt="Local Gas Safe plumber on a UK emergency callout"
                 fill
                 sizes="(max-width: 768px) 100vw, 600px"

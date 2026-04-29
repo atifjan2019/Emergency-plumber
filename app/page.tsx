@@ -245,14 +245,14 @@ export default async function HomePage() {
       <section aria-label="Expert reviewer" className="section bg-white">
         <div className="container-content">
           <div className="rounded-3xl border border-gray-line bg-gradient-to-br from-white to-off-white p-6 sm:p-8 md:p-10 shadow-sm">
-            <div className="grid gap-6 md:grid-cols-12 items-center">
+            <div className="grid gap-6 md:gap-x-[50px] md:grid-cols-12 items-center">
               <div className="md:col-span-3 flex md:block items-center gap-4">
-                <div className="relative h-24 w-24 md:h-36 md:w-36 shrink-0 overflow-hidden rounded-2xl border-2 border-primary/20 bg-off-white">
+                <div className="relative h-40 w-40 sm:h-56 sm:w-56 md:h-72 md:w-72 lg:h-80 lg:w-80 shrink-0 overflow-hidden rounded-2xl border-2 border-primary/20 bg-off-white">
                   <Image
                     src={REVIEWER.photoUrl}
                     alt={`${REVIEWER.name}, ${REVIEWER.role} at ${BRAND}`}
                     fill
-                    sizes="(max-width: 768px) 96px, 144px"
+                    sizes="(max-width: 640px) 160px, (max-width: 768px) 224px, (max-width: 1024px) 288px, 320px"
                     className="object-cover"
                   />
                 </div>

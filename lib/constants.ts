@@ -20,7 +20,7 @@ export const NATIONWIDE_REVIEW_COUNT = 2847;
 export const REVIEWER = {
   name: 'James Whitfield',
   role: 'Lead Plumbing Engineer & Technical Reviewer',
-  photoUrl: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/1.jpg',
+  photoUrl: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/reviewed-by-james-whitfield.png',
   yearsExperience: 22,
   qualifications: [
     'NVQ Level 3 Plumbing & Heating',
