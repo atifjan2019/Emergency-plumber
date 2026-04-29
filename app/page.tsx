@@ -244,32 +244,46 @@ export default async function HomePage() {
       {/* EXPERT REVIEWER BOX (E-E-A-T) */}
       <section aria-label="Expert reviewer" className="section bg-white">
         <div className="container-content">
-          <div className="rounded-3xl border border-gray-line bg-gradient-to-br from-white to-off-white p-6 sm:p-8 md:p-10 shadow-sm">
-            <div className="grid gap-6 md:gap-x-16 md:grid-cols-12 items-center">
-              <div className="md:col-span-3 flex md:block items-center gap-4">
-                <div className="relative h-72 w-72 shrink-0 overflow-hidden rounded-2xl border-2 border-primary/20 bg-off-white">
+          <div className="overflow-hidden rounded-3xl border border-gray-line bg-gradient-to-br from-white to-off-white shadow-sm">
+            <div className="grid md:grid-cols-12">
+              <div className="relative md:col-span-5 lg:col-span-4">
+                <div className="relative aspect-[4/5] md:h-full md:aspect-auto md:min-h-[460px]">
                   <Image
                     src={REVIEWER.photoUrl}
                     alt={`${REVIEWER.name}, ${REVIEWER.role} at ${BRAND}`}
                     fill
-                    sizes="288px"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 40vw, 460px"
                     className="object-cover"
                   />
-                </div>
-                <div className="md:hidden">
-                  <div className="text-xs font-bold uppercase tracking-wider text-primary">Reviewed by</div>
-                  <div className="mt-1 text-lg font-bold text-ink">{REVIEWER.name}</div>
-                  <div className="text-sm text-gray-soft">{REVIEWER.role}</div>
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/80 via-ink/40 to-transparent p-5 sm:p-6">
+                    <div className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary shadow-sm">
+                      <UtilityIcon name="badge" />
+                      Expert reviewed
+                    </div>
+                    <div className="mt-3 text-lg sm:text-xl font-extrabold text-white leading-tight">
+                      {REVIEWER.name}
+                    </div>
+                    <div className="text-xs sm:text-sm font-medium text-white/85">
+                      {REVIEWER.role}
+                    </div>
+                  </div>
+                  <div className="absolute top-4 right-4 rounded-xl bg-white/95 backdrop-blur px-3 py-2 shadow-md">
+                    <div className="text-2xl font-extrabold text-primary leading-none">
+                      {REVIEWER.yearsExperience}
+                    </div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-gray-soft mt-0.5">
+                      Years on tools
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="md:col-span-9">
-                <div className="hidden md:flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
-                    <UtilityIcon name="badge" />
-                    Expert reviewed
+              <div className="md:col-span-7 lg:col-span-8 p-6 sm:p-8 md:p-10 lg:p-12">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                    Reviewed by an engineer, not a marketer
                   </span>
-                  <span className="text-xs font-semibold text-gray-soft">
+                  <span className="text-xs font-medium text-gray-soft">
                     Last reviewed{' '}
                     {new Date(REVIEWER.lastReviewed).toLocaleDateString('en-GB', {
                       day: 'numeric',
@@ -279,18 +293,18 @@ export default async function HomePage() {
                   </span>
                 </div>
 
-                <h2 className="mt-2 text-h3-m md:text-h2-m">
+                <h2 className="mt-3 text-h3-m md:text-h2-m">
                   Reviewed by {REVIEWER.name}, {REVIEWER.yearsExperience} years on the tools
                 </h2>
 
-                <p className="mt-3 text-sm md:text-base text-gray-soft max-w-3xl">
+                <p className="mt-4 text-sm md:text-base text-gray-soft">
                   Every plumbing guide, price and recommendation on this page is reviewed and signed off by a working engineer - not a marketing team. Below are the qualifications, registrations and specialist areas the review covers.
                 </p>
 
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                <div className="mt-6 grid gap-6 sm:grid-cols-2">
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wider text-gray-soft">Qualifications &amp; registrations</div>
-                    <ul className="mt-2 space-y-1.5 text-sm text-ink">
+                    <ul className="mt-3 space-y-2 text-sm text-ink">
                       {REVIEWER.qualifications.map((q) => (
                         <li key={q} className="flex items-start gap-2">
                           <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-green/15 text-green-dark">
@@ -305,7 +319,7 @@ export default async function HomePage() {
                   </div>
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wider text-gray-soft">Specialist areas</div>
-                    <ul className="mt-2 flex flex-wrap gap-1.5">
+                    <ul className="mt-3 flex flex-wrap gap-1.5">
                       {REVIEWER.specialistAreas.map((s) => (
                         <li
                           key={s}
@@ -316,14 +330,6 @@ export default async function HomePage() {
                         </li>
                       ))}
                     </ul>
-                    <div className="mt-4 md:hidden text-xs text-gray-soft">
-                      Last reviewed{' '}
-                      {new Date(REVIEWER.lastReviewed).toLocaleDateString('en-GB', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })}
-                    </div>
                   </div>
                 </div>
               </div>
@@ -345,7 +351,7 @@ export default async function HomePage() {
             {certificationBadges.map((c) => (
               <li
                 key={c.name}
-                className="flex items-start gap-3 rounded-xl border border-gray-line bg-white p-4 hover:border-primary transition"
+                className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left gap-3 rounded-xl border border-gray-line bg-white p-4 hover:border-primary transition"
               >
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary">
                   <UtilityIcon name={c.icon} />
