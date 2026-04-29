@@ -47,7 +47,7 @@ export default function QuotePopup() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="fixed bottom-20 right-4 z-40 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white shadow-xl hover:bg-primary-dark md:bottom-6"
+          className="hidden md:inline-flex fixed bottom-6 right-4 z-40 rounded-full bg-primary px-5 py-3 text-sm font-semibold text-white shadow-xl hover:bg-primary-dark"
         >
           Get a free quote
         </button>
