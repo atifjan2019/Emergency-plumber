@@ -436,14 +436,19 @@ export default async function HomePage() {
               <div className="lg:col-span-5 flex flex-col sm:flex-row gap-3 lg:justify-end">
                 <Link
                   href="/quote"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-base font-bold text-primary shadow-lg hover:bg-off-white transition whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-7 py-4 text-base font-bold text-primary shadow-lg hover:bg-off-white transition whitespace-nowrap"
                 >
-                  Get a quote
+                  Get a free quote
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
                     <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
                   </svg>
                 </Link>
-                <CallButton size="lg" variant="primary" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
+                <Link
+                  href="/quote"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/40 px-6 py-3.5 text-sm font-semibold text-white hover:bg-white/10 transition whitespace-nowrap"
+                >
+                  Send photos &amp; symptoms
+                </Link>
               </div>
             </div>
           </div>
@@ -615,11 +620,16 @@ export default async function HomePage() {
           </ol>
 
           <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <CallButton phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
-            <Link href="/quote" className="btn-ghost">Get a fixed quote</Link>
+            <Link href="/quote" className="btn-primary">
+              Get a fixed quote
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+                <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
+            </Link>
+            <Link href="/quote#photos" className="btn-ghost">Send photos for a price</Link>
             <span className="ml-auto hidden sm:flex items-center gap-2 text-sm text-gray-soft">
               <span className="pulse-dot" />
-              <span>Available now - typically responding in ~30 minutes</span>
+              <span>Quotes typically returned within the hour</span>
             </span>
           </div>
         </div>
@@ -746,11 +756,19 @@ export default async function HomePage() {
 
               <div className="mt-6 rounded-xl bg-primary p-5 text-white">
                 <p className="font-semibold">Get an exact price for your job</p>
-                <p className="mt-1 text-sm text-white/85">Send a photo or video, get a fixed quote within the hour.</p>
-                <div className="mt-4 flex flex-col sm:flex-row gap-2">
-                  <Link href="/quote" className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-primary hover:bg-off-white">Request a quote</Link>
-                  <CallButton size="sm" variant="white" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
+                <p className="mt-1 text-sm text-white/85">Send a photo or video and a few details. We come back with a fixed written quote within the hour.</p>
+                <div className="mt-4">
+                  <Link
+                    href="/quote"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-bold text-primary hover:bg-off-white transition w-full sm:w-auto"
+                  >
+                    Get my free quote
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+                      <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                    </svg>
+                  </Link>
                 </div>
+                <p className="mt-3 text-xs text-white/70">No obligation. Free quote, fixed-price guarantee.</p>
               </div>
             </div>
 
@@ -959,14 +977,19 @@ export default async function HomePage() {
 
           <div className="mt-10 rounded-2xl bg-gradient-to-r from-primary to-primary-dark p-6 sm:p-8 text-white flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div className="flex-1">
-              <p className="text-lg font-bold">Got a similar problem? We can usually be on site within the hour.</p>
-              <p className="mt-1 text-sm text-white/85">Photo or video, fixed quote, same engineers as the jobs above.</p>
+              <p className="text-lg font-bold">Got a similar problem? Get a free fixed quote.</p>
+              <p className="mt-1 text-sm text-white/85">Send a photo or short video. The same engineers behind the jobs above will come back with a price - usually within the hour.</p>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Link href="/quote" className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-primary hover:bg-off-white">
-                Request a quote
+              <Link
+                href="/quote"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3.5 text-sm font-bold text-primary hover:bg-off-white shadow-md"
+              >
+                Get a free quote
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+                  <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                </svg>
               </Link>
-              <CallButton size="md" variant="white" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
             </div>
           </div>
         </div>
@@ -1083,9 +1106,14 @@ export default async function HomePage() {
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-ink text-sm">Not sure if we cover your area?</p>
-                  <p className="text-xs text-gray-soft">Call with your postcode and we will confirm the response time for your street.</p>
+                  <p className="text-xs text-gray-soft">Pop your postcode in the quote form and we will confirm the response time for your street.</p>
                 </div>
-                <CallButton size="sm" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
+                <Link
+                  href="/quote"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-white hover:bg-primary-dark transition whitespace-nowrap"
+                >
+                  Check my postcode
+                </Link>
               </div>
             </div>
 
@@ -1329,9 +1357,17 @@ export default async function HomePage() {
           <div className="mt-6 rounded-xl border border-primary/20 bg-white p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <p className="text-sm text-ink flex-1">
               <span className="font-semibold">Still got questions?</span>{' '}
-              <span className="text-gray-soft">Talk to a real plumber - no call centre script, no upselling.</span>
+              <span className="text-gray-soft">Send your details and a real plumber will reply with a free, no-obligation quote.</span>
             </p>
-            <CallButton size="md" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
+            <Link
+              href="/quote"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-bold text-white hover:bg-primary-dark transition whitespace-nowrap"
+            >
+              Get a free quote
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+                <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
@@ -1356,11 +1392,28 @@ export default async function HomePage() {
                 Whether you need urgent help with a burst pipe, a blocked drain, a leaking tap, a hidden leak or a planned plumbing installation, {BRAND} can help. Call now or request a quote from a local plumber in your city.
               </p>
               <div className="mt-7 flex flex-col sm:flex-row gap-3">
-                <CallButton size="lg" variant="white" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
-                <Link href="/quote" className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 px-6 py-3.5 font-semibold text-white hover:bg-white/10">
-                  Request a quote
+                <Link
+                  href="/quote"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-7 py-4 text-base font-bold text-primary shadow-lg hover:bg-off-white transition"
+                >
+                  Get my free quote
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden>
+                    <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                  </svg>
+                </Link>
+                <Link
+                  href="/quote#photos"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 px-6 py-3.5 font-semibold text-white hover:bg-white/10"
+                >
+                  Send photos &amp; details
                 </Link>
               </div>
+              <p className="mt-4 text-xs text-white/70">
+                Active flooding right now? Call our 24/7 emergency line: {' '}
+                <a href={`tel:${settings.phoneTel}`} className="underline font-semibold text-white">
+                  {settings.phoneDisplay}
+                </a>
+              </p>
             </div>
             <ul className="relative lg:col-span-5 grid grid-cols-2 gap-3 text-sm">
               {[
