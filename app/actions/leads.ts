@@ -30,8 +30,19 @@ export async function submitLead(
   const phone = trim(formData.get('phone'));
   const email = trim(formData.get('email'));
   const citySlug = trim(formData.get('city_slug'));
-  const message = trim(formData.get('message'));
+  const userMessage = trim(formData.get('message'));
   const sourcePage = trim(formData.get('source_page'));
+  const postcode = trim(formData.get('postcode'));
+  const serviceType = trim(formData.get('service_type'));
+  const urgency = trim(formData.get('urgency'));
+
+  const metaParts: string[] = [];
+  if (postcode) metaParts.push(`Postcode: ${postcode.toUpperCase()}`);
+  if (serviceType) metaParts.push(`Service: ${serviceType}`);
+  if (urgency) metaParts.push(`Urgency: ${urgency}`);
+  const message = metaParts.length
+    ? `${metaParts.join(' | ')}\n\n${userMessage}`
+    : userMessage;
 
   if (!name) {
     return { ok: false, message: 'Please tell us your name.' };
@@ -39,11 +50,14 @@ export async function submitLead(
   if (!phone && !email) {
     return { ok: false, message: 'Please leave a phone number or email so we can reply.' };
   }
-  if (!message) {
+  if (!userMessage) {
     return { ok: false, message: 'Please add a short message about what you need.' };
   }
 
   if (name.length > 200 || message.length > 4000 || phone.length > 50 || email.length > 200) {
+    return { ok: false, message: 'One of those fields is unusually long. Please shorten and resubmit.' };
+  }
+  if (postcode.length > 12 || serviceType.length > 80 || urgency.length > 80) {
     return { ok: false, message: 'One of those fields is unusually long. Please shorten and resubmit.' };
   }
 

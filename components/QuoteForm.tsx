@@ -1,10 +1,29 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { submitLead, type LeadFormState } from '@/app/actions/leads';
 import { useDraftCapture, readFormDraft } from '@/lib/useDraftCapture';
+import { cities } from '@/data/cities';
+
+function checkPostcodeCoverage(raw: string) {
+  const cleaned = raw.replace(/\s+/g, '').toUpperCase();
+  if (cleaned.length < 2) return { state: 'idle' as const };
+  const m = cleaned.match(/^([A-Z]{1,2}\d{1,2}[A-Z]?)/);
+  if (!m) return { state: 'invalid' as const };
+  const outward = m[1];
+  for (const city of cities) {
+    for (const p of city.postcodes) {
+      if (outward === p) return { state: 'match' as const, city, outward };
+      if (/^[A-Z]+$/.test(p) && outward.startsWith(p)) {
+        const next = outward[p.length];
+        if (next && /\d/.test(next)) return { state: 'match' as const, city, outward };
+      }
+    }
+  }
+  return { state: 'no-match' as const, outward };
+}
 
 const initial: LeadFormState = { ok: false, message: '' };
 
@@ -54,6 +73,8 @@ export default function QuoteForm({
 }: Props) {
   const [state, formAction] = useActionState(submitLead, initial);
   const { draftId, update, clearDraft } = useDraftCapture(draftKey);
+  const [postcode, setPostcode] = useState('');
+  const coverage = useMemo(() => checkPostcodeCoverage(postcode), [postcode]);
 
   useEffect(() => {
     if (state.ok) clearDraft();
@@ -116,6 +137,53 @@ export default function QuoteForm({
           autoComplete="email"
           className="w-full rounded-xl border-2 border-gray-line bg-white px-4 py-3 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 transition-colors"
         />
+      )}
+
+      <div className="relative">
+        <input
+          type="text"
+          name="postcode"
+          placeholder="Postcode (e.g. SW1A 1AA)"
+          autoComplete="postal-code"
+          spellCheck={false}
+          value={postcode}
+          onChange={(e) => setPostcode(e.target.value)}
+          className={`w-full rounded-xl border-2 bg-white px-4 py-3 pr-32 text-base uppercase tracking-wider text-ink shadow-sm focus:outline-none focus:ring-4 transition-colors ${
+            coverage.state === 'match'
+              ? 'border-green/50 focus:border-green focus:ring-green/15'
+              : coverage.state === 'no-match' || coverage.state === 'invalid'
+              ? 'border-accent/40 focus:border-accent focus:ring-accent/15'
+              : 'border-gray-line focus:border-primary focus:ring-primary/15'
+          }`}
+        />
+        {coverage.state === 'match' && (
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-full bg-green/15 px-2.5 py-1 text-xs font-bold text-green-dark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-3 w-3" aria-hidden>
+              <path strokeLinecap="round" d="M5 12l5 5L20 7" />
+            </svg>
+            {coverage.city.name}
+          </span>
+        )}
+        {coverage.state === 'no-match' && (
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-full bg-accent/10 px-2.5 py-1 text-xs font-bold text-accent-dark">
+            Outside zone
+          </span>
+        )}
+      </div>
+      {coverage.state === 'match' && (
+        <p className="-mt-1 text-xs text-green-dark font-semibold">
+          We cover {coverage.city.name} ({coverage.city.region}) - typical response ~{coverage.city.responseTime}.
+        </p>
+      )}
+      {coverage.state === 'no-match' && (
+        <p className="-mt-1 text-xs text-gray-soft">
+          {coverage.outward} sits outside our 12-city zone. Send your details and we will let you know if we can still help.
+        </p>
+      )}
+      {coverage.state === 'invalid' && (
+        <p className="-mt-1 text-xs text-gray-soft">
+          That does not look like a UK postcode yet - keep typing.
+        </p>
       )}
 
       <div className={compact ? 'grid gap-3' : 'grid gap-3.5 sm:grid-cols-2'}>
