@@ -50,8 +50,8 @@ export async function submitLead(
   if (!phone && !email) {
     return { ok: false, message: 'Please leave a phone number or email so we can reply.' };
   }
-  if (!userMessage) {
-    return { ok: false, message: 'Please add a short message about what you need.' };
+  if (!userMessage && !serviceType && !urgency) {
+    return { ok: false, message: 'Please add a short message or pick a service type.' };
   }
 
   if (name.length > 200 || message.length > 4000 || phone.length > 50 || email.length > 200) {

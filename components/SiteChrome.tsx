@@ -14,8 +14,9 @@ type Props = {
 export default function SiteChrome({ header, footer, stickyBar, popup, children }: Props) {
   const pathname = usePathname();
   const isAdmin = pathname?.startsWith('/admin') ?? false;
+  const isFocusMode = pathname === '/quote' || (pathname?.startsWith('/quote/') ?? false);
 
-  if (isAdmin) {
+  if (isAdmin || isFocusMode) {
     return <main id="main">{children}</main>;
   }
 
