@@ -46,7 +46,7 @@ function plumbingServicesSchema(city: City, s: SiteSettings) {
     '@type': ['LocalBusiness', 'Plumber'],
     name: `${s.brand} Plumbing Services ${city.name}`,
     url: `${SITE_URL}/plumbing-services/${city.slug}`,
-    telephone: PHONE_TEL,
+    telephone: s.phoneTel,
     priceRange: '££',
     openingHours: 'Mo-Su 00:00-23:59',
     areaServed: { '@type': 'City', name: city.name },

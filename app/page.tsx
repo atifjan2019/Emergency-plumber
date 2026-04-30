@@ -160,7 +160,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <SchemaMarkup data={[organizationSchema(), faqSchema(homeFaq)]} />
+      <SchemaMarkup data={[organizationSchema(settings.phoneTel), faqSchema(homeFaq)]} />
 
       {/* HERO - image-led, conversion-focused */}
       <section
