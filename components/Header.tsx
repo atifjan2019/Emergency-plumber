@@ -72,6 +72,8 @@ export default function Header({ brand, phoneDisplay, phoneTel, logoUrl }: Props
               <img
                 src={logoUrl}
                 alt={brand}
+                width={180}
+                height={40}
                 className="h-9 md:h-10 w-auto max-w-[180px] object-contain"
               />
             ) : (

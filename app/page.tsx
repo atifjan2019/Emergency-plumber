@@ -26,7 +26,7 @@ import {
   INSURANCE_PROVIDER,
   REVIEWER,
 } from '@/lib/constants';
-import { organizationSchema, faqSchema } from '@/lib/schema';
+import { organizationSchema, websiteSchema, faqSchema } from '@/lib/schema';
 import { getSettings } from '@/lib/settings';
 import {
   problemRouter,
@@ -167,7 +167,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <SchemaMarkup data={[organizationSchema(settings.phoneTel), faqSchema(homeFaq)]} />
+      <SchemaMarkup data={[organizationSchema(settings.phoneTel), websiteSchema(), faqSchema(homeFaq)]} />
 
       {/* HERO - image-led, conversion-focused */}
       <section

@@ -23,6 +23,8 @@ export default async function Footer() {
               <img
                 src={s.logoUrl}
                 alt={s.brand}
+                width={280}
+                height={56}
                 className="h-14 w-auto max-w-[280px] object-contain brightness-0 invert"
               />
             ) : (
