@@ -41,18 +41,14 @@ export default async function QuotePage() {
       <main className="flex-1 w-full">
         <div className="container-content py-6 md:py-12">
           <div className="rounded-2xl md:rounded-3xl border border-gray-line bg-white p-5 sm:p-7 md:p-10 lg:p-12 shadow-xl">
-            <div className="mb-5 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs font-bold text-primary">
-                <span className="pulse-dot" /> Free, no obligation
+            <div className="flex items-center justify-between gap-3">
+              <h1 className="text-xl md:text-2xl font-extrabold text-ink leading-tight">Get a free fixed quote</h1>
+              <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-2.5 py-1 text-[11px] font-bold text-primary whitespace-nowrap">
+                <span className="pulse-dot" /> Free · ~60s
               </span>
-              <span className="text-xs text-gray-soft">Takes about 60 seconds</span>
             </div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-ink leading-tight">Get a free fixed quote</h1>
-            <p className="mt-2 text-sm md:text-base text-gray-soft">
-              Not sure what is wrong? That is fine - just pick the closest option. A Gas Safe engineer will follow up.
-            </p>
 
-            <div className="mt-6 md:mt-8">
+            <div className="mt-5 md:mt-6">
               <QuoteWizard sourcePage="/quote" />
             </div>
           </div>
@@ -75,7 +71,7 @@ export default async function QuotePage() {
       </main>
 
       <footer className="border-t border-gray-line bg-white">
-        <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[11px] sm:text-xs text-gray-soft">
+        <div className="container-content py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[11px] sm:text-xs text-gray-soft">
           <p>For active emergencies (flooding, no heat in winter, gas smell), please call instead.</p>
           <p>{s.brand} - 24/7 across 12 UK cities</p>
         </div>

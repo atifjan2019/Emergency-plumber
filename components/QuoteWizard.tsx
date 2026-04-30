@@ -184,29 +184,19 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
   return (
     <div className="w-full">
       {/* Progress */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between text-xs font-semibold">
+      <div className="mb-6">
+        <div className="flex items-center justify-between text-[11px] font-semibold">
           <span className="text-gray-soft">
-            Step <span className="text-ink">{step}</span> of {totalSteps}
+            Step <span className="text-ink">{step}</span> / {totalSteps} · <span className="text-primary">{stepLabels[step - 1]}</span>
           </span>
-          <span className="text-primary">{stepLabels[step - 1]}</span>
+          <span className="text-gray-soft">{Math.round((step / totalSteps) * 100)}%</span>
         </div>
-        <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-line">
+        <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-gray-line">
           <div
             className="h-full rounded-full bg-gradient-to-r from-primary to-primary-dark transition-all duration-300"
             style={{ width: `${(step / totalSteps) * 100}%` }}
           />
         </div>
-        <ol className="mt-3 grid grid-cols-4 gap-2 text-[11px] font-semibold text-gray-soft">
-          {stepLabels.map((label, i) => (
-            <li
-              key={label}
-              className={`text-center transition ${i + 1 <= step ? 'text-primary' : ''}`}
-            >
-              {label}
-            </li>
-          ))}
-        </ol>
       </div>
 
       <form
@@ -242,9 +232,8 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
         {/* STEP 1: Postcode */}
         {step === 1 && (
           <div>
-            <h2 className="text-xl md:text-2xl font-extrabold text-ink">What is your postcode?</h2>
-            <p className="mt-1 text-sm text-gray-soft">We will instantly confirm if we cover your area.</p>
-            <div className="mt-5 relative">
+            <h2 className="text-base md:text-lg font-bold text-ink">Your postcode</h2>
+            <div className="mt-3 relative">
               <input
                 type="text"
                 value={postcode}
@@ -276,33 +265,22 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
               )}
             </div>
             {coverage.state === 'match' && (
-              <div className="mt-4 rounded-xl border border-green/30 bg-green/5 p-4">
-                <p className="text-sm font-bold text-green-dark">
-                  Yes - we cover {coverage.city.name} ({coverage.city.region})
-                </p>
-                <p className="mt-1 text-xs text-gray-soft">
-                  Typical response time: ~{coverage.city.responseTime}. Same rate day or night.
-                </p>
-              </div>
+              <p className="mt-3 text-xs text-green-dark font-semibold">
+                We cover {coverage.city.name} · ~{coverage.city.responseTime} response.
+              </p>
             )}
             {coverage.state === 'no-match' && (
-              <div className="mt-4 rounded-xl border border-accent/30 bg-accent/5 p-4">
-                <p className="text-sm font-bold text-accent-dark">{coverage.outward} sits outside our 12-city zone</p>
-                <p className="mt-1 text-xs text-gray-soft">
-                  Send your details and we will let you know whether we can dispatch.
-                </p>
-              </div>
-            )}
-            {coverage.state === 'invalid' && (
-              <p className="mt-4 text-xs text-gray-soft">That does not look like a UK postcode yet - keep typing.</p>
+              <p className="mt-3 text-xs text-gray-soft">
+                {coverage.outward} sits outside our 12-city zone - we will still try to help.
+              </p>
             )}
             {coverage.state === 'idle' && (
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="mt-4 text-xs font-semibold text-gray-soft underline-offset-2 hover:underline hover:text-primary"
+                className="mt-3 text-xs font-semibold text-gray-soft underline-offset-2 hover:underline hover:text-primary"
               >
-                Don&apos;t know it? Skip and continue
+                Don&apos;t know it? Skip
               </button>
             )}
           </div>
@@ -311,9 +289,8 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
         {/* STEP 2: Service type */}
         {step === 2 && (
           <div>
-            <h2 className="text-xl md:text-2xl font-extrabold text-ink">What do you need help with?</h2>
-            <p className="mt-1 text-sm text-gray-soft">Pick whichever fits best - we will confirm on the call.</p>
-            <div className="mt-5 grid gap-3 grid-cols-2 md:grid-cols-4">
+            <h2 className="text-base md:text-lg font-bold text-ink">What do you need?</h2>
+            <div className="mt-3 grid gap-2.5 grid-cols-2 md:grid-cols-4">
               {serviceOptions.map((opt) => {
                 const active = serviceType === opt.value;
                 return (
@@ -345,9 +322,8 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
         {/* STEP 3: Urgency */}
         {step === 3 && (
           <div>
-            <h2 className="text-xl md:text-2xl font-extrabold text-ink">How urgent is it?</h2>
-            <p className="mt-1 text-sm text-gray-soft">Same rate day or night - this just helps us prioritise.</p>
-            <div className="mt-5 grid gap-3 grid-cols-1 sm:grid-cols-2">
+            <h2 className="text-base md:text-lg font-bold text-ink">How urgent?</h2>
+            <div className="mt-3 grid gap-2.5 grid-cols-1 sm:grid-cols-2">
               {urgencyOptions.map((opt) => {
                 const active = urgency === opt.value;
                 const accent = opt.color === 'accent';
@@ -388,10 +364,9 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
         {/* STEP 4: Contact + optional issue description */}
         {step === 4 && (
           <div>
-            <h2 className="text-xl md:text-2xl font-extrabold text-ink">How should we reply?</h2>
-            <p className="mt-1 text-sm text-gray-soft">We will reply within an hour during the day.</p>
+            <h2 className="text-base md:text-lg font-bold text-ink">Your details</h2>
 
-            <div className="mt-5 space-y-3.5">
+            <div className="mt-3 space-y-3">
               <input
                 type="text"
                 name="name"
