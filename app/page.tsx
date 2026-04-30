@@ -1115,62 +1115,66 @@ export default async function HomePage() {
       </section>
 
       {/* SECTION: SERVICE AREAS - chips + cards + map illustration + local proof */}
-      <section className="section">
-        <div className="container-content">
-          <div className="grid gap-10 lg:grid-cols-12 items-start">
-            <div className="lg:col-span-5">
+      <section className="section relative overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" aria-hidden />
+        <div className="container-content relative">
+          {/* Header */}
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-8">
               <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Service areas</span>
-              <h2 className="mt-3">Plumbers across 12 UK cities and surrounding postcodes</h2>
-              <p className="mt-3 text-gray-soft">
-                We provide plumbing repairs, leak detection, drain unblocking, emergency plumbing and bathroom and kitchen plumbing across the cities below and their surrounding postcodes. Each city has its own dedicated page with local jobs, postcodes and reviews.
+              <h2 className="mt-3">Plumbers across {cities.length} UK cities and surrounding postcodes</h2>
+              <p className="mt-3 text-gray-soft md:text-lg max-w-3xl">
+                Emergency plumbing, leak detection, drain unblocking and full bathroom and kitchen plumbing - delivered by directly employed engineers across the cities below. Each city has its own page with local jobs, postcodes and reviews.
               </p>
-
-              <div className="mt-6 flex flex-wrap gap-2">
-                {cities.map((c) => (
-                  <Link
-                    key={c.slug}
-                    href={`/emergency-plumber/${c.slug}`}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-gray-line bg-white px-3 py-1.5 text-xs font-semibold text-ink hover:border-primary hover:text-primary transition"
-                  >
-                    <UtilityIcon name="pin" />
-                    {c.name}
-                  </Link>
-                ))}
-              </div>
-
-              <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-5 flex flex-col sm:flex-row sm:items-center gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-primary text-white">
-                  <UtilityIcon name="pin" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-ink text-sm">Not sure if we cover your area?</p>
-                  <p className="text-xs text-gray-soft">Pop your postcode in the quote form and we will confirm the response time for your street.</p>
-                </div>
-                <Link
-                  href="/quote"
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-white hover:bg-primary-dark transition whitespace-nowrap"
-                >
-                  Check my postcode
-                </Link>
-              </div>
             </div>
+            <div className="lg:col-span-4 flex lg:justify-end">
+              <Link
+                href="/areas"
+                className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-white px-5 py-3 text-sm font-semibold text-primary hover:bg-primary/5 transition"
+              >
+                View all service areas
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+                  <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
 
+          {/* Stats strip */}
+          <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { v: cities.length.toString(), l: 'UK cities covered', i: 'pin' },
+              { v: '~30m', l: 'Average response time', i: 'clock' },
+              { v: '24/7', l: '365 days a year', i: 'bolt' },
+              { v: '90-day', l: 'Workmanship guarantee', i: 'shield' },
+            ].map((s) => (
+              <div key={s.l} className="rounded-2xl border border-gray-line bg-white p-5 flex items-center gap-4">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                  <UtilityIcon name={s.i} />
+                </span>
+                <div>
+                  <div className="text-2xl font-extrabold text-ink leading-none">{s.v}</div>
+                  <div className="mt-1 text-xs font-semibold text-gray-soft">{s.l}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Hero row: enlarged map + sidebar */}
+          <div className="mt-8 grid gap-6 lg:grid-cols-12">
             <div className="lg:col-span-7">
-              {/* Map illustration with city pins */}
               <div className="relative overflow-hidden rounded-2xl border border-gray-line bg-gradient-to-br from-primary/5 via-off-white to-primary/10 aspect-[5/3]">
                 <svg
                   viewBox="0 0 500 300"
                   className="absolute inset-0 h-full w-full"
                   aria-label="Map of UK service area cities"
                 >
-                  {/* Simplified UK outline */}
                   <path
                     d="M180 30 Q160 20 150 50 Q140 80 130 110 Q110 140 130 170 Q140 200 160 230 Q180 260 220 270 Q260 275 290 260 Q320 245 330 215 Q345 185 345 155 Q350 125 335 95 Q320 65 290 50 Q260 35 220 30 Z M210 280 Q220 290 240 290 Q260 290 270 280 Z"
                     fill="rgba(30, 115, 190, 0.08)"
                     stroke="rgba(30, 115, 190, 0.3)"
                     strokeWidth="1.5"
                   />
-                  {/* City pins */}
                   {[
                     { x: 240, y: 240, name: 'London', big: true },
                     { x: 215, y: 165, name: 'Birmingham', big: true },
@@ -1197,30 +1201,72 @@ export default async function HomePage() {
                     </g>
                   ))}
                 </svg>
-                <div className="absolute bottom-3 right-3 rounded-lg bg-white/95 backdrop-blur px-3 py-2 text-xs font-bold text-ink shadow-md flex items-center gap-2">
+                <div className="absolute top-3 left-3 rounded-lg bg-white/95 backdrop-blur px-3 py-2 text-xs font-bold text-ink shadow-md flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                  12 cities · live coverage
+                  Live coverage map
+                </div>
+                <div className="absolute bottom-3 right-3 rounded-lg bg-white/95 backdrop-blur px-3 py-2 text-xs font-bold text-ink shadow-md">
+                  {cities.length} cities · {cities.reduce((acc, c) => acc + c.postcodes.length, 0)}+ postcode districts
                 </div>
               </div>
+            </div>
+            <div className="lg:col-span-5">
+              <div className="h-full rounded-2xl border border-gray-line bg-white p-6 flex flex-col">
+                <p className="text-xs font-bold uppercase tracking-wider text-primary">Quick navigation</p>
+                <h3 className="mt-2 text-lg font-bold text-ink">Jump to your city</h3>
+                <p className="mt-1 text-sm text-gray-soft">Tap a city for local jobs, postcodes and reviews from real customers.</p>
 
-              {/* City cards */}
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                {cities.slice(0, 6).map((c) => (
-                  <CityCard key={c.slug} slug={c.slug} name={c.name} region={c.region} responseTime={c.responseTime} />
-                ))}
-                <Link
-                  href="/areas"
-                  className="sm:col-span-2 group flex items-center justify-between rounded-xl border-2 border-dashed border-primary/30 bg-white p-5 hover:border-primary hover:bg-primary/5 transition"
-                >
-                  <div>
-                    <div className="text-sm font-bold text-primary">View all service areas</div>
-                    <div className="text-xs text-gray-soft">{cities.length} cities and surrounding postcodes</div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {cities.map((c) => (
+                    <Link
+                      key={c.slug}
+                      href={`/emergency-plumber/${c.slug}`}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-gray-line bg-white px-3 py-1.5 text-xs font-semibold text-ink hover:border-primary hover:text-primary hover:bg-primary/5 transition"
+                    >
+                      <UtilityIcon name="pin" />
+                      {c.name}
+                    </Link>
+                  ))}
+                </div>
+
+                <div className="mt-auto pt-6">
+                  <div className="rounded-xl bg-gradient-to-br from-primary to-primary-dark text-white p-5">
+                    <div className="flex items-start gap-3">
+                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/20 text-white">
+                        <UtilityIcon name="pin" />
+                      </span>
+                      <div className="flex-1">
+                        <p className="font-bold text-sm">Not sure if we cover your area?</p>
+                        <p className="mt-1 text-xs text-white/85">Drop in your postcode and we will confirm the response time for your street.</p>
+                      </div>
+                    </div>
+                    <Link
+                      href="/quote"
+                      className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-bold text-primary hover:bg-off-white transition"
+                    >
+                      Check my postcode
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+                        <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                      </svg>
+                    </Link>
                   </div>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5 text-primary transition group-hover:translate-x-1" aria-hidden>
-                    <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
-                  </svg>
-                </Link>
+                </div>
               </div>
+            </div>
+          </div>
+
+          {/* Full city card grid */}
+          <div className="mt-10">
+            <div className="flex items-end justify-between gap-4 flex-wrap">
+              <h3 className="text-h3-m md:text-h3-d">All {cities.length} service areas</h3>
+              <Link href="/areas" className="text-sm font-semibold text-primary hover:text-primary-dark">
+                View all →
+              </Link>
+            </div>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {cities.map((c) => (
+                <CityCard key={c.slug} slug={c.slug} name={c.name} region={c.region} responseTime={c.responseTime} />
+              ))}
             </div>
           </div>
 

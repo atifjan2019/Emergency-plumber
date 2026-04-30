@@ -4,6 +4,7 @@ import BreadcrumbNav from '@/components/BreadcrumbNav';
 import CallButton from '@/components/CallButton';
 import CTASection from '@/components/CTASection';
 import QuoteForm from '@/components/QuoteForm';
+import PostcodeChecker from '@/components/PostcodeChecker';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import { breadcrumbSchema } from '@/lib/schema';
 import { getSettings } from '@/lib/settings';
@@ -89,7 +90,7 @@ export default async function QuotePage() {
               </div>
             </div>
 
-            <div className="md:sticky md:top-28 md:self-start">
+            <div id="quote-form" className="md:sticky md:top-28 md:self-start scroll-mt-28">
               <div className="relative rounded-2xl border-2 border-gray-line bg-white p-6 md:p-7 shadow-xl">
                 <div className="absolute -top-3 left-6 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-xs font-bold text-white shadow-md">
                   <svg viewBox="0 0 24 24" fill="currentColor" className="h-3 w-3" aria-hidden>
@@ -107,6 +108,8 @@ export default async function QuotePage() {
           </div>
         </div>
       </section>
+
+      <PostcodeChecker />
 
       <section className="section bg-off-white">
         <div className="container-content">

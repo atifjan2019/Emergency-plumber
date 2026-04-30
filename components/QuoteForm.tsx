@@ -117,6 +117,54 @@ export default function QuoteForm({
           className="w-full rounded-xl border-2 border-gray-line bg-white px-4 py-3 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 transition-colors"
         />
       )}
+
+      <div className={compact ? 'grid gap-3' : 'grid gap-3.5 sm:grid-cols-2'}>
+        <label className="block">
+          <span className="sr-only">Service type</span>
+          <select
+            name="service_type"
+            required
+            defaultValue=""
+            className="w-full appearance-none rounded-xl border-2 border-gray-line bg-white px-4 py-3 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 transition-colors bg-no-repeat bg-right pr-10"
+            style={{
+              backgroundImage:
+                'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'8\' viewBox=\'0 0 12 8\'%3E%3Cpath d=\'M1 1l5 5 5-5\' stroke=\'%23666\' stroke-width=\'2\' fill=\'none\' stroke-linecap=\'round\'/%3E%3C/svg%3E")',
+              backgroundPosition: 'right 1rem center',
+            }}
+          >
+            <option value="" disabled>Service type</option>
+            <option value="Emergency repair">Emergency repair</option>
+            <option value="Burst pipe / leak">Burst pipe / leak</option>
+            <option value="Drain blockage">Drain blockage</option>
+            <option value="Boiler / heating">Boiler / heating</option>
+            <option value="Bathroom / kitchen plumbing">Bathroom / kitchen plumbing</option>
+            <option value="Tap, toilet or fixture">Tap, toilet or fixture</option>
+            <option value="Pipe installation / replacement">Pipe installation / replacement</option>
+            <option value="Other / not sure">Other / not sure</option>
+          </select>
+        </label>
+        <label className="block">
+          <span className="sr-only">How urgent</span>
+          <select
+            name="urgency"
+            required
+            defaultValue=""
+            className="w-full appearance-none rounded-xl border-2 border-gray-line bg-white px-4 py-3 text-base text-ink shadow-sm focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15 transition-colors bg-no-repeat bg-right pr-10"
+            style={{
+              backgroundImage:
+                'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'8\' viewBox=\'0 0 12 8\'%3E%3Cpath d=\'M1 1l5 5 5-5\' stroke=\'%23666\' stroke-width=\'2\' fill=\'none\' stroke-linecap=\'round\'/%3E%3C/svg%3E")',
+              backgroundPosition: 'right 1rem center',
+            }}
+          >
+            <option value="" disabled>How urgent?</option>
+            <option value="Emergency now">Emergency now (within 2 hours)</option>
+            <option value="Today">Today</option>
+            <option value="This week">This week</option>
+            <option value="Scheduled / quote only">Scheduled / quote only</option>
+          </select>
+        </label>
+      </div>
+
       <textarea
         name="message"
         required
