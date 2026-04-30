@@ -18,7 +18,7 @@ const config: Config = {
         },
         green: {
           DEFAULT: '#2ECC71',
-          dark: '#27ae60',
+          dark: '#15803d',
         },
         navy: '#1E73BE',
         ink: '#222222',

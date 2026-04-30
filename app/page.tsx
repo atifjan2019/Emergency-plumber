@@ -1404,7 +1404,7 @@ export default async function HomePage() {
                 <div className="flex flex-col sm:flex-row md:flex-col gap-3 md:shrink-0">
                   <Link
                     href="/quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-green text-white px-5 py-3 text-sm font-bold hover:bg-green-dark transition"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-green-dark text-white px-5 py-3 text-sm font-bold hover:bg-green transition"
                   >
                     Book a check-up
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
@@ -1415,7 +1415,7 @@ export default async function HomePage() {
                     href="/services"
                     className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-line px-5 py-3 text-sm font-semibold text-ink hover:bg-off-white transition"
                   >
-                    Learn more
+                    See all services
                   </Link>
                 </div>
               </div>
