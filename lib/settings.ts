@@ -86,8 +86,8 @@ export const getSettings = cache(async (): Promise<SiteSettings> => {
       twitterHandle: data.twitter_handle || '',
       googleSiteVerification: data.google_site_verification || '',
       bingSiteVerification: data.bing_site_verification || '',
-      gtmId: data.gtm_id || '',
-      gaId: data.ga_id || '',
+      gtmId: data.gtm_id || fallback.gtmId,
+      gaId: data.ga_id || fallback.gaId,
       clarityId: data.clarity_id || fallback.clarityId,
       keywords: data.keywords || '',
     };
