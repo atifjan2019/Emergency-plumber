@@ -6,8 +6,8 @@ import { isUkPostcodeArea, extractArea } from '@/lib/ukPostcodes';
 
 export type Coverage =
   | { state: 'idle' }
-  | { state: 'city'; city: City; outward: string; areaName: string }
-  | { state: 'uk'; outward: string; areaName: string };
+  | { state: 'city'; city: City; outward: string; areaName: string; resolved: boolean }
+  | { state: 'uk'; outward: string; areaName: string; resolved: boolean };
 
 const POSTCODE_REGEX = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i;
 
@@ -19,16 +19,16 @@ function localCheck(raw: string): Coverage {
   const outward = m[1];
   for (const city of cities) {
     for (const p of city.postcodes) {
-      if (outward === p) return { state: 'city', city, outward, areaName: city.name };
+      if (outward === p) return { state: 'city', city, outward, areaName: city.name, resolved: true };
       if (/^[A-Z]+$/.test(p) && outward.startsWith(p)) {
         const next = outward[p.length];
-        if (next && /\d/.test(next)) return { state: 'city', city, outward, areaName: city.name };
+        if (next && /\d/.test(next)) return { state: 'city', city, outward, areaName: city.name, resolved: true };
       }
     }
   }
   const area = extractArea(outward);
   if (area && isUkPostcodeArea(area)) {
-    return { state: 'uk', outward, areaName: outward };
+    return { state: 'uk', outward, areaName: '', resolved: false };
   }
   return { state: 'idle' };
 }
@@ -67,12 +67,14 @@ export function usePostcodeCoverage(raw: string): Coverage {
             city: matchedCity,
             outward: local.outward,
             areaName: apiArea,
+            resolved: true,
           });
         } else {
           setCoverage({
             state: 'uk',
             outward: local.outward,
             areaName: apiArea,
+            resolved: true,
           });
         }
       } catch {

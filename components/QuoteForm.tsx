@@ -150,10 +150,13 @@ export default function QuoteForm({
           We cover {coverage.areaName} ({coverage.city.region}) - typical response ~{coverage.city.responseTime}.
         </p>
       )}
-      {coverage.state === 'uk' && (
+      {coverage.state === 'uk' && coverage.resolved && (
         <p className="-mt-1 text-xs text-green-dark font-semibold">
           Yes, we can help in {coverage.areaName} - we will confirm response time on call.
         </p>
+      )}
+      {coverage.state === 'uk' && !coverage.resolved && (
+        <p className="-mt-1 text-xs text-gray-soft">Looking up your area...</p>
       )}
 
       <div className={compact ? 'grid gap-3' : 'grid gap-3.5 sm:grid-cols-2'}>

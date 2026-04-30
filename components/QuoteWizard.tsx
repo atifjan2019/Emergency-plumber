@@ -244,9 +244,14 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
                 We cover {coverage.areaName} · ~{coverage.city.responseTime} response.
               </p>
             )}
-            {coverage.state === 'uk' && (
+            {coverage.state === 'uk' && coverage.resolved && (
               <p className="mt-3 text-xs text-green-dark font-semibold">
                 Yes, we can help in {coverage.areaName} - we will confirm response time on call.
+              </p>
+            )}
+            {coverage.state === 'uk' && !coverage.resolved && (
+              <p className="mt-3 text-xs text-gray-soft">
+                Looking up your area...
               </p>
             )}
             {coverage.state === 'idle' && (
@@ -398,7 +403,7 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
                   <dt className="text-xs text-gray-soft">Postcode</dt>
                   <dd className="font-semibold text-ink">
                     {postcode.toUpperCase() || '-'}
-                    {(coverage.state === 'city' || coverage.state === 'uk') && (
+                    {(coverage.state === 'city' || (coverage.state === 'uk' && coverage.resolved)) && (
                       <span className="ml-2 text-xs text-green-dark">({coverage.areaName})</span>
                     )}
                   </dd>
