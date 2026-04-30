@@ -76,6 +76,7 @@ const serviceDeepDive: {
   note?: string;
   ctaHref: string;
   imageAlt: string;
+  image?: string;
 }[] = [
   {
     h3: 'Emergency plumbing repairs',
@@ -86,6 +87,7 @@ const serviceDeepDive: {
     fix: 'Isolate supply, repair or replace failed pipework, dry the affected area and document for insurance.',
     ctaHref: '/services/24-hour-plumber',
     imageAlt: 'Emergency plumber isolating a burst pipe with a stop tap during a 24/7 callout',
+    image: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/emergency-plumbing-repairs.png',
   },
   {
     h3: 'Leak detection & pipe repair',
@@ -96,6 +98,7 @@ const serviceDeepDive: {
     fix: 'Mark the leak source precisely, then repair or replace the failed pipe, joint or valve.',
     ctaHref: '/services/leak-detection',
     imageAlt: 'Thermal imaging camera being used to find a hidden water leak under a kitchen floor',
+    image: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/leak-detection-pipe-repair.png',
   },
   {
     h3: 'Drain cleaning & unblocking',
@@ -106,6 +109,7 @@ const serviceDeepDive: {
     fix: 'High-pressure jetting, electric drain rods, root cutting heads and CCTV survey on recurrent blockages.',
     ctaHref: '/services/blocked-drain',
     imageAlt: 'Drain engineer using high-pressure jetting to clear a blocked external drain',
+    image: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/drain-cleaning.png',
   },
   {
     h3: 'Pipe installation & replacement',
@@ -116,6 +120,7 @@ const serviceDeepDive: {
     fix: 'Copper, MDPE or push-fit plastic in standard domestic sizes with a pressure test on completion.',
     ctaHref: '/services/burst-pipe-repair',
     imageAlt: 'Plumber soldering a copper pipe joint during a pipe replacement',
+    image: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/pipe-installation.webp',
   },
   {
     h3: 'Bathroom & kitchen plumbing',
@@ -126,6 +131,7 @@ const serviceDeepDive: {
     fix: 'Replace washers, cartridges, valves, traps, taps and waste connections with proper isolation valves.',
     ctaHref: '/services/blocked-toilet',
     imageAlt: 'Plumber repairing a leaking tap and waste under a kitchen sink',
+    image: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/bathroom-kitchen-plumbing.webp',
   },
   {
     h3: 'Hot water & heating-related plumbing',
@@ -137,6 +143,7 @@ const serviceDeepDive: {
     note: 'Gas boiler and gas appliance work is carried out only by Gas Safe registered engineers.',
     ctaHref: '/services/no-hot-water',
     imageAlt: 'Gas Safe engineer servicing a combi boiler and motorised valve',
+    image: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/worker-repairing-water-heater.webp',
   },
 ];
 
@@ -553,7 +560,7 @@ export default async function HomePage() {
                   <div className="lg:col-span-6">
                     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-off-white shadow-sm">
                       <Image
-                        src={PLACEHOLDER_IMAGE}
+                        src={s.image ?? PLACEHOLDER_IMAGE}
                         alt={s.imageAlt}
                         fill
                         sizes="(max-width: 1024px) 100vw, 560px"
@@ -679,7 +686,7 @@ export default async function HomePage() {
           <div className="lg:col-span-5">
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white/20 shadow-2xl">
               <Image
-                src={PLACEHOLDER_IMAGE}
+                src="https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/plumbing-professional-doing-his-job.webp"
                 alt="Emergency plumber arriving on site with tools and isolation equipment for a 24/7 callout"
                 fill
                 sizes="(max-width: 1024px) 100vw, 480px"
@@ -732,114 +739,136 @@ export default async function HomePage() {
       </section>
 
       {/* SECTION: TRANSPARENT PRICING */}
-      <section className="section">
-        <div className="container-content">
-          <div className="grid gap-10 lg:grid-cols-12 items-start">
-            <div className="lg:col-span-5">
-              <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Pricing</span>
-              <h2 className="mt-3">Transparent plumbing prices - no hidden charges</h2>
-              <p className="mt-3 text-gray-soft">
-                We publish our standard rates so you know what to expect before you call. After diagnosis, the engineer confirms a fixed quote in writing - parts and labour - before any work begins. Same rate at 3am Sunday as at 11am Tuesday.
-              </p>
+      <section className="section relative overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" aria-hidden />
+        <div className="container-content relative">
+          {/* Header */}
+          <div className="max-w-3xl">
+            <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Pricing</span>
+            <h2 className="mt-3">Transparent plumbing prices - no hidden charges</h2>
+            <p className="mt-4 text-gray-soft md:text-lg">
+              Published rates, fixed quotes confirmed in writing before any work starts, and the same rate at 3am Sunday as at 11am Tuesday.
+            </p>
+          </div>
 
-              <div className="mt-6 space-y-3">
-                {[
-                  { t: 'No hidden charges', d: 'Quote confirmed in writing before any work starts' },
-                  { t: 'Same rate day or night', d: 'No surcharge for evenings, weekends or bank holidays' },
-                  { t: 'Itemised receipt', d: 'Insurance-grade written report included as standard' },
-                  { t: 'Fixed-price guarantee', d: 'If we go over the quote, we cover the difference' },
-                ].map((b) => (
-                  <div key={b.t} className="flex items-start gap-3 rounded-xl border border-gray-line bg-white p-4">
-                    <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-green/15 text-green-dark">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-4 w-4" aria-hidden>
-                        <path strokeLinecap="round" d="M5 12l5 5L20 7" />
-                      </svg>
+          {/* Trust pill row */}
+          <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { t: 'No hidden charges', d: 'Written quote before work starts' },
+              { t: 'Same rate day or night', d: 'No nights or weekend surcharge' },
+              { t: 'Itemised receipt', d: 'Insurance-grade documentation' },
+              { t: 'Fixed-price guarantee', d: 'We cover any overrun' },
+            ].map((b) => (
+              <div key={b.t} className="flex items-start gap-3 rounded-xl border border-gray-line bg-white p-4">
+                <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-green/15 text-green-dark">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-4 w-4" aria-hidden>
+                    <path strokeLinecap="round" d="M5 12l5 5L20 7" />
+                  </svg>
+                </span>
+                <div>
+                  <div className="text-sm font-bold text-ink">{b.t}</div>
+                  <div className="text-xs text-gray-soft mt-0.5">{b.d}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Featured pricing tiles */}
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {pricingTable.slice(0, 3).map((row, i) => {
+              const featured = i === 2;
+              return (
+                <div
+                  key={row.item}
+                  className={`relative rounded-2xl border p-6 md:p-7 transition shadow-sm hover:shadow-md ${
+                    featured
+                      ? 'bg-primary text-white border-primary lg:scale-[1.03]'
+                      : 'bg-white border-gray-line'
+                  }`}
+                >
+                  {featured && (
+                    <span className="absolute -top-3 left-6 inline-flex items-center gap-1 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow">
+                      Most asked about
                     </span>
-                    <div>
-                      <div className="font-semibold text-ink">{b.t}</div>
-                      <div className="text-sm text-gray-soft">{b.d}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 rounded-xl bg-primary p-5 text-white">
-                <p className="font-semibold">Get an exact price for your job</p>
-                <p className="mt-1 text-sm text-white/85">Send a photo or video and a few details. We come back with a fixed written quote within the hour.</p>
-                <div className="mt-4">
-                  <Link
-                    href="/quote"
-                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-bold text-primary hover:bg-off-white transition w-full sm:w-auto"
-                  >
-                    Get my free quote
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
-                      <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
-                    </svg>
-                  </Link>
+                  )}
+                  <p className={`text-xs font-bold uppercase tracking-wider ${featured ? 'text-white/80' : 'text-gray-soft'}`}>
+                    {row.item}
+                  </p>
+                  <p className={`mt-3 text-3xl md:text-4xl font-extrabold tracking-tight ${featured ? 'text-white' : 'text-primary'}`}>
+                    {row.price}
+                  </p>
+                  <p className={`mt-3 text-sm leading-relaxed ${featured ? 'text-white/85' : 'text-gray-soft'}`}>
+                    {row.note}
+                  </p>
                 </div>
-                <p className="mt-3 text-xs text-white/70">No obligation. Free quote, fixed-price guarantee.</p>
-              </div>
+              );
+            })}
+          </div>
+
+          {/* Secondary rates strip */}
+          <div className="mt-6 rounded-2xl border border-gray-line bg-white overflow-hidden">
+            <div className="flex items-center justify-between gap-4 px-5 md:px-6 py-3 border-b border-gray-line bg-off-white">
+              <h3 className="text-sm font-bold text-ink">Other published rates</h3>
+              <span className="text-xs text-gray-soft">Incl. VAT - {VAT_NUMBER}</span>
             </div>
+            <ul className="divide-y divide-gray-line md:divide-y-0 md:grid md:grid-cols-2 md:divide-x">
+              {pricingTable.slice(3).map((row) => (
+                <li key={row.item} className="p-5 md:p-6 hover:bg-off-white transition">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <h4 className="text-sm font-semibold text-ink">{row.item}</h4>
+                    <div className="text-base font-bold text-primary whitespace-nowrap">{row.price}</div>
+                  </div>
+                  <p className="mt-1.5 text-xs text-gray-soft leading-snug">{row.note}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-            <div className="lg:col-span-7">
-              <div className="overflow-hidden rounded-2xl border border-gray-line bg-white shadow-sm">
-                <div className="bg-primary px-5 py-4 text-white">
-                  <h3 className="text-base font-bold">Standard plumbing rates</h3>
-                  <p className="text-xs text-white/80">All prices include VAT. {VAT_NUMBER}.</p>
-                </div>
+          <p className="mt-4 text-xs text-gray-soft max-w-3xl leading-relaxed">
+            <span className="font-semibold text-ink">What affects the final price:</span> {pricingFinalNote}
+          </p>
 
-                {/* Desktop table */}
-                <table className="hidden md:table w-full text-left text-sm">
-                  <thead className="bg-off-white text-xs uppercase tracking-wide text-gray-soft">
-                    <tr>
-                      <th className="px-5 py-3 font-semibold w-2/5">Item</th>
-                      <th className="px-5 py-3 font-semibold w-1/5">Price</th>
-                      <th className="px-5 py-3 font-semibold">Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-line">
-                    {pricingTable.map((row) => (
-                      <tr key={row.item} className="align-top hover:bg-off-white">
-                        <td className="px-5 py-4 font-semibold text-ink">{row.item}</td>
-                        <td className="px-5 py-4 font-bold text-primary whitespace-nowrap">{row.price}</td>
-                        <td className="px-5 py-4 text-gray-soft">{row.note}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          {/* Cost factor tiles */}
+          <div className="mt-12">
+            <div className="max-w-2xl">
+              <h3 className="text-h3-m md:text-h3-d">Cost factors that shape your quote</h3>
+              <p className="mt-2 text-sm text-gray-soft">Each fixed quote is calculated against these inputs - so two similar-sounding jobs can sit at different price points.</p>
+            </div>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {pricingFactors.slice(0, 6).map((f, i) => (
+                <li key={f.factor} className="rounded-2xl border border-gray-line bg-white p-5 hover:border-primary/30 hover:shadow-sm transition">
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary text-sm font-bold">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <h4 className="text-sm font-bold text-ink">{f.factor}</h4>
+                  </div>
+                  <p className="mt-3 text-xs text-gray-soft leading-relaxed">{f.why}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-                {/* Mobile cards */}
-                <div className="md:hidden divide-y divide-gray-line">
-                  {pricingTable.map((row) => (
-                    <div key={row.item} className="p-5">
-                      <div className="flex items-baseline justify-between gap-3">
-                        <h4 className="text-sm font-semibold text-ink">{row.item}</h4>
-                        <div className="text-base font-bold text-primary whitespace-nowrap">{row.price}</div>
-                      </div>
-                      <p className="mt-1.5 text-xs text-gray-soft leading-snug">{row.note}</p>
-                    </div>
-                  ))}
-                </div>
+          {/* Final CTA stripe */}
+          <div className="mt-12 relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white p-6 md:p-8">
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_55%)] pointer-events-none" aria-hidden />
+            <div className="relative grid gap-6 md:grid-cols-12 md:items-center">
+              <div className="md:col-span-7">
+                <p className="text-xs font-bold uppercase tracking-wider text-white/80">Free fixed quote</p>
+                <h3 className="mt-2 text-white text-h3-m md:text-h3-d">Get an exact price for your job - usually within the hour</h3>
+                <p className="mt-2 text-sm md:text-base text-white/85">Send a photo or short video and a few details. A real engineer comes back with a written, fixed quote - no obligation.</p>
               </div>
-
-              <p className="mt-4 text-xs text-gray-soft leading-relaxed">
-                <span className="font-semibold text-ink">What affects the final price:</span> {pricingFinalNote}
-              </p>
-
-              <div className="mt-6 rounded-2xl border border-gray-line bg-off-white p-5">
-                <h3 className="text-sm font-bold text-ink">Cost factors that may apply</h3>
-                <p className="mt-1 text-xs text-gray-soft">Used to calculate your fixed quote.</p>
-                <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-                  {pricingFactors.slice(0, 6).map((f) => (
-                    <li key={f.factor} className="flex items-start gap-2 text-xs">
-                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                      <span>
-                        <span className="font-semibold text-ink">{f.factor}:</span>{' '}
-                        <span className="text-gray-soft">{f.why}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="md:col-span-5 flex flex-col sm:flex-row md:justify-end gap-3">
+                <Link
+                  href="/quote"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3.5 text-sm font-bold text-primary hover:bg-off-white transition"
+                >
+                  Get my free quote
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+                    <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                  </svg>
+                </Link>
+                <CallButton variant="white" phoneTel={settings.phoneTel} phoneDisplay={settings.phoneDisplay} />
               </div>
             </div>
           </div>
@@ -886,7 +915,7 @@ export default async function HomePage() {
             <div className="lg:col-span-5">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-white shadow-md">
                 <Image
-                  src={PLACEHOLDER_IMAGE}
+                  src="https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/promotional-image-repair-experts-posing-with-their-tools-equipment-exuding-confidence.jpg"
                   alt={`${BRAND} engineer next to a sign-written plumbing van, ready for a 24/7 emergency callout`}
                   fill
                   sizes="(max-width: 1024px) 100vw, 480px"
@@ -932,7 +961,7 @@ export default async function HomePage() {
               >
                 <div className="relative aspect-[16/9] overflow-hidden bg-off-white">
                   <Image
-                    src={PLACEHOLDER_IMAGE}
+                    src={j.image ?? PLACEHOLDER_IMAGE}
                     alt={j.imageAlt}
                     fill
                     sizes="(max-width: 1024px) 100vw, 600px"
@@ -1229,40 +1258,102 @@ export default async function HomePage() {
       </section>
 
       {/* SECTION: PREVENTION */}
-      <section className="section bg-off-white">
-        <div className="container-content grid gap-10 lg:grid-cols-12 items-start">
-          <div className="lg:col-span-5">
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gray-line bg-white">
-              <Image
-                src={PLACEHOLDER_IMAGE}
-                alt="Plumber inspecting pipework and valves during a routine plumbing maintenance visit"
-                fill
-                sizes="(max-width: 1024px) 100vw, 480px"
-                className="object-cover"
-              />
+      <section className="section bg-off-white relative overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-green/8 via-transparent to-transparent pointer-events-none" aria-hidden />
+        <div className="container-content relative">
+          {/* Header */}
+          <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-8">
+              <span className="inline-block rounded-full bg-green/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-green-dark">Prevention</span>
+              <h2 className="mt-3">Stop small problems becoming emergencies</h2>
+              <p className="mt-3 text-gray-soft md:text-lg max-w-3xl">
+                Regular plumbing maintenance catches worn valves, leaking joints, blocked waste pipes, pressure faults and early pipe corrosion before they turn into emergency call-outs. A handful of low-effort habits prevents most of the jobs we attend.
+              </p>
             </div>
-            <span className="mt-6 inline-block rounded-full bg-green/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-green-dark">Prevention</span>
-            <h2 className="mt-3">Stop small problems becoming emergencies</h2>
-            <p className="mt-3 text-gray-soft">
-              Regular plumbing maintenance helps identify worn valves, leaking joints, blocked waste pipes, pressure irregularities and early signs of pipe corrosion before they turn into emergency repairs. A handful of low-effort habits prevents the majority of the call-outs we attend.
-            </p>
-            <Link href="/services" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary">
-              See our maintenance service
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
-                <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
-              </svg>
-            </Link>
+            <div className="lg:col-span-4 flex lg:justify-end">
+              <Link
+                href="/services"
+                className="inline-flex items-center gap-2 rounded-lg border border-green/40 bg-white px-5 py-3 text-sm font-semibold text-green-dark hover:bg-green/10 transition"
+              >
+                See our maintenance service
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+                  <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
           </div>
-          <ul className="lg:col-span-7 grid gap-3 sm:grid-cols-2">
-            {preventionTips.map((tip, i) => (
-              <li key={tip} className="flex items-start gap-3 rounded-xl border border-gray-line bg-white p-4 hover:border-green/40 transition">
-                <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-green/15 text-green-dark text-xs font-bold">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="text-sm text-ink leading-snug">{tip}</span>
-              </li>
-            ))}
+
+          {/* Tip cards */}
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {preventionTips.map((tip, i) => {
+              const meta = [
+                { icon: 'shield', label: 'Stop tap' },
+                { icon: 'pipe', label: 'Frost protection' },
+                { icon: 'toilet', label: 'Drain care' },
+                { icon: 'search', label: 'Monthly check' },
+                { icon: 'droplet', label: 'Water quality' },
+                { icon: 'tap', label: 'Tap upkeep' },
+                { icon: 'radiator', label: 'Heating system' },
+                { icon: 'clock', label: 'Annual service' },
+              ][i] ?? { icon: 'check', label: 'Tip' };
+              return (
+                <li
+                  key={tip}
+                  className="group relative flex flex-col rounded-2xl border border-gray-line bg-white p-5 hover:border-green/50 hover:shadow-md transition"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-green/12 text-green-dark group-hover:bg-green group-hover:text-white transition">
+                      <UtilityIcon name={meta.icon} />
+                    </span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-gray-soft">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-[11px] font-bold uppercase tracking-wider text-green-dark">{meta.label}</p>
+                  <p className="mt-2 text-sm text-ink leading-relaxed flex-1">{tip}</p>
+                </li>
+              );
+            })}
           </ul>
+
+          {/* Maintenance CTA banner */}
+          <div className="mt-10 relative overflow-hidden rounded-2xl border border-green/25 bg-white">
+            <div className="grid gap-0 md:grid-cols-12 items-stretch">
+              <div className="md:col-span-4 relative min-h-[180px] md:min-h-0">
+                <Image
+                  src="https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/promotional-image-repair-experts-posing-with-their-tools-equipment-exuding-confidence.jpg"
+                  alt="Plumber inspecting pipework and valves during a routine plumbing maintenance visit"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 380px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="md:col-span-8 p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+                <div className="flex-1">
+                  <p className="text-xs font-bold uppercase tracking-wider text-green-dark">Annual maintenance plan</p>
+                  <h3 className="mt-2 text-h3-m md:text-h3-d">Catch problems early - one yearly visit, fixed price</h3>
+                  <p className="mt-2 text-sm text-gray-soft">A scheduled plumbing inspection across pipework, valves, drainage and the boiler. Most repeat call-outs we attend would have been prevented at this stage.</p>
+                </div>
+                <div className="flex flex-col sm:flex-row md:flex-col gap-3 md:shrink-0">
+                  <Link
+                    href="/quote"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-green text-white px-5 py-3 text-sm font-bold hover:bg-green-dark transition"
+                  >
+                    Book a check-up
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden>
+                      <path strokeLinecap="round" d="M5 12h14M13 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                  <Link
+                    href="/services"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-line px-5 py-3 text-sm font-semibold text-ink hover:bg-off-white transition"
+                  >
+                    Learn more
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

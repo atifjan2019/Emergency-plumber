@@ -128,6 +128,7 @@ export type DetailedJob = {
   outcome: string;
   date: string;
   imageAlt: string;
+  image?: string;
 };
 
 export const detailedRecentJobs: DetailedJob[] = [
@@ -142,6 +143,7 @@ export const detailedRecentJobs: DetailedJob[] = [
     timeTaken: '2h 45m on site',
     outcome: 'Supply restored same visit. Insurance-grade written report issued. 90-day workmanship guarantee.',
     imageAlt: 'Replaced copper section above kitchen ceiling after burst rising main repair in Birmingham B17',
+    image: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/worker-fixing-burst-water-pipe-with-blue-flange-wrench-as-water-sprays-everywhere-emergency-plumbing-repair-task.webp',
   },
   {
     title: 'Blocked bathroom drain in Leeds',
@@ -154,6 +156,7 @@ export const detailedRecentJobs: DetailedJob[] = [
     timeTaken: '55 minutes',
     outcome: 'Drain flowing clear, smell gone. Tenant briefed on monthly hot-water flush to prevent recurrence.',
     imageAlt: 'Cleared bathroom waste pipe after drain unblocking job in Leeds LS6',
+    image: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/bathroom-drain-clogged-with-dirty-hair-slime-female-hand-pulls-long-messy-tuft-hair.webp',
   },
   {
     title: 'Leaking toilet cistern in Bristol',
@@ -166,6 +169,7 @@ export const detailedRecentJobs: DetailedJob[] = [
     timeTaken: '40 minutes',
     outcome: 'No more running, no leak, water meter ticking back to zero. Parts and labour fixed-price.',
     imageAlt: 'Replaced toilet flush valve and cistern seal after leak repair in Bristol BS8',
+    image: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/male-plumber-working-fix-problems-client-s-house.webp',
   },
   {
     title: 'Low water pressure issue in Manchester',
@@ -178,6 +182,7 @@ export const detailedRecentJobs: DetailedJob[] = [
     timeTaken: '90 minutes',
     outcome: 'Pressure stable for 72-hour soak test. Showers back to full flow. No more weekly top-ups.',
     imageAlt: 'Replaced radiator valve fixing low boiler pressure in Manchester M20',
+    image: 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/need-help-unhappy-woman-crouching-near-leaking-water-tap-home.webp',
   },
 ];
 
