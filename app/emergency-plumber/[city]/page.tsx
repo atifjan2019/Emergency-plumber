@@ -19,6 +19,7 @@ import { buildCityFaq } from '@/lib/cityFaq';
 import { cityPlumberSchema, faqSchema, breadcrumbSchema } from '@/lib/schema';
 import { BRAND, SITE_URL } from '@/lib/constants';
 import { getSettings } from '@/lib/settings';
+import { ogImageFor } from '@/lib/seo';
 
 export const dynamicParams = false;
 export const revalidate = 3600;
@@ -31,8 +32,11 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   const { city: slug } = await params;
   const city = getCityBySlug(slug);
   if (!city) return {};
+  const s = await getSettings();
+  const url = `${SITE_URL}/emergency-plumber/${city.slug}`;
   const title = `Emergency Plumber ${city.name} | 24/7 Call Out`;
   const description = `24/7 emergency plumber in ${city.name}. Response in ${city.responseTime}. Burst pipes, blocked drains, boiler repairs. Gas Safe. Call now.`;
+  const image = ogImageFor(s.ogImageUrl, `Emergency plumber in ${city.name}`);
   return {
     title,
     description,
@@ -40,10 +44,17 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
     openGraph: {
       title,
       description,
-      url: `${SITE_URL}/emergency-plumber/${city.slug}`,
+      url,
       type: 'website',
       siteName: BRAND,
       locale: 'en_GB',
+      images: [image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image.url],
     },
   };
 }

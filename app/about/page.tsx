@@ -4,14 +4,34 @@ import BreadcrumbNav from '@/components/BreadcrumbNav';
 import CTASection from '@/components/CTASection';
 import TrustBar from '@/components/TrustBar';
 import SchemaMarkup from '@/components/SchemaMarkup';
-import { breadcrumbSchema } from '@/lib/schema';
-import { BRAND, GAS_SAFE_NUMBER } from '@/lib/constants';
+import { breadcrumbSchema, webPageSchema } from '@/lib/schema';
+import { BRAND, GAS_SAFE_NUMBER, SITE_URL } from '@/lib/constants';
 import { PLACEHOLDER_IMAGE } from '@/lib/plumbingContent';
+import { DEFAULT_OG_IMAGE } from '@/lib/seo';
+
+const ABOUT_TITLE = `About ${BRAND} | UK Emergency Plumbing`;
+const ABOUT_DESCRIPTION = `${BRAND} is a UK nationwide emergency plumbing company providing Gas Safe registered, 24/7 response across 12 cities with no out-of-hours surcharge.`;
+const ABOUT_URL = `${SITE_URL}/about`;
 
 export const metadata: Metadata = {
-  title: `About ${BRAND} | UK Emergency Plumbing`,
-  description: `${BRAND} is a UK nationwide emergency plumbing company providing Gas Safe registered, 24/7 response across 12 cities with no out-of-hours surcharge.`,
+  title: ABOUT_TITLE,
+  description: ABOUT_DESCRIPTION,
   alternates: { canonical: '/about' },
+  openGraph: {
+    type: 'website',
+    locale: 'en_GB',
+    siteName: BRAND,
+    title: ABOUT_TITLE,
+    description: ABOUT_DESCRIPTION,
+    url: ABOUT_URL,
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: BRAND }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: ABOUT_TITLE,
+    description: ABOUT_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
+  },
 };
 
 const sections: { h: string; body: string }[] = [];
@@ -23,7 +43,12 @@ export default function AboutPage() {
   ];
   return (
     <>
-      <SchemaMarkup data={breadcrumbSchema(crumbs)} />
+      <SchemaMarkup
+        data={[
+          webPageSchema({ url: ABOUT_URL, name: ABOUT_TITLE, description: ABOUT_DESCRIPTION, type: 'AboutPage' }),
+          breadcrumbSchema(crumbs),
+        ]}
+      />
       <div className="container-content pt-6">
         <BreadcrumbNav items={crumbs} />
       </div>

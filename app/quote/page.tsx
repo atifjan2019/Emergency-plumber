@@ -3,14 +3,35 @@ import Link from 'next/link';
 import CallButton from '@/components/CallButton';
 import QuoteWizard from '@/components/QuoteWizard';
 import { getSettings } from '@/lib/settings';
+import { SITE_URL } from '@/lib/constants';
+import { ogImageFor } from '@/lib/seo';
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSettings();
+  const url = `${SITE_URL}/quote`;
+  const title = `Get a free quote | ${s.brand}`;
+  const description = `Free, no-obligation quote from a Gas Safe plumber. Tell us what's wrong and we'll reply within an hour during the day. For emergencies, call ${s.phoneDisplay}.`;
+  const image = ogImageFor(s.ogImageUrl, `Get a free plumbing quote - ${s.brand}`);
   return {
-    title: `Get a free quote | ${s.brand}`,
-    description: `Free, no-obligation quote from a Gas Safe plumber. Tell us what's wrong and we'll reply within an hour during the day. For emergencies, call ${s.phoneDisplay}.`,
+    title,
+    description,
     alternates: { canonical: '/quote' },
-    robots: { index: true, follow: true },
+    robots: { index: false, follow: true },
+    openGraph: {
+      type: 'website',
+      locale: 'en_GB',
+      siteName: s.brand,
+      title,
+      description,
+      url,
+      images: [image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image.url],
+    },
   };
 }
 

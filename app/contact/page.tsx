@@ -5,16 +5,37 @@ import CallButton from '@/components/CallButton';
 import ContactForm from '@/components/ContactForm';
 import CTASection from '@/components/CTASection';
 import SchemaMarkup from '@/components/SchemaMarkup';
-import { breadcrumbSchema } from '@/lib/schema';
+import { breadcrumbSchema, webPageSchema } from '@/lib/schema';
 import { getSettings } from '@/lib/settings';
 import { PLACEHOLDER_IMAGE } from '@/lib/plumbingContent';
+import { SITE_URL } from '@/lib/constants';
+import { ogImageFor } from '@/lib/seo';
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSettings();
+  const url = `${SITE_URL}/contact`;
+  const title = `Contact ${s.brand} | 24/7 Emergency Line`;
+  const description = `Contact ${s.brand} - 24/7 emergency plumbing line, email, and live UK coverage details. Call now or send us a non-urgent message.`;
+  const image = ogImageFor(s.ogImageUrl, `Contact ${s.brand}`);
   return {
-    title: `Contact ${s.brand} | 24/7 Emergency Line`,
-    description: `Contact ${s.brand} - 24/7 emergency plumbing line, email, and live UK coverage details. Call now or send us a non-urgent message.`,
+    title,
+    description,
     alternates: { canonical: '/contact' },
+    openGraph: {
+      type: 'website',
+      locale: 'en_GB',
+      siteName: s.brand,
+      title,
+      description,
+      url,
+      images: [image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image.url],
+    },
   };
 }
 
@@ -26,9 +47,20 @@ export default async function ContactPage() {
     { label: 'Home', href: '/' },
     { label: 'Contact' },
   ];
+  const url = `${SITE_URL}/contact`;
   return (
     <>
-      <SchemaMarkup data={breadcrumbSchema(crumbs)} />
+      <SchemaMarkup
+        data={[
+          webPageSchema({
+            url,
+            name: `Contact ${s.brand}`,
+            description: `Contact ${s.brand} - 24/7 emergency plumbing line, email, and live UK coverage details.`,
+            type: 'ContactPage',
+          }),
+          breadcrumbSchema(crumbs),
+        ]}
+      />
       <div className="container-content pt-6">
         <BreadcrumbNav items={crumbs} />
       </div>

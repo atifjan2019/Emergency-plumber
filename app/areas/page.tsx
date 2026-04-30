@@ -5,14 +5,34 @@ import BreadcrumbNav from '@/components/BreadcrumbNav';
 import CTASection from '@/components/CTASection';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import { cities } from '@/data/cities';
-import { breadcrumbSchema } from '@/lib/schema';
-import { BRAND } from '@/lib/constants';
+import { breadcrumbSchema, webPageSchema } from '@/lib/schema';
+import { BRAND, SITE_URL } from '@/lib/constants';
 import { PLACEHOLDER_IMAGE } from '@/lib/plumbingContent';
+import { DEFAULT_OG_IMAGE } from '@/lib/seo';
+
+const AREAS_TITLE = `UK Coverage Areas | 24/7 Emergency Plumbers | ${BRAND}`;
+const AREAS_DESCRIPTION = `Live emergency plumbing coverage in 12 UK cities including London, Manchester, Birmingham, Glasgow, Leeds, Liverpool. Pick your area for local pricing.`;
+const AREAS_URL = `${SITE_URL}/areas`;
 
 export const metadata: Metadata = {
-  title: `UK Coverage Areas | 24/7 Emergency Plumbers | ${BRAND}`,
-  description: `Live emergency plumbing coverage in 12 UK cities including London, Manchester, Birmingham, Glasgow, Leeds, Liverpool and more. Pick your area for local pricing and response times.`,
+  title: AREAS_TITLE,
+  description: AREAS_DESCRIPTION,
   alternates: { canonical: '/areas' },
+  openGraph: {
+    type: 'website',
+    locale: 'en_GB',
+    siteName: BRAND,
+    title: AREAS_TITLE,
+    description: AREAS_DESCRIPTION,
+    url: AREAS_URL,
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: BRAND }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: AREAS_TITLE,
+    description: AREAS_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
+  },
 };
 
 export default function AreasIndex() {
@@ -22,7 +42,12 @@ export default function AreasIndex() {
   ];
   return (
     <>
-      <SchemaMarkup data={breadcrumbSchema(crumbs)} />
+      <SchemaMarkup
+        data={[
+          webPageSchema({ url: AREAS_URL, name: AREAS_TITLE, description: AREAS_DESCRIPTION, type: 'CollectionPage' }),
+          breadcrumbSchema(crumbs),
+        ]}
+      />
       <div className="container-content pt-6">
         <BreadcrumbNav items={crumbs} />
       </div>

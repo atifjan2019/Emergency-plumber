@@ -6,16 +6,30 @@ import CTASection from '@/components/CTASection';
 import { cities } from '@/data/cities';
 import { BRAND, SITE_URL } from '@/lib/constants';
 import { PLACEHOLDER_IMAGE } from '@/lib/plumbingContent';
+import { DEFAULT_OG_IMAGE } from '@/lib/seo';
+
+const PS_TITLE = `Plumbing Services UK | Local Repairs, Leaks, Drains | ${BRAND}`;
+const PS_DESCRIPTION = `Local plumbing services across the UK. Emergency repairs, burst pipes, blocked drains, leak detection, tap replacement, bathroom plumbing.`;
+const PS_URL = `${SITE_URL}/plumbing-services`;
 
 export const metadata: Metadata = {
-  title: `Plumbing Services UK | Local Repairs, Leaks, Drains | ${BRAND}`,
-  description: `Local plumbing services across the UK. Emergency repairs, burst pipes, blocked drains, leak detection, tap replacement, and bathroom plumbing. Clear quotes. Guaranteed workmanship.`,
+  title: PS_TITLE,
+  description: PS_DESCRIPTION,
   alternates: { canonical: '/plumbing-services' },
   openGraph: {
-    title: `Plumbing Services UK | ${BRAND}`,
-    description: `Local plumbing services across the UK: emergency repairs, leak detection, drain unblocking, and installations. Clear quotes, guaranteed workmanship.`,
-    url: `${SITE_URL}/plumbing-services`,
     type: 'website',
+    locale: 'en_GB',
+    siteName: BRAND,
+    title: PS_TITLE,
+    description: PS_DESCRIPTION,
+    url: PS_URL,
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: BRAND }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: PS_TITLE,
+    description: PS_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 

@@ -14,7 +14,8 @@ import { getReviewsByCity } from '@/lib/reviews';
 import { getRecentJobsByCity } from '@/data/recentJobs';
 import { faqSchema, breadcrumbSchema } from '@/lib/schema';
 import { getSettings, type SiteSettings } from '@/lib/settings';
-import { SITE_URL, PHONE_TEL, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT } from '@/lib/constants';
+import { SITE_URL, PHONE_TEL, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT, BRAND } from '@/lib/constants';
+import { ogImageFor } from '@/lib/seo';
 
 export const dynamicParams = false;
 export const revalidate = 3600;
@@ -27,19 +28,30 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   const { city: slug } = await params;
   const city = getCityBySlug(slug);
   if (!city) return {};
+  const s = await getSettings();
+  const canonicalUrl = `${SITE_URL}/emergency-plumber/${city.slug}`;
   const title = `Plumbing Services ${city.name} | Local Plumber`;
   const description = `Local plumbers in ${city.name}. Burst pipes, blocked drains, leak detection, tap & bathroom plumbing. Clear quotes, guaranteed workmanship. Call now.`;
+  const image = ogImageFor(s.ogImageUrl, `Plumbing services in ${city.name}`);
   return {
     title,
     description,
-    alternates: { canonical: `${SITE_URL}/emergency-plumber/${city.slug}` },
+    alternates: { canonical: canonicalUrl },
     robots: { index: false, follow: true },
     openGraph: {
       title,
       description,
-      url: `${SITE_URL}/emergency-plumber/${city.slug}`,
+      url: canonicalUrl,
       type: 'website',
+      siteName: BRAND,
       locale: 'en_GB',
+      images: [image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image.url],
     },
   };
 }

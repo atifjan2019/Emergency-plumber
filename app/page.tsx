@@ -27,6 +27,7 @@ import {
   REVIEWER,
 } from '@/lib/constants';
 import { organizationSchema, websiteSchema, faqSchema } from '@/lib/schema';
+import { DEFAULT_OG_IMAGE } from '@/lib/seo';
 import { getSettings } from '@/lib/settings';
 import {
   problemRouter,
@@ -47,17 +48,27 @@ import {
 
 export const revalidate = 3600;
 
+const HOME_TITLE = `24/7 Emergency Plumber UK | ${BRAND}`;
+const HOME_DESCRIPTION = `24/7 emergency plumbers across 12 UK cities. Burst pipes, blocked drains, leaks & boiler repairs. Gas Safe registered. Transparent quotes. Call now.`;
+
 export const metadata: Metadata = {
-  title: `24/7 Emergency Plumber UK | ${BRAND}`,
-  description: `24/7 emergency plumbers across 12 UK cities. Burst pipes, blocked drains, leaks & boiler repairs. Gas Safe registered. Transparent quotes. Call now.`,
+  title: HOME_TITLE,
+  description: HOME_DESCRIPTION,
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     locale: 'en_GB',
     siteName: BRAND,
-    title: `24/7 Emergency Plumber UK | ${BRAND}`,
-    description: `24/7 emergency plumbers across 12 UK cities. Burst pipes, blocked drains, leaks & boiler repairs. Gas Safe registered. Transparent quotes. Call now.`,
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
     url: '/',
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: BRAND }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: HOME_TITLE,
+    description: HOME_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 
@@ -167,7 +178,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <SchemaMarkup data={[organizationSchema(settings.phoneTel), websiteSchema(), faqSchema(homeFaq)]} />
+      <SchemaMarkup data={[organizationSchema(settings.phoneTel, settings.logoUrl), websiteSchema(), faqSchema(homeFaq)]} />
 
       {/* HERO - image-led, conversion-focused */}
       <section

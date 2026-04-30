@@ -18,6 +18,7 @@ import { getFeaturedReviews } from '@/lib/reviews';
 import { serviceSchema, faqSchema, breadcrumbSchema } from '@/lib/schema';
 import { getSettings } from '@/lib/settings';
 import { BRAND, SITE_URL, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT } from '@/lib/constants';
+import { ogImageFor, trimDescription } from '@/lib/seo';
 import Image from 'next/image';
 import {
   problemRouter,
@@ -40,10 +41,13 @@ export async function generateMetadata({ params }: { params: Promise<{ service: 
   const { service: slug } = await params;
   const service = getServiceBySlug(slug);
   if (!service) return {};
+  const s = await getSettings();
+  const url = `${SITE_URL}/services/${service.slug}`;
   const title = `${service.name} UK | 24/7 Emergency Plumber`;
   const description = trimDescription(
     `${service.shortDescription} Gas Safe plumbers across 12 UK cities. Transparent quotes, 24/7 callouts.`
   );
+  const image = ogImageFor(s.ogImageUrl, `${service.name} - ${BRAND}`);
   return {
     title,
     description,
@@ -51,19 +55,19 @@ export async function generateMetadata({ params }: { params: Promise<{ service: 
     openGraph: {
       title,
       description,
-      url: `${SITE_URL}/services/${service.slug}`,
+      url,
       type: 'website',
       siteName: BRAND,
       locale: 'en_GB',
+      images: [image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [image.url],
     },
   };
-}
-
-function trimDescription(text: string, max = 155): string {
-  if (text.length <= max) return text;
-  const cut = text.slice(0, max);
-  const lastSpace = cut.lastIndexOf(' ');
-  return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd() + '…';
 }
 
 export default async function ServicePage({ params }: { params: Promise<{ service: string }> }) {
