@@ -14,7 +14,6 @@ import { cities } from '@/data/cities';
 import { homeFaq } from '@/data/homeFaq';
 import {
   BRAND,
-  PHONE_DISPLAY,
   NATIONWIDE_RATING,
   NATIONWIDE_REVIEW_COUNT,
   GAS_SAFE_NUMBER,
