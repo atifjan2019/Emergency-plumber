@@ -23,7 +23,7 @@ const priceNumber = (s: string): number | undefined => {
   return m ? Number(m[1]) : undefined;
 };
 
-export const organizationSchema = (phoneTel: string, logoUrl?: string) => ({
+export const organizationSchema = (phoneTel: string, logoUrl?: string, gasSafeNumber?: string) => ({
   '@context': 'https://schema.org',
   '@type': 'Plumber',
   '@id': `${SITE_URL}/#organization`,
@@ -37,7 +37,7 @@ export const organizationSchema = (phoneTel: string, logoUrl?: string) => ({
   priceRange: '££',
   openingHours: 'Mo-Su 00:00-23:59',
   areaServed: allCities.map((c) => ({ '@type': 'City', name: c.name })),
-  hasCredential: { '@type': 'EducationalOccupationalCredential', name: `Gas Safe Registered #${GAS_SAFE_NUMBER}` },
+  hasCredential: { '@type': 'EducationalOccupationalCredential', name: `Gas Safe Registered #${gasSafeNumber || GAS_SAFE_NUMBER}` },
   sameAs: ORG_SAME_AS,
   aggregateRating: {
     '@type': 'AggregateRating',

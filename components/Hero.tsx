@@ -37,7 +37,7 @@ export default async function Hero({ variant = 'home', title, subtitle, response
             <a href="#how-it-works" className="btn-ghost">How it works</a>
           </div>
           <div className="mt-8">
-            <TrustBar responseTime={responseTime} />
+            <TrustBar responseTime={responseTime} gasSafeNumber={s.gasSafeNumber} />
           </div>
         </div>
 

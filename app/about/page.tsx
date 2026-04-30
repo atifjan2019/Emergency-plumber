@@ -5,9 +5,10 @@ import CTASection from '@/components/CTASection';
 import TrustBar from '@/components/TrustBar';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import { breadcrumbSchema, webPageSchema } from '@/lib/schema';
-import { BRAND, GAS_SAFE_NUMBER, SITE_URL } from '@/lib/constants';
+import { BRAND, SITE_URL } from '@/lib/constants';
 import { PLACEHOLDER_IMAGE } from '@/lib/plumbingContent';
 import { DEFAULT_OG_IMAGE } from '@/lib/seo';
+import { getSettings } from '@/lib/settings';
 
 const ABOUT_TITLE = `About ${BRAND} | UK Emergency Plumbing`;
 const ABOUT_DESCRIPTION = `${BRAND} is a UK nationwide emergency plumbing company providing Gas Safe registered, 24/7 response across 12 cities with no out-of-hours surcharge.`;
@@ -36,7 +37,9 @@ export const metadata: Metadata = {
 
 const sections: { h: string; body: string }[] = [];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const settings = await getSettings();
+  const gasSafe = settings.gasSafeNumber;
   const crumbs = [
     { label: 'Home', href: '/' },
     { label: 'About' },
@@ -67,7 +70,7 @@ export default function AboutPage() {
               {BRAND} is a UK emergency plumbing company built around one principle - the price you pay for an emergency at 3am on a Sunday should be the same as at midday on a Tuesday. Every engineer is directly employed, Gas Safe registered, and equipped to complete most domestic emergencies on the first visit.
             </p>
             <div className="mt-8">
-              <TrustBar responseTime="30 minutes" />
+              <TrustBar responseTime="30 minutes" gasSafeNumber={gasSafe} />
             </div>
           </div>
           <div className="md:col-span-5">
@@ -143,7 +146,7 @@ export default function AboutPage() {
                 <h2 className="text-h3-m md:text-h3-d">Credentials</h2>
               </div>
               <p className="mt-4 text-base leading-relaxed text-gray-soft">
-                Gas Safe registered company (registration #{GAS_SAFE_NUMBER}). All gas engineers hold current ACS qualifications. Public liability insurance £5m. Compliance with WRAS, BS EN standards for installation, and G3 unvented qualifications across the engineer pool.
+                Gas Safe registered company (registration #{gasSafe}). All gas engineers hold current ACS qualifications. Public liability insurance £5m. Compliance with WRAS, BS EN standards for installation, and G3 unvented qualifications across the engineer pool.
               </p>
             </article>
           </div>

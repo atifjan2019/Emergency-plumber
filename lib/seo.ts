@@ -8,6 +8,21 @@ export const ogImageFor = (settingsOgImageUrl: string | undefined, alt: string) 
   alt,
 });
 
+import { GAS_SAFE_NUMBER } from './constants';
+
+const GAS_SAFE_FALLBACK_RE = new RegExp(`\\b${GAS_SAFE_NUMBER}\\b`, 'g');
+
+export const subGasSafe = (text: string, gasSafeNumber: string): string =>
+  gasSafeNumber === GAS_SAFE_NUMBER ? text : text.replace(GAS_SAFE_FALLBACK_RE, gasSafeNumber);
+
+export const subGasSafeFaq = <T extends { question: string; answer: string }>(
+  items: T[],
+  gasSafeNumber: string,
+): T[] =>
+  gasSafeNumber === GAS_SAFE_NUMBER
+    ? items
+    : items.map((q) => ({ ...q, answer: subGasSafe(q.answer, gasSafeNumber) }));
+
 export function trimDescription(text: string, max = 155): string {
   const clean = text.trim();
   if (clean.length <= max) return clean;

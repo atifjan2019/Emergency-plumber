@@ -1,8 +1,9 @@
 import { GAS_SAFE_NUMBER, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT } from '@/lib/constants';
 
-type Props = { responseTime?: string; variant?: 'light' | 'dark' };
+type Props = { responseTime?: string; variant?: 'light' | 'dark'; gasSafeNumber?: string };
 
-export default function TrustBar({ responseTime, variant = 'light' }: Props) {
+export default function TrustBar({ responseTime, variant = 'light', gasSafeNumber }: Props) {
+  const gasSafe = gasSafeNumber || GAS_SAFE_NUMBER;
   const dark = variant === 'dark';
   const textColor = dark ? 'text-white' : 'text-ink';
   const subColor = dark ? 'text-white/70' : 'text-gray-soft';
@@ -22,7 +23,7 @@ export default function TrustBar({ responseTime, variant = 'light' }: Props) {
         </span>
         <div className="min-w-0 leading-tight">
           <div className="text-sm font-bold truncate">Gas Safe</div>
-          <div className={`text-[11px] truncate ${subColor}`}>#{GAS_SAFE_NUMBER}</div>
+          <div className={`text-[11px] truncate ${subColor}`}>#{gasSafe}</div>
         </div>
       </div>
 

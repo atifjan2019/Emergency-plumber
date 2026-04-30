@@ -67,7 +67,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
   const cityReviews = await getReviewsByCity(city.slug, 6);
   const recentJobs = getRecentJobsByCity(city.slug);
   const settings = await getSettings();
-  const faq = buildCityFaq(city);
+  const faq = buildCityFaq(city, settings.gasSafeNumber);
   const otherCities = cities.filter((c) => c.slug !== city.slug).slice(0, 6);
 
   const crumbs = [

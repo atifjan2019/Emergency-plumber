@@ -18,7 +18,7 @@ import { getFeaturedReviews } from '@/lib/reviews';
 import { serviceSchema, faqSchema, breadcrumbSchema } from '@/lib/schema';
 import { getSettings } from '@/lib/settings';
 import { BRAND, SITE_URL, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT } from '@/lib/constants';
-import { ogImageFor, trimDescription } from '@/lib/seo';
+import { ogImageFor, trimDescription, subGasSafeFaq } from '@/lib/seo';
 import Image from 'next/image';
 import {
   problemRouter,
@@ -82,6 +82,7 @@ export default async function ServicePage({ params }: { params: Promise<{ servic
   const settings = await getSettings();
   const featured = await getFeaturedReviews(3);
   const otherServices = services.filter((s) => s.slug !== service.slug);
+  const serviceFaq = subGasSafeFaq(service.faq, settings.gasSafeNumber);
 
   const crumbs = [
     { label: 'Home', href: '/' },
@@ -92,7 +93,7 @@ export default async function ServicePage({ params }: { params: Promise<{ servic
   return (
     <>
       <SchemaMarkup
-        data={[serviceSchema(service), faqSchema(service.faq), breadcrumbSchema(crumbs)]}
+        data={[serviceSchema(service), faqSchema(serviceFaq), breadcrumbSchema(crumbs)]}
       />
 
       <div className="container-content pt-6">
@@ -611,7 +612,7 @@ export default async function ServicePage({ params }: { params: Promise<{ servic
           <h2>{service.name} FAQs</h2>
           <p className="mt-3 text-gray-soft">If your question is not here, call us - a real dispatcher answers 24 hours a day.</p>
           <div className="mt-8">
-            <FaqAccordion items={service.faq} />
+            <FaqAccordion items={serviceFaq} />
           </div>
         </div>
       </section>

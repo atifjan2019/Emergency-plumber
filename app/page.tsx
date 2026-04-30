@@ -16,7 +16,6 @@ import {
   BRAND,
   NATIONWIDE_RATING,
   NATIONWIDE_REVIEW_COUNT,
-  GAS_SAFE_NUMBER,
   LEGAL_COMPANY_NAME,
   COMPANY_NUMBER,
   VAT_NUMBER,
@@ -27,7 +26,7 @@ import {
   REVIEWER,
 } from '@/lib/constants';
 import { organizationSchema, websiteSchema, faqSchema } from '@/lib/schema';
-import { DEFAULT_OG_IMAGE } from '@/lib/seo';
+import { DEFAULT_OG_IMAGE, subGasSafe, subGasSafeFaq } from '@/lib/seo';
 import { getSettings } from '@/lib/settings';
 import {
   problemRouter,
@@ -175,10 +174,14 @@ const reviewSourceMeta: Record<string, { color: string; bg: string; label: strin
 
 export default async function HomePage() {
   const settings = await getSettings();
+  const gasSafe = settings.gasSafeNumber;
+  const faqItems = subGasSafeFaq(homeFaq, gasSafe);
+  const certBadges = certificationBadges.map((b) => ({ ...b, detail: subGasSafe(b.detail, gasSafe) }));
+  const reviewerQualifications = REVIEWER.qualifications.map((q) => subGasSafe(q, gasSafe));
 
   return (
     <>
-      <SchemaMarkup data={[organizationSchema(settings.phoneTel, settings.logoUrl), websiteSchema(), faqSchema(homeFaq)]} />
+      <SchemaMarkup data={[organizationSchema(settings.phoneTel, settings.logoUrl, gasSafe), websiteSchema(), faqSchema(faqItems)]} />
 
       {/* HERO - image-led, conversion-focused */}
       <section
@@ -206,7 +209,7 @@ export default async function HomePage() {
             </div>
 
             <div className="mt-7">
-              <TrustBar responseTime="30 minutes" />
+              <TrustBar responseTime="30 minutes" gasSafeNumber={gasSafe} />
             </div>
           </div>
 
@@ -330,7 +333,7 @@ export default async function HomePage() {
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wider text-gray-soft">Qualifications &amp; registrations</div>
                     <ul className="mt-3 space-y-2 text-sm text-ink">
-                      {REVIEWER.qualifications.map((q) => (
+                      {reviewerQualifications.map((q) => (
                         <li key={q} className="flex items-start gap-2">
                           <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-green/15 text-green-dark">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-3 w-3" aria-hidden>
@@ -373,7 +376,7 @@ export default async function HomePage() {
             </p>
           </div>
           <ul className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {certificationBadges.map((c) => (
+            {certBadges.map((c) => (
               <li
                 key={c.name}
                 className="flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left gap-3 rounded-xl border border-gray-line bg-white p-4 hover:border-primary transition"
@@ -925,7 +928,7 @@ export default async function HomePage() {
                 </span>
                 <div>
                   <div className="font-semibold text-ink">Gas Safe registered</div>
-                  <div className="text-xs text-gray-soft">Reg #{GAS_SAFE_NUMBER} - every gas job</div>
+                  <div className="text-xs text-gray-soft">Reg #{gasSafe} - every gas job</div>
                 </div>
               </div>
             </div>
@@ -1476,7 +1479,7 @@ export default async function HomePage() {
           </div>
 
           <p className="mt-5 text-xs text-gray-soft max-w-3xl">
-            Gas Safe: gas appliance work (boilers, gas hobs, gas fires) is carried out only by our Gas Safe registered engineers (Reg #{GAS_SAFE_NUMBER}). All gas work is logged on the Gas Safe register on completion.
+            Gas Safe: gas appliance work (boilers, gas hobs, gas fires) is carried out only by our Gas Safe registered engineers (Reg #{gasSafe}). All gas work is logged on the Gas Safe register on completion.
           </p>
         </div>
       </section>
@@ -1516,7 +1519,7 @@ export default async function HomePage() {
           <h2 className="mt-3">Plumbing services FAQs</h2>
           <p className="mt-3 text-gray-soft">If your question is not here, call us - a real dispatcher answers 24 hours a day.</p>
           <div className="mt-8">
-            <FaqAccordion items={homeFaq} />
+            <FaqAccordion items={faqItems} />
           </div>
           <div className="mt-6 rounded-xl border border-primary/20 bg-white p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <p className="text-sm text-ink flex-1">

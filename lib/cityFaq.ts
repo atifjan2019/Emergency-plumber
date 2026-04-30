@@ -1,6 +1,7 @@
 import type { City } from '@/data/cities';
+import { GAS_SAFE_NUMBER } from './constants';
 
-export const buildCityFaq = (city: City) => [
+export const buildCityFaq = (city: City, gasSafeNumber: string = GAS_SAFE_NUMBER) => [
   {
     question: `How quickly can you reach me in ${city.name}?`,
     answer: `Our average response time across ${city.name} is ${city.responseTime} from call to arrival. We have engineers on call 24 hours a day, every day of the year, including bank holidays.`,
@@ -19,7 +20,7 @@ export const buildCityFaq = (city: City) => [
   },
   {
     question: `Are your ${city.name} engineers Gas Safe registered?`,
-    answer: `Yes. Every engineer attending gas-related work in ${city.name} is Gas Safe registered with current ACS qualifications. Our company Gas Safe registration is 123456.`,
+    answer: `Yes. Every engineer attending gas-related work in ${city.name} is Gas Safe registered with current ACS qualifications. Our company Gas Safe registration is ${gasSafeNumber}.`,
   },
   {
     question: `My water in ${city.name} is supplied by ${city.waterBoard} - does that affect my plumbing?`,
