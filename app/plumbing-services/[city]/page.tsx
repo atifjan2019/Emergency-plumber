@@ -26,15 +26,21 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
   const { city: slug } = await params;
   const city = getCityBySlug(slug);
-  const s = await getSettings();
   if (!city) return {};
-  const title = `Plumbing Services ${city.name} | Leaks, Drains, Emergency Repairs | ${s.brand}`;
-  const description = `Local plumbing services in ${city.name}. Emergency repairs, burst pipes, blocked drains, leak detection, tap replacement, bathroom plumbing. Clear quotes. Guaranteed workmanship. Call now.`;
+  const title = `Plumbing Services ${city.name} | Local Plumber`;
+  const description = `Local plumbers in ${city.name}. Burst pipes, blocked drains, leak detection, tap & bathroom plumbing. Clear quotes, guaranteed workmanship. Call now.`;
   return {
     title,
     description,
-    alternates: { canonical: `/plumbing-services/${city.slug}` },
-    openGraph: { title, description, url: `${SITE_URL}/plumbing-services/${city.slug}`, type: 'website' },
+    alternates: { canonical: `${SITE_URL}/emergency-plumber/${city.slug}` },
+    robots: { index: false, follow: true },
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/emergency-plumber/${city.slug}`,
+      type: 'website',
+      locale: 'en_GB',
+    },
   };
 }
 

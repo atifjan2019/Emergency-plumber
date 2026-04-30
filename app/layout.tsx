@@ -16,14 +16,19 @@ const inter = Inter({
   display: 'swap',
 });
 
+const DEFAULT_OG_IMAGE =
+  'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/hero.png';
+
+const R2_HOST = 'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev';
+
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSettings();
 
   const defaultTitle =
-    s.metaTitleDefault || `${s.brand} - 24/7 Emergency Plumber UK`;
+    s.metaTitleDefault || `24/7 Emergency Plumber UK | ${s.brand}`;
   const description =
     s.metaDescriptionDefault ||
-    `${s.brand} - 24/7 emergency plumbing across the UK. Burst pipes, boiler repair, blocked drains. Gas Safe registered. Same-rate nights and weekends.`;
+    `24/7 emergency plumbers across 12 UK cities. Burst pipes, blocked drains, leaks & boiler repairs. Gas Safe registered. Transparent quotes. Call now.`;
 
   const verification: Metadata['verification'] = {};
   if (s.googleSiteVerification) verification.google = s.googleSiteVerification;
@@ -31,28 +36,34 @@ export async function generateMetadata(): Promise<Metadata> {
     verification.other = { ...(verification.other ?? {}), 'msvalidate.01': s.bingSiteVerification };
   }
 
+  const ogImage = s.ogImageUrl || DEFAULT_OG_IMAGE;
+
   return {
     metadataBase: new URL(s.siteUrl),
     title: {
       default: defaultTitle,
-      template: `%s | ${s.brand}`,
+      template: `%s`,
     },
     description,
     keywords: s.keywords ? s.keywords.split(',').map((k) => k.trim()).filter(Boolean) : undefined,
     icons: s.faviconUrl ? { icon: s.faviconUrl } : undefined,
+    alternates: { canonical: '/' },
     openGraph: {
       type: 'website',
       locale: 'en_GB',
       siteName: s.brand,
       title: defaultTitle,
       description,
-      images: s.ogImageUrl ? [{ url: s.ogImageUrl, width: 1200, height: 630, alt: s.brand }] : undefined,
+      url: s.siteUrl,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: s.brand }],
     },
     twitter: {
       card: 'summary_large_image',
       site: s.twitterHandle || undefined,
       creator: s.twitterHandle || undefined,
-      images: s.ogImageUrl ? [s.ogImageUrl] : undefined,
+      title: defaultTitle,
+      description,
+      images: [ogImage],
     },
     robots: { index: true, follow: true },
     verification: Object.keys(verification).length ? verification : undefined,
@@ -64,6 +75,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en-GB" className={inter.variable}>
       <head>
+        <link rel="preconnect" href={R2_HOST} crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href={R2_HOST} />
         {s.gtmId && (
           <Script id="gtm" strategy="afterInteractive">
             {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${s.gtmId}');`}

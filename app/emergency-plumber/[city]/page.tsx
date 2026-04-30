@@ -31,13 +31,20 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   const { city: slug } = await params;
   const city = getCityBySlug(slug);
   if (!city) return {};
-  const title = `Emergency Plumber ${city.name} | 24/7 Call Out | ${BRAND}`;
-  const description = `Need an emergency plumber in ${city.name}? 24/7 response in ${city.responseTime}. Burst pipes, boiler repairs, blocked drains. Gas Safe registered. Call now.`;
+  const title = `Emergency Plumber ${city.name} | 24/7 Call Out`;
+  const description = `24/7 emergency plumber in ${city.name}. Response in ${city.responseTime}. Burst pipes, blocked drains, boiler repairs. Gas Safe. Call now.`;
   return {
     title,
     description,
     alternates: { canonical: `/emergency-plumber/${city.slug}` },
-    openGraph: { title, description, url: `${SITE_URL}/emergency-plumber/${city.slug}`, type: 'website' },
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/emergency-plumber/${city.slug}`,
+      type: 'website',
+      siteName: BRAND,
+      locale: 'en_GB',
+    },
   };
 }
 

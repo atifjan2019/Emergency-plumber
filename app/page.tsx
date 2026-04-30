@@ -48,9 +48,17 @@ import {
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: `Plumbing Services UK - Emergency Repairs, Leaks, Drains & Installations | ${BRAND}`,
-  description: `${BRAND} provides local and emergency plumbing services across 12 UK cities. Burst pipe repair, leak detection, drain unblocking, toilet and tap repairs, low water pressure diagnosis and bathroom plumbing. Transparent quotes, guaranteed workmanship, Gas Safe registered.`,
+  title: `24/7 Emergency Plumber UK | ${BRAND}`,
+  description: `24/7 emergency plumbers across 12 UK cities. Burst pipes, blocked drains, leaks & boiler repairs. Gas Safe registered. Transparent quotes. Call now.`,
   alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    locale: 'en_GB',
+    siteName: BRAND,
+    title: `24/7 Emergency Plumber UK | ${BRAND}`,
+    description: `24/7 emergency plumbers across 12 UK cities. Burst pipes, blocked drains, leaks & boiler repairs. Gas Safe registered. Transparent quotes. Call now.`,
+    url: '/',
+  },
 };
 
 const processSteps = [

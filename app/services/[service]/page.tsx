@@ -40,14 +40,30 @@ export async function generateMetadata({ params }: { params: Promise<{ service: 
   const { service: slug } = await params;
   const service = getServiceBySlug(slug);
   if (!service) return {};
-  const title = `${service.name} UK - Emergency Plumber, 24/7 Response | ${BRAND}`;
-  const description = `${service.shortDescription} Local Gas Safe plumbers across 12 UK cities, 24/7 callouts, transparent quotes and guaranteed workmanship. Call ${BRAND} now.`;
+  const title = `${service.name} UK | 24/7 Emergency Plumber`;
+  const description = trimDescription(
+    `${service.shortDescription} Gas Safe plumbers across 12 UK cities. Transparent quotes, 24/7 callouts.`
+  );
   return {
     title,
     description,
     alternates: { canonical: `/services/${service.slug}` },
-    openGraph: { title, description, url: `${SITE_URL}/services/${service.slug}`, type: 'website' },
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/services/${service.slug}`,
+      type: 'website',
+      siteName: BRAND,
+      locale: 'en_GB',
+    },
   };
+}
+
+function trimDescription(text: string, max = 155): string {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd() + '…';
 }
 
 export default async function ServicePage({ params }: { params: Promise<{ service: string }> }) {
