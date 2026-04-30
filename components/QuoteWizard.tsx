@@ -6,6 +6,7 @@ import { useFormStatus } from 'react-dom';
 import { submitLead, type LeadFormState } from '@/app/actions/leads';
 import { useDraftCapture, readFormDraft } from '@/lib/useDraftCapture';
 import { cities } from '@/data/cities';
+import { isUkPostcodeArea, extractArea } from '@/lib/ukPostcodes';
 
 const initial: LeadFormState = { ok: false, message: '' };
 
@@ -32,18 +33,22 @@ function checkPostcode(raw: string) {
   const cleaned = raw.replace(/\s+/g, '').toUpperCase();
   if (cleaned.length < 2) return { state: 'idle' as const };
   const m = cleaned.match(/^([A-Z]{1,2}\d{1,2}[A-Z]?)/);
-  if (!m) return { state: 'invalid' as const };
+  if (!m) return { state: 'idle' as const };
   const outward = m[1];
   for (const city of cities) {
     for (const p of city.postcodes) {
-      if (outward === p) return { state: 'match' as const, city, outward };
+      if (outward === p) return { state: 'city' as const, city, outward };
       if (/^[A-Z]+$/.test(p) && outward.startsWith(p)) {
         const next = outward[p.length];
-        if (next && /\d/.test(next)) return { state: 'match' as const, city, outward };
+        if (next && /\d/.test(next)) return { state: 'city' as const, city, outward };
       }
     }
   }
-  return { state: 'no-match' as const, outward };
+  const area = extractArea(outward);
+  if (area && isUkPostcodeArea(area)) {
+    return { state: 'uk' as const, outward };
+  }
+  return { state: 'idle' as const };
 }
 
 function ServiceIcon({ name }: { name: string }) {
@@ -242,36 +247,29 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
                 autoComplete="postal-code"
                 spellCheck={false}
                 autoFocus
-                className={`w-full rounded-xl border-2 bg-white px-5 py-4 pr-36 text-lg uppercase tracking-wider text-ink shadow-sm focus:outline-none focus:ring-4 transition-colors ${
-                  coverage.state === 'match'
+                className={`w-full rounded-xl border-2 bg-white px-5 py-4 pr-32 text-lg uppercase tracking-wider text-ink shadow-sm focus:outline-none focus:ring-4 transition-colors ${
+                  coverage.state === 'city' || coverage.state === 'uk'
                     ? 'border-green/50 focus:border-green focus:ring-green/15'
-                    : coverage.state === 'no-match' || coverage.state === 'invalid'
-                    ? 'border-accent/40 focus:border-accent focus:ring-accent/15'
                     : 'border-gray-line focus:border-primary focus:ring-primary/15'
                 }`}
               />
-              {coverage.state === 'match' && (
+              {(coverage.state === 'city' || coverage.state === 'uk') && (
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-full bg-green/15 px-3 py-1.5 text-xs font-bold text-green-dark">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-3 w-3" aria-hidden>
                     <path strokeLinecap="round" d="M5 12l5 5L20 7" />
                   </svg>
-                  Covered
-                </span>
-              )}
-              {coverage.state === 'no-match' && (
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-bold text-accent-dark">
-                  Outside zone
+                  Yes
                 </span>
               )}
             </div>
-            {coverage.state === 'match' && (
+            {coverage.state === 'city' && (
               <p className="mt-3 text-xs text-green-dark font-semibold">
                 We cover {coverage.city.name} · ~{coverage.city.responseTime} response.
               </p>
             )}
-            {coverage.state === 'no-match' && (
-              <p className="mt-3 text-xs text-gray-soft">
-                {coverage.outward} sits outside our 12-city zone - we will still try to help.
+            {coverage.state === 'uk' && (
+              <p className="mt-3 text-xs text-green-dark font-semibold">
+                Yes, we can help in {coverage.outward} - we will confirm response time on call.
               </p>
             )}
             {coverage.state === 'idle' && (
@@ -423,7 +421,7 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
                   <dt className="text-xs text-gray-soft">Postcode</dt>
                   <dd className="font-semibold text-ink">
                     {postcode.toUpperCase() || '-'}
-                    {coverage.state === 'match' && (
+                    {coverage.state === 'city' && (
                       <span className="ml-2 text-xs text-green-dark">({coverage.city.name})</span>
                     )}
                   </dd>
