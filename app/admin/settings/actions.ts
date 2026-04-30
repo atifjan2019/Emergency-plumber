@@ -47,7 +47,6 @@ export async function saveSettings(
   const bingSiteVerification = trim(formData.get('bing_site_verification'));
   const gtmId = trim(formData.get('gtm_id'));
   const gaId = trim(formData.get('ga_id'));
-  const clarityId = trim(formData.get('clarity_id'));
   const keywords = trim(formData.get('keywords'));
 
   if (!brand || !phoneDisplay || !phoneTel || !email) {
@@ -69,7 +68,6 @@ export async function saveSettings(
     bing_site_verification: bingSiteVerification,
     gtm_id: gtmId,
     ga_id: gaId,
-    clarity_id: clarityId,
     keywords,
   };
 

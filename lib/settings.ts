@@ -50,7 +50,7 @@ const fallback: SiteSettings = {
   twitterHandle: '',
   googleSiteVerification: '',
   bingSiteVerification: '',
-  gtmId: '',
+  gtmId: 'GTM-M2ZC2LJJ',
   gaId: '',
   clarityId: 'wjx29fn330',
   keywords: '',

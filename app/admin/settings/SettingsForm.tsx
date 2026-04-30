@@ -25,7 +25,6 @@ type Props = {
     bingSiteVerification: string;
     gtmId: string;
     gaId: string;
-    clarityId: string;
     keywords: string;
   };
 };
@@ -234,7 +233,6 @@ export default function SettingsForm({ defaults }: Props) {
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           <Field label="Google Tag Manager ID" name="gtm_id" defaultValue={defaults.gtmId} placeholder="GTM-XXXXXXX" />
           <Field label="GA4 measurement ID" name="ga_id" defaultValue={defaults.gaId} placeholder="G-XXXXXXXXXX" />
-          <Field label="Microsoft Clarity ID" name="clarity_id" defaultValue={defaults.clarityId} placeholder="wjx29fn330" />
         </div>
       </section>
 
