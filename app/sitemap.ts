@@ -20,6 +20,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
+  const plumbingServicesPages: MetadataRoute.Sitemap = cities.map((c) => ({
+    url: `${SITE_URL}/plumbing-services/${c.slug}`,
+    lastModified: now,
+    changeFrequency: 'weekly',
+    priority: 0.9,
+  }));
+
   const servicePages: MetadataRoute.Sitemap = services.map((s) => ({
     url: `${SITE_URL}/services/${s.slug}`,
     lastModified: now,
@@ -27,5 +34,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...cityPages, ...servicePages];
+  return [...staticPages, ...cityPages, ...plumbingServicesPages, ...servicePages];
 }
