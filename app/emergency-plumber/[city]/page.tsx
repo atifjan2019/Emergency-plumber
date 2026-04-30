@@ -18,6 +18,7 @@ import { getRecentJobsByCity } from '@/data/recentJobs';
 import { buildCityFaq } from '@/lib/cityFaq';
 import { cityPlumberSchema, faqSchema, breadcrumbSchema } from '@/lib/schema';
 import { BRAND, SITE_URL } from '@/lib/constants';
+import { getSettings } from '@/lib/settings';
 
 export const dynamicParams = false;
 export const revalidate = 3600;
@@ -47,6 +48,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
 
   const cityReviews = await getReviewsByCity(city.slug, 6);
   const recentJobs = getRecentJobsByCity(city.slug);
+  const settings = await getSettings();
   const faq = buildCityFaq(city);
   const otherCities = cities.filter((c) => c.slug !== city.slug).slice(0, 6);
 
@@ -60,7 +62,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
     <>
       <SchemaMarkup
         data={[
-          cityPlumberSchema(city),
+          cityPlumberSchema(city, settings.phoneTel),
           faqSchema(faq),
           breadcrumbSchema(crumbs),
         ]}
