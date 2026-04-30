@@ -277,7 +277,10 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
                   <button
                     type="button"
                     key={opt.value}
-                    onClick={() => setServiceType(opt.value)}
+                    onClick={() => {
+                      setServiceType(opt.value);
+                      setStep(3);
+                    }}
                     className={`flex flex-col items-center gap-2 rounded-2xl border-2 p-4 text-center transition ${
                       active
                         ? 'border-primary bg-primary/5 shadow-md shadow-primary/10'
@@ -318,7 +321,10 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
                   <button
                     type="button"
                     key={opt.value}
-                    onClick={() => setUrgency(opt.value)}
+                    onClick={() => {
+                      setUrgency(opt.value);
+                      setStep(4);
+                    }}
                     className={`flex items-center justify-between rounded-2xl border-2 p-5 text-left transition ${
                       active ? `${activeClasses} shadow-md` : 'border-gray-line bg-white hover:border-gray-soft/30'
                     }`}

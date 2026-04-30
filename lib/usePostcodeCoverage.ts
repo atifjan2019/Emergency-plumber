@@ -42,24 +42,31 @@ export function usePostcodeCoverage(raw: string): Coverage {
     if (local.state === 'idle') return;
 
     const cleaned = raw.replace(/\s+/g, '').toUpperCase();
-    // Only call the API when the postcode looks complete (outward + inward).
-    if (!POSTCODE_REGEX.test(raw.trim())) return;
+    const isFullPostcode = POSTCODE_REGEX.test(raw.trim());
+    const outcodeMatch = cleaned.match(/^([A-Z]{1,2}\d{1,2}[A-Z]?)$/);
+    const isOutcodeOnly = !isFullPostcode && Boolean(outcodeMatch);
+    if (!isFullPostcode && !isOutcodeOnly) return;
+
+    const url = isFullPostcode
+      ? `https://api.postcodes.io/postcodes/${encodeURIComponent(cleaned)}`
+      : `https://api.postcodes.io/outcodes/${encodeURIComponent(local.outward)}`;
 
     const ctrl = new AbortController();
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(
-          `https://api.postcodes.io/postcodes/${encodeURIComponent(cleaned)}`,
-          { signal: ctrl.signal }
-        );
+        const res = await fetch(url, { signal: ctrl.signal });
         if (!res.ok) return;
         const data = await res.json();
         const r = data?.result;
         if (!r) return;
+        // /outcodes returns admin_district as an array, /postcodes returns it as a string.
+        const districtRaw = Array.isArray(r.admin_district)
+          ? r.admin_district[0]
+          : r.admin_district;
         const apiArea: string =
-          r.admin_district || r.parish || r.region || local.outward;
+          districtRaw || r.parish || r.region || local.outward;
         const matchedCity = cities.find(
-          (c) => c.name.toLowerCase() === String(r.admin_district ?? '').toLowerCase()
+          (c) => c.name.toLowerCase() === String(districtRaw ?? '').toLowerCase()
         );
         if (matchedCity) {
           setCoverage({
