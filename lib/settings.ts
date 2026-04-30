@@ -51,7 +51,7 @@ const fallback: SiteSettings = {
   googleSiteVerification: '',
   bingSiteVerification: '',
   gtmId: 'GTM-M2ZC2LJJ',
-  gaId: '',
+  gaId: 'G-8627EQHVL0',
   clarityId: 'wjx29fn330',
   keywords: '',
 };
