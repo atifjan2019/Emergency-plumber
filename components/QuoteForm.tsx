@@ -1,34 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { submitLead, type LeadFormState } from '@/app/actions/leads';
 import { useDraftCapture, readFormDraft } from '@/lib/useDraftCapture';
-import { cities } from '@/data/cities';
-import { isUkPostcodeArea, extractArea } from '@/lib/ukPostcodes';
-
-function checkPostcodeCoverage(raw: string) {
-  const cleaned = raw.replace(/\s+/g, '').toUpperCase();
-  if (cleaned.length < 2) return { state: 'idle' as const };
-  const m = cleaned.match(/^([A-Z]{1,2}\d{1,2}[A-Z]?)/);
-  if (!m) return { state: 'idle' as const };
-  const outward = m[1];
-  for (const city of cities) {
-    for (const p of city.postcodes) {
-      if (outward === p) return { state: 'city' as const, city, outward };
-      if (/^[A-Z]+$/.test(p) && outward.startsWith(p)) {
-        const next = outward[p.length];
-        if (next && /\d/.test(next)) return { state: 'city' as const, city, outward };
-      }
-    }
-  }
-  const area = extractArea(outward);
-  if (area && isUkPostcodeArea(area)) {
-    return { state: 'uk' as const, outward };
-  }
-  return { state: 'idle' as const };
-}
+import { usePostcodeCoverage } from '@/lib/usePostcodeCoverage';
 
 const initial: LeadFormState = { ok: false, message: '' };
 
@@ -79,7 +56,7 @@ export default function QuoteForm({
   const [state, formAction] = useActionState(submitLead, initial);
   const { draftId, update, clearDraft } = useDraftCapture(draftKey);
   const [postcode, setPostcode] = useState('');
-  const coverage = useMemo(() => checkPostcodeCoverage(postcode), [postcode]);
+  const coverage = usePostcodeCoverage(postcode);
 
   useEffect(() => {
     if (state.ok) clearDraft();
@@ -164,18 +141,18 @@ export default function QuoteForm({
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-3 w-3" aria-hidden>
               <path strokeLinecap="round" d="M5 12l5 5L20 7" />
             </svg>
-            {coverage.state === 'city' ? coverage.city.name : 'Yes'}
+            Yes
           </span>
         )}
       </div>
       {coverage.state === 'city' && (
         <p className="-mt-1 text-xs text-green-dark font-semibold">
-          We cover {coverage.city.name} ({coverage.city.region}) - typical response ~{coverage.city.responseTime}.
+          We cover {coverage.areaName} ({coverage.city.region}) - typical response ~{coverage.city.responseTime}.
         </p>
       )}
       {coverage.state === 'uk' && (
         <p className="-mt-1 text-xs text-green-dark font-semibold">
-          Yes, we can help in {coverage.outward} - we will confirm response time on call.
+          Yes, we can help in {coverage.areaName} - we will confirm response time on call.
         </p>
       )}
 

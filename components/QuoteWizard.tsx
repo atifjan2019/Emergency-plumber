@@ -1,12 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { submitLead, type LeadFormState } from '@/app/actions/leads';
 import { useDraftCapture, readFormDraft } from '@/lib/useDraftCapture';
-import { cities } from '@/data/cities';
-import { isUkPostcodeArea, extractArea } from '@/lib/ukPostcodes';
+import { usePostcodeCoverage } from '@/lib/usePostcodeCoverage';
 
 const initial: LeadFormState = { ok: false, message: '' };
 
@@ -28,28 +27,6 @@ const urgencyOptions = [
   { value: 'This week', label: 'This week', sub: 'Flexible weekday', color: 'primary' },
   { value: 'Scheduled / quote only', label: 'Scheduled', sub: 'Just want a quote', color: 'green' },
 ] as const;
-
-function checkPostcode(raw: string) {
-  const cleaned = raw.replace(/\s+/g, '').toUpperCase();
-  if (cleaned.length < 2) return { state: 'idle' as const };
-  const m = cleaned.match(/^([A-Z]{1,2}\d{1,2}[A-Z]?)/);
-  if (!m) return { state: 'idle' as const };
-  const outward = m[1];
-  for (const city of cities) {
-    for (const p of city.postcodes) {
-      if (outward === p) return { state: 'city' as const, city, outward };
-      if (/^[A-Z]+$/.test(p) && outward.startsWith(p)) {
-        const next = outward[p.length];
-        if (next && /\d/.test(next)) return { state: 'city' as const, city, outward };
-      }
-    }
-  }
-  const area = extractArea(outward);
-  if (area && isUkPostcodeArea(area)) {
-    return { state: 'uk' as const, outward };
-  }
-  return { state: 'idle' as const };
-}
 
 function ServiceIcon({ name }: { name: string }) {
   const common = 'h-6 w-6';
@@ -138,7 +115,7 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
 
-  const coverage = useMemo(() => checkPostcode(postcode), [postcode]);
+  const coverage = usePostcodeCoverage(postcode);
 
   useEffect(() => {
     if (state.ok) clearDraft();
@@ -264,12 +241,12 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
             </div>
             {coverage.state === 'city' && (
               <p className="mt-3 text-xs text-green-dark font-semibold">
-                We cover {coverage.city.name} · ~{coverage.city.responseTime} response.
+                We cover {coverage.areaName} · ~{coverage.city.responseTime} response.
               </p>
             )}
             {coverage.state === 'uk' && (
               <p className="mt-3 text-xs text-green-dark font-semibold">
-                Yes, we can help in {coverage.outward} - we will confirm response time on call.
+                Yes, we can help in {coverage.areaName} - we will confirm response time on call.
               </p>
             )}
             {coverage.state === 'idle' && (
@@ -421,8 +398,8 @@ export default function QuoteWizard({ sourcePage = '/quote' }: { sourcePage?: st
                   <dt className="text-xs text-gray-soft">Postcode</dt>
                   <dd className="font-semibold text-ink">
                     {postcode.toUpperCase() || '-'}
-                    {coverage.state === 'city' && (
-                      <span className="ml-2 text-xs text-green-dark">({coverage.city.name})</span>
+                    {(coverage.state === 'city' || coverage.state === 'uk') && (
+                      <span className="ml-2 text-xs text-green-dark">({coverage.areaName})</span>
                     )}
                   </dd>
                 </div>
