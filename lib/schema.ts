@@ -2,13 +2,13 @@ import { BRAND, SITE_URL, PHONE_TEL, GAS_SAFE_NUMBER, NATIONWIDE_RATING, NATIONW
 import type { City } from '@/data/cities';
 import type { Service } from '@/data/services';
 
-export const organizationSchema = () => ({
+export const organizationSchema = (phoneTel: string) => ({
   '@context': 'https://schema.org',
   '@type': 'Plumber',
   '@id': `${SITE_URL}/#organization`,
   name: BRAND,
   url: SITE_URL,
-  telephone: PHONE_TEL,
+  telephone: phoneTel,
   priceRange: '££',
   openingHours: 'Mo-Su 00:00-23:59',
   areaServed: { '@type': 'Country', name: 'United Kingdom' },
@@ -20,12 +20,12 @@ export const organizationSchema = () => ({
   },
 });
 
-export const cityPlumberSchema = (city: City) => ({
+export const cityPlumberSchema = (city: City, phoneTel: string) => ({
   '@context': 'https://schema.org',
   '@type': 'Plumber',
   name: `${BRAND} Emergency Plumber ${city.name}`,
   url: `${SITE_URL}/emergency-plumber/${city.slug}`,
-  telephone: PHONE_TEL,
+  telephone: phoneTel,
   priceRange: '££',
   openingHours: 'Mo-Su 00:00-23:59',
   areaServed: { '@type': 'City', name: city.name },

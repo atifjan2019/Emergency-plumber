@@ -380,7 +380,7 @@ export default async function HomePage() {
             <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Find your fix</span>
             <h2 className="mt-3">What plumbing problem do you need help with?</h2>
             <p className="mt-3 text-gray-soft">
-              Pick the issue closest to what you are seeing. Each route takes you to the right service, the likely cause, the diagnostic process and the cost. If your problem is urgent, call {PHONE_DISPLAY} - a real dispatcher answers 24 hours a day.
+              Pick the issue closest to what you are seeing. Each route takes you to the right service, the likely cause, the diagnostic process and the cost. If your problem is urgent, call {settings.phoneDisplay} - a real dispatcher answers 24 hours a day.
             </p>
           </div>
 
