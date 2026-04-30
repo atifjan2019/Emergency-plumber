@@ -30,6 +30,7 @@ export type SiteSettings = {
   bingSiteVerification: string;
   gtmId: string;
   gaId: string;
+  clarityId: string;
   keywords: string;
 };
 
@@ -51,6 +52,7 @@ const fallback: SiteSettings = {
   bingSiteVerification: '',
   gtmId: '',
   gaId: '',
+  clarityId: 'wjx29fn330',
   keywords: '',
 };
 
@@ -86,6 +88,7 @@ export const getSettings = cache(async (): Promise<SiteSettings> => {
       bingSiteVerification: data.bing_site_verification || '',
       gtmId: data.gtm_id || '',
       gaId: data.ga_id || '',
+      clarityId: data.clarity_id || fallback.clarityId,
       keywords: data.keywords || '',
     };
   } catch (err) {
