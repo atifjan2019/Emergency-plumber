@@ -51,7 +51,8 @@ const fallback: SiteSettings = {
   googleSiteVerification: '',
   bingSiteVerification: '',
   gtmId: 'GTM-M2ZC2LJJ',
-  gaId: 'G-8627EQHVL0',
+  // GA4 (G-8627EQHVL0) fires via the GTM container — do not also load gtag.js here or pageviews will be double-counted.
+  gaId: '',
   clarityId: 'wjx29fn330',
   keywords: '',
 };
