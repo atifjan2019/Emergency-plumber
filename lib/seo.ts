@@ -1,14 +1,21 @@
+import { GAS_SAFE_NUMBER } from './constants';
+
 export const DEFAULT_OG_IMAGE =
   'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/general/hero.png';
 
+const OG_IMAGE_ALIASES: Record<string, string> = {
+  'https://pub-d2063e290531450c8615a5e9338ff332.r2.dev/hero.png': DEFAULT_OG_IMAGE,
+};
+
+const normalizeOgImage = (url: string): string => OG_IMAGE_ALIASES[url] ?? url;
+
 export const ogImageFor = (settingsOgImageUrl: string | undefined, alt: string) => ({
-  url: settingsOgImageUrl || DEFAULT_OG_IMAGE,
+  url: settingsOgImageUrl ? normalizeOgImage(settingsOgImageUrl) : DEFAULT_OG_IMAGE,
   width: 1200,
   height: 630,
   alt,
 });
 
-import { GAS_SAFE_NUMBER } from './constants';
 
 const GAS_SAFE_FALLBACK_RE = new RegExp(`\\b${GAS_SAFE_NUMBER}\\b`, 'g');
 
