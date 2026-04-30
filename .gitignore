@@ -4,5 +4,3 @@ out/
 .env*.local
 .DS_Store
 *.log
-public/sitemap*.xml
-public/robots.txt
