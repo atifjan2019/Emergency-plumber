@@ -78,7 +78,15 @@ export const cityPlumberSchema = (city: City, phoneTel: string) => {
     parentOrganization: { '@id': `${SITE_URL}/#organization` },
     priceRange: '££',
     openingHours: 'Mo-Su 00:00-23:59',
-    areaServed: { '@type': 'City', name: city.name },
+    areaServed: [
+      { '@type': 'City', name: city.name },
+      ...city.postcodes.map((p) => ({ '@type': 'PostalCodeSpecification', postalCode: p, addressCountry: 'GB' })),
+    ],
+    serviceArea: {
+      '@type': 'GeoCircle',
+      geoMidpoint: { '@type': 'GeoCoordinates', latitude: city.geo.lat, longitude: city.geo.lng },
+      geoRadius: '20000',
+    },
     geo: { '@type': 'GeoCoordinates', latitude: city.geo.lat, longitude: city.geo.lng },
     address: { '@type': 'PostalAddress', addressLocality: city.name, addressRegion: city.region, addressCountry: 'GB' },
     hasMap: `https://www.google.com/maps/search/?api=1&query=emergency+plumber+${encodeURIComponent(city.name)}`,

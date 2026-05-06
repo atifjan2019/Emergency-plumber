@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const s = await getSettings();
 
   const defaultTitle =
-    s.metaTitleDefault || `24/7 Emergency Plumber UK | ${s.brand}`;
+    s.metaTitleDefault || `${s.brand} | 24/7 Emergency Plumbers UK`;
   const description =
     s.metaDescriptionDefault ||
     `24/7 emergency plumbers across 12 UK cities. Burst pipes, blocked drains, leaks & boiler repairs. Gas Safe registered. Transparent quotes. Call now.`;

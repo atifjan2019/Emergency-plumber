@@ -94,6 +94,33 @@ export default async function ContactPage() {
 
       <section className="section">
         <div className="container-content">
+          <div className="mx-auto max-w-4xl mb-10 space-y-5 text-base leading-relaxed text-gray-soft">
+            <p>
+              <strong className="text-ink">{s.brand}</strong> is a UK 24/7 emergency plumbing company covering 12 cities -
+              London, Manchester, Birmingham, Glasgow, Leeds, Liverpool, Bristol, Sheffield, Edinburgh, Newcastle,
+              Nottingham and Cardiff - and the surrounding postcode districts. Whether you have a burst pipe, a leaking
+              boiler, a blocked drain or no hot water, you can reach a real dispatcher on{' '}
+              <a href={`tel:${s.phoneTel}`} className="font-bold text-primary hover:text-primary-dark">{s.phoneDisplay}</a>{' '}
+              every hour of every day, including weekends and bank holidays.
+            </p>
+            <p>
+              We dispatch the closest available Gas Safe registered engineer from one of our local depots and we charge
+              the same call-out fee day or night - no out-of-hours surcharge. Most domestic emergencies are completed
+              on the first visit from full van stock and you receive a written workmanship guarantee plus an itemised
+              receipt suitable for insurance claims.
+            </p>
+            <p>
+              <strong className="text-ink">Opening hours:</strong> 24 hours a day, 7 days a week, 365 days a year.
+              Phone is answered within three rings - never an automated menu, never a call centre.
+            </p>
+            <p>
+              <strong className="text-ink">Service area:</strong> nationwide UK coverage across our 12 live cities and
+              their wider regions ({s.address ? s.address + '. ' : ''}call us with your postcode if you are unsure -
+              we cover further than the listed prefixes in most cases). For non-urgent enquiries, quotes or scheduled
+              work, email <a href={`mailto:${s.email}`} className="font-bold text-primary hover:text-primary-dark">{s.email}</a> and
+              we will reply within one working day.
+            </p>
+          </div>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="relative overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary to-primary-dark p-8 text-white shadow-xl">
               <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-white/10 blur-2xl" aria-hidden />

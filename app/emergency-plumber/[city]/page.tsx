@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ city: str
   if (!city) return {};
   const s = await getSettings();
   const url = `${SITE_URL}/emergency-plumber/${city.slug}`;
-  const title = `Emergency Plumber ${city.name} | 24/7 Call Out`;
+  const title = `Emergency Plumber in ${city.name} | Available 24/7 | ${BRAND}`;
   const description = `24/7 emergency plumber in ${city.name}. Response in ${city.responseTime}. Burst pipes, blocked drains, boiler repairs. Gas Safe. Call now.`;
   const image = ogImageFor(s.ogImageUrl, `Emergency plumber in ${city.name}`);
   return {
@@ -133,6 +133,32 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
               citySlug={city.slug}
               cityName={city.name}
             />
+          </div>
+        </div>
+      </section>
+
+      {/* Why choose us in [City] */}
+      <section className="section">
+        <div className="container-content">
+          <span className="eyebrow">Why us</span>
+          <h2 className="mt-3">Why choose us in {city.name}</h2>
+          <p className="mt-3 max-w-3xl text-gray-soft">
+            Engineers based in and around {city.name} - {city.landmarks.slice(0, 3).join(', ')} - dispatched in around {city.responseTime} from your call. We cover {city.postcodes.length} {city.region} postcode districts ({city.postcodes.slice(0, 8).join(', ')}{city.postcodes.length > 8 ? ` and ${city.postcodes.length - 8} more` : ''}) with the same call-out fee day or night, weekends and bank holidays included. Local engineers know the {city.waterBoard} supply network, the {city.waterHardness}-water profile across {city.name}, and the property-stock quirks that drive most of our local call-outs.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { t: `${city.responseTime} response across ${city.name}`, d: `Average dispatch from your call to a Gas Safe engineer arriving on site in ${city.name}.` },
+              { t: `${city.postcodes.length} ${city.region} postcode districts covered`, d: `From ${city.postcodes[0]} through ${city.postcodes[city.postcodes.length - 1]} - call us with your postcode if you are unsure.` },
+              { t: `${city.callOutFee} call-out, ${city.hourlyRate}/hr in ${city.name}`, d: `Same rate at any hour. No surcharge for nights, weekends or bank holidays in ${city.name}.` },
+              { t: `Knows ${city.waterBoard} supply quirks`, d: `${city.waterBoard} delivers ${city.waterHardness} water across ${city.name} - we plan boiler and pipe repairs around it.` },
+              { t: `Familiar with ${city.name} property stock`, d: city.commonIssues[0] + '.' },
+              { t: 'In-house engineers, no subcontracting', d: `Directly employed Gas Safe team in ${city.name}, fully insured and uniformed.` },
+            ].map((b) => (
+              <div key={b.t} className="rounded-2xl border border-gray-line bg-white p-5">
+                <div className="font-bold text-ink">{b.t}</div>
+                <p className="mt-1.5 text-sm text-gray-soft leading-relaxed">{b.d}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>

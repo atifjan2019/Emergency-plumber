@@ -47,7 +47,7 @@ import {
 
 export const revalidate = 3600;
 
-const HOME_TITLE = `24/7 Emergency Plumber UK | ${BRAND}`;
+const HOME_TITLE = `${BRAND} | 24/7 Emergency Plumbers UK`;
 const HOME_DESCRIPTION = `24/7 emergency plumbers across 12 UK cities. Burst pipes, blocked drains, leaks & boiler repairs. Gas Safe registered. Transparent quotes. Call now.`;
 
 export const metadata: Metadata = {
