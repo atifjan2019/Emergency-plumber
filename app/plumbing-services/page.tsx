@@ -138,7 +138,7 @@ export default function PlumbingServicesIndexPage() {
             {cities.map((city) => (
               <Link
                 key={city.slug}
-                href={`/plumbing-services/${city.slug}`}
+                href={`/emergency-plumber/${city.slug}`}
                 className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-gray-line bg-white p-6 shadow-sm transition hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-0.5"
               >
                 <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-primary/5 transition group-hover:bg-primary/10" aria-hidden />

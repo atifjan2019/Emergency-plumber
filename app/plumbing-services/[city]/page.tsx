@@ -906,7 +906,7 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
           <div className="text-sm font-semibold text-ink mb-4">Plumbing services in other cities</div>
           <div className="flex flex-wrap gap-2">
             {otherCities.map((c) => (
-              <Link key={c.slug} href={`/plumbing-services/${c.slug}`} className="rounded-full border border-gray-line bg-white px-4 py-2 text-sm font-medium text-ink hover:border-primary hover:text-primary transition-colors">
+              <Link key={c.slug} href={`/emergency-plumber/${c.slug}`} className="rounded-full border border-gray-line bg-white px-4 py-2 text-sm font-medium text-ink hover:border-primary hover:text-primary transition-colors">
                 {c.name}
               </Link>
             ))}

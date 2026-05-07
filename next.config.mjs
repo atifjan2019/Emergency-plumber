@@ -10,13 +10,30 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      // Force www host. Next.js receives the request after the host hits this app,
-      // so this catches any request that arrives with a non-www Host header.
-      // Edge / DNS / hosting layer should also enforce HTTPS at the network level.
+      // Force www host (301). Edge / hosting layer should also enforce HTTPS.
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'emergencyplumbernow.co.uk' }],
         destination: 'https://www.emergencyplumbernow.co.uk/:path*',
+        permanent: true,
+      },
+      // Belt-and-braces HTTPS upgrade if a request arrives over HTTP via x-forwarded-proto.
+      {
+        source: '/:path*',
+        has: [{ type: 'header', key: 'x-forwarded-proto', value: 'http' }],
+        destination: 'https://www.emergencyplumbernow.co.uk/:path*',
+        permanent: true,
+      },
+      // Collapse the duplicate /plumbing-services tree onto the canonical /emergency-plumber tree (301).
+      // City pages were noindex with canonical pointing at /emergency-plumber/[city]; redirect saves crawl budget.
+      {
+        source: '/plumbing-services/:city',
+        destination: '/emergency-plumber/:city',
+        permanent: true,
+      },
+      {
+        source: '/plumbing-services',
+        destination: '/services',
         permanent: true,
       },
     ];
