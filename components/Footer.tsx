@@ -4,11 +4,7 @@ import { services } from '@/data/services';
 import { getSettings } from '@/lib/settings';
 import {
   LEGAL_COMPANY_NAME,
-  COMPANY_NUMBER,
-  VAT_NUMBER,
-  SERVICE_BASE,
   PUBLIC_LIABILITY_COVER,
-  INSURANCE_PROVIDER,
 } from '@/lib/constants';
 
 export default async function Footer() {
@@ -68,12 +64,6 @@ export default async function Footer() {
                 {s.address}
               </p>
             )}
-            <p className="flex items-center gap-2.5 text-sm text-white/70">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4 shrink-0 text-green" aria-hidden>
-                <path d="M12 2L4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z" />
-              </svg>
-              Gas Safe Reg: {s.gasSafeNumber}
-            </p>
           </div>
         </div>
 
@@ -115,12 +105,6 @@ export default async function Footer() {
 
           <div className="mt-8 flex flex-col gap-2">
             <span className="inline-flex items-center gap-2 rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-xs font-semibold text-white/80">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5 text-green" aria-hidden>
-                <path d="M5 12l5 5L20 7" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" />
-              </svg>
-              Gas Safe registered
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-xs font-semibold text-white/80">
               <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5 text-yellow-500" aria-hidden>
                 <path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1L12 2z" />
               </svg>
@@ -136,40 +120,9 @@ export default async function Footer() {
         </div>
       </div>
 
-      {/* Company trust details band */}
-      <div className="border-t border-white/10 bg-black/20">
-        <div className="container-content py-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 text-xs">
-          <div>
-            <div className="font-bold uppercase tracking-wider text-white/50">Legal company</div>
-            <div className="mt-1.5 font-semibold text-white">{LEGAL_COMPANY_NAME}</div>
-            <div className="mt-0.5 text-white/60">Company No. {COMPANY_NUMBER}</div>
-            <div className="text-white/60">{SERVICE_BASE}</div>
-          </div>
-          <div>
-            <div className="font-bold uppercase tracking-wider text-white/50">VAT</div>
-            <div className="mt-1.5 font-semibold text-white">VAT registered</div>
-            <div className="mt-0.5 text-white/60">{VAT_NUMBER}</div>
-            <div className="text-white/60">All quotes inclusive of VAT</div>
-          </div>
-          <div>
-            <div className="font-bold uppercase tracking-wider text-white/50">Insurance</div>
-            <div className="mt-1.5 font-semibold text-white">{PUBLIC_LIABILITY_COVER} public liability</div>
-            <div className="mt-0.5 text-white/60">Underwritten by {INSURANCE_PROVIDER}</div>
-          </div>
-          <div>
-            <div className="font-bold uppercase tracking-wider text-white/50">Emergency 24/7</div>
-            <a href={`tel:${s.phoneTel}`} className="mt-1.5 inline-block font-semibold text-white hover:text-primary transition">
-              {s.phoneDisplay}
-            </a>
-            <div className="mt-0.5 text-white/60">Real dispatcher answers in &lt; 60s</div>
-          </div>
-        </div>
-      </div>
-
       <div className="border-t border-white/10">
-        <div className="container-content py-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-xs text-white/50">
+        <div className="container-content py-6 text-xs text-white/50">
           <p>© {new Date().getFullYear()} {LEGAL_COMPANY_NAME}. All rights reserved.</p>
-          <p>Gas Safe registered #{s.gasSafeNumber} · Company No. {COMPANY_NUMBER} · UK nationwide coverage</p>
         </div>
       </div>
     </footer>
