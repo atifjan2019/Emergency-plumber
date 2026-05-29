@@ -31,14 +31,11 @@ import { getSettings } from '@/lib/settings';
 import {
   problemRouter,
   issueExplanations,
-  pricingFactors,
   preventionTips,
   trustReasons,
   PLACEHOLDER_IMAGE,
   detailedRecentJobs,
   certificationBadges,
-  pricingTable,
-  pricingFinalNote,
   emergencySafetyTips,
   verifiedReviews,
   serviceLimitations,
@@ -765,10 +762,10 @@ export default async function HomePage() {
         <div className="container-content relative">
           {/* Header */}
           <div className="max-w-3xl">
-            <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Pricing</span>
-            <h2 className="mt-3">Transparent plumbing prices - no hidden charges</h2>
+            <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">Clear quotes</span>
+            <h2 className="mt-3">Clear quotes - no hidden charges, no surprises</h2>
             <p className="mt-4 text-gray-soft md:text-lg">
-              Published rates, fixed quotes confirmed in writing before any work starts, and the same rate at 3am Sunday as at 11am Tuesday.
+              Fixed quotes confirmed in writing before any work starts, and the same rate at 3am Sunday as at 11am Tuesday - no out-of-hours surcharge.
             </p>
           </div>
 
@@ -794,89 +791,13 @@ export default async function HomePage() {
             ))}
           </div>
 
-          {/* Featured pricing tiles */}
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {pricingTable.slice(0, 3).map((row, i) => {
-              const featured = i === 2;
-              return (
-                <div
-                  key={row.item}
-                  className={`relative rounded-2xl border p-6 md:p-7 transition shadow-sm hover:shadow-md ${
-                    featured
-                      ? 'bg-primary text-white border-primary lg:scale-[1.03]'
-                      : 'bg-white border-gray-line'
-                  }`}
-                >
-                  {featured && (
-                    <span className="absolute -top-3 left-6 inline-flex items-center gap-1 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow">
-                      Most asked about
-                    </span>
-                  )}
-                  <p className={`text-xs font-bold uppercase tracking-wider ${featured ? 'text-white/80' : 'text-gray-soft'}`}>
-                    {row.item}
-                  </p>
-                  <p className={`mt-3 text-3xl md:text-4xl font-extrabold tracking-tight ${featured ? 'text-white' : 'text-primary'}`}>
-                    {row.price}
-                  </p>
-                  <p className={`mt-3 text-sm leading-relaxed ${featured ? 'text-white/85' : 'text-gray-soft'}`}>
-                    {row.note}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Secondary rates strip */}
-          <div className="mt-6 rounded-2xl border border-gray-line bg-white overflow-hidden">
-            <div className="flex items-center justify-between gap-4 px-5 md:px-6 py-3 border-b border-gray-line bg-off-white">
-              <h3 className="text-sm font-bold text-ink">Other published rates</h3>
-              <span className="text-xs text-gray-soft">Incl. VAT - {VAT_NUMBER}</span>
-            </div>
-            <ul className="divide-y divide-gray-line md:divide-y-0 md:grid md:grid-cols-2 md:divide-x">
-              {pricingTable.slice(3).map((row) => (
-                <li key={row.item} className="p-5 md:p-6 hover:bg-off-white transition">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h4 className="text-sm font-semibold text-ink">{row.item}</h4>
-                    <div className="text-base font-bold text-primary whitespace-nowrap">{row.price}</div>
-                  </div>
-                  <p className="mt-1.5 text-xs text-gray-soft leading-snug">{row.note}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <p className="mt-4 text-xs text-gray-soft max-w-3xl leading-relaxed">
-            <span className="font-semibold text-ink">What affects the final price:</span> {pricingFinalNote}
-          </p>
-
-          {/* Cost factor tiles */}
-          <div className="mt-12">
-            <div className="max-w-2xl">
-              <h3 className="text-h3-m md:text-h3-d">Cost factors that shape your quote</h3>
-              <p className="mt-2 text-sm text-gray-soft">Each fixed quote is calculated against these inputs - so two similar-sounding jobs can sit at different price points.</p>
-            </div>
-            <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {pricingFactors.slice(0, 6).map((f, i) => (
-                <li key={f.factor} className="rounded-2xl border border-gray-line bg-white p-5 hover:border-primary/30 hover:shadow-sm transition">
-                  <div className="flex items-center gap-3">
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary text-sm font-bold">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <h4 className="text-sm font-bold text-ink">{f.factor}</h4>
-                  </div>
-                  <p className="mt-3 text-xs text-gray-soft leading-relaxed">{f.why}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           {/* Final CTA stripe */}
           <div className="mt-12 relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white p-6 md:p-8">
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_55%)] pointer-events-none" aria-hidden />
             <div className="relative grid gap-6 md:grid-cols-12 md:items-center">
               <div className="md:col-span-7">
                 <p className="text-xs font-bold uppercase tracking-wider text-white/80">Free fixed quote</p>
-                <h3 className="mt-2 text-white text-h3-m md:text-h3-d">Get an exact price for your job - usually within the hour</h3>
+                <h3 className="mt-2 text-white text-h3-m md:text-h3-d">Get a fixed quote for your job - usually within the hour</h3>
                 <p className="mt-2 text-sm md:text-base text-white/85">Send a photo or short video and a few details. A real engineer comes back with a written, fixed quote - no obligation.</p>
               </div>
               <div className="md:col-span-5 flex flex-col sm:flex-row md:justify-end gap-3">
@@ -1495,7 +1416,7 @@ export default async function HomePage() {
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-white/60">VAT &amp; tax</div>
             <div className="mt-2 text-base font-bold">VAT registered</div>
-            <div className="mt-1 text-xs text-white/70">{VAT_NUMBER} · prices include VAT</div>
+            <div className="mt-1 text-xs text-white/70">{VAT_NUMBER} · VAT registered</div>
           </div>
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-white/60">Insurance</div>

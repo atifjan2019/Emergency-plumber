@@ -147,8 +147,8 @@ export default async function AreaPage({ params }: { params: Promise<{ city: str
         <div className="container-content py-10 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: 'Avg response', value: area.responseTime },
-            { label: 'Call-out fee', value: city.callOutFee },
-            { label: 'Hourly rate', value: city.hourlyRate },
+            { label: 'Availability', value: '24/7' },
+            { label: 'No surcharge', value: 'Day or night' },
             { label: 'Postcodes', value: `${area.postcodes.length}` },
           ].map((stat) => (
             <div key={stat.label} className="rounded-2xl bg-white/10 backdrop-blur border border-white/20 p-5">

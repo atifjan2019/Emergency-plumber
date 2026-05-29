@@ -105,7 +105,7 @@ export default async function ContactPage() {
             </p>
             <p>
               We dispatch the closest available Gas Safe registered engineer from one of our local depots and we charge
-              the same call-out fee day or night - no out-of-hours surcharge. Most domestic emergencies are completed
+              the same rate day or night - no out-of-hours surcharge. Most domestic emergencies are completed
               on the first visit from full van stock and you receive a written workmanship guarantee plus an itemised
               receipt suitable for insurance claims.
             </p>

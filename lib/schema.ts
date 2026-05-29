@@ -19,11 +19,6 @@ const ORG_SAME_AS = [
   'https://www.trustpilot.com/review/emergencyplumbernow.co.uk',
 ];
 
-const priceNumber = (s: string): number | undefined => {
-  const m = s.match(/£\s*(\d+(?:\.\d+)?)/);
-  return m ? Number(m[1]) : undefined;
-};
-
 export const organizationSchema = (phoneTel: string, logoUrl?: string, gasSafeNumber?: string) => ({
   '@context': 'https://schema.org',
   '@type': 'Plumber',
@@ -35,7 +30,6 @@ export const organizationSchema = (phoneTel: string, logoUrl?: string, gasSafeNu
   description: ORG_DESCRIPTION,
   image: ORG_HERO_IMAGE,
   logo: logoUrl || ORG_LOGO,
-  priceRange: '££',
   openingHours: 'Mo-Su 00:00-23:59',
   areaServed: allCities.map((c) => ({ '@type': 'City', name: c.name })),
   hasCredential: { '@type': 'EducationalOccupationalCredential', name: `Gas Safe Registered #${gasSafeNumber || GAS_SAFE_NUMBER}` },
@@ -67,7 +61,6 @@ export const websiteSchema = () => ({
 
 export const cityPlumberSchema = (city: City, phoneTel: string) => {
   const url = `${SITE_URL}/emergency-plumber/${city.slug}`;
-  const callOutPrice = priceNumber(city.callOutFee);
   return {
     '@context': 'https://schema.org',
     '@type': 'Plumber',
@@ -77,7 +70,6 @@ export const cityPlumberSchema = (city: City, phoneTel: string) => {
     telephone: phoneTel,
     image: ORG_HERO_IMAGE,
     parentOrganization: { '@id': `${SITE_URL}/#organization` },
-    priceRange: '££',
     openingHours: 'Mo-Su 00:00-23:59',
     areaServed: [
       { '@type': 'City', name: city.name },
@@ -91,19 +83,6 @@ export const cityPlumberSchema = (city: City, phoneTel: string) => {
     geo: { '@type': 'GeoCoordinates', latitude: city.geo.lat, longitude: city.geo.lng },
     address: { '@type': 'PostalAddress', addressLocality: city.name, addressRegion: city.region, addressCountry: 'GB' },
     hasMap: `https://www.google.com/maps/search/?api=1&query=emergency+plumber+${encodeURIComponent(city.name)}`,
-    ...(callOutPrice !== undefined && {
-      offers: {
-        '@type': 'Offer',
-        availability: 'https://schema.org/InStock',
-        priceSpecification: {
-          '@type': 'PriceSpecification',
-          priceCurrency: 'GBP',
-          price: callOutPrice,
-          minPrice: callOutPrice,
-          valueAddedTaxIncluded: true,
-        },
-      },
-    }),
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: NATIONWIDE_RATING,
@@ -115,7 +94,6 @@ export const cityPlumberSchema = (city: City, phoneTel: string) => {
 
 export const areaPlumberSchema = (area: Area, city: City, phoneTel: string) => {
   const url = `${SITE_URL}/emergency-plumber/${city.slug}/${area.slug}`;
-  const callOutPrice = priceNumber(city.callOutFee);
   return {
     '@context': 'https://schema.org',
     '@type': 'Plumber',
@@ -125,7 +103,6 @@ export const areaPlumberSchema = (area: Area, city: City, phoneTel: string) => {
     telephone: phoneTel,
     image: ORG_HERO_IMAGE,
     parentOrganization: { '@id': `${SITE_URL}/#organization` },
-    priceRange: '££',
     openingHours: 'Mo-Su 00:00-23:59',
     areaServed: [
       { '@type': 'City', name: city.name },
@@ -140,19 +117,6 @@ export const areaPlumberSchema = (area: Area, city: City, phoneTel: string) => {
     geo: { '@type': 'GeoCoordinates', latitude: area.geo.lat, longitude: area.geo.lng },
     address: { '@type': 'PostalAddress', addressLocality: area.name, addressRegion: city.region, addressCountry: 'GB' },
     hasMap: `https://www.google.com/maps/search/?api=1&query=emergency+plumber+${encodeURIComponent(`${area.name} ${city.name}`)}`,
-    ...(callOutPrice !== undefined && {
-      offers: {
-        '@type': 'Offer',
-        availability: 'https://schema.org/InStock',
-        priceSpecification: {
-          '@type': 'PriceSpecification',
-          priceCurrency: 'GBP',
-          price: callOutPrice,
-          minPrice: callOutPrice,
-          valueAddedTaxIncluded: true,
-        },
-      },
-    }),
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: NATIONWIDE_RATING,
@@ -163,7 +127,6 @@ export const areaPlumberSchema = (area: Area, city: City, phoneTel: string) => {
 };
 
 export const serviceSchema = (service: Service) => {
-  const start = priceNumber(service.startingPrice);
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -173,19 +136,6 @@ export const serviceSchema = (service: Service) => {
     provider: { '@id': `${SITE_URL}/#organization` },
     areaServed: { '@type': 'Country', name: 'United Kingdom' },
     serviceType: 'Emergency Plumbing',
-    ...(start !== undefined && {
-      offers: {
-        '@type': 'Offer',
-        availability: 'https://schema.org/InStock',
-        priceSpecification: {
-          '@type': 'PriceSpecification',
-          priceCurrency: 'GBP',
-          price: start,
-          minPrice: start,
-          valueAddedTaxIncluded: true,
-        },
-      },
-    }),
   };
 };
 

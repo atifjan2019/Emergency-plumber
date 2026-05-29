@@ -11,8 +11,8 @@ export const buildCityFaq = (city: City, gasSafeNumber: string = GAS_SAFE_NUMBER
     answer: `We cover all major ${city.name} postcodes including ${city.postcodes.slice(0, 6).join(', ')} and surrounding areas. Call us with your postcode if you are unsure - we cover further than the listed prefixes in most cases.`,
   },
   {
-    question: `What does an emergency call-out cost in ${city.name}?`,
-    answer: `Our ${city.name} call-out fee is ${city.callOutFee} which covers attendance and the first hour of labour on site. Our hourly rate beyond the first hour is ${city.hourlyRate}. We charge the same rate at any hour of the day or night, including weekends.`,
+    question: `How do you quote for an emergency call-out in ${city.name}?`,
+    answer: `We give you a clear quote before any work begins in ${city.name}. The call-out covers attendance and the first hour of labour on site, and we confirm the price with you up front. We charge the same rate at any hour of the day or night, including weekends, with no out-of-hours surcharge.`,
   },
   {
     question: `Do you charge extra at night or on weekends in ${city.name}?`,

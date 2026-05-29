@@ -150,7 +150,7 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
             {[
               { t: `${city.responseTime} response across ${city.name}`, d: `Average dispatch from your call to a Gas Safe engineer arriving on site in ${city.name}.` },
               { t: `${city.postcodes.length} ${city.region} postcode districts covered`, d: `From ${city.postcodes[0]} through ${city.postcodes[city.postcodes.length - 1]} - call us with your postcode if you are unsure.` },
-              { t: `${city.callOutFee} call-out, ${city.hourlyRate}/hr in ${city.name}`, d: `Same rate at any hour. No surcharge for nights, weekends or bank holidays in ${city.name}.` },
+              { t: `Same rate day or night in ${city.name}`, d: `No surcharge for nights, weekends or bank holidays. We confirm a clear quote before any work begins in ${city.name}.` },
               { t: `Knows ${city.waterBoard} supply quirks`, d: `${city.waterBoard} delivers ${city.waterHardness} water across ${city.name} - we plan boiler and pipe repairs around it.` },
               { t: `Familiar with ${city.name} property stock`, d: city.commonIssues[0] + '.' },
               { t: 'In-house engineers, no subcontracting', d: `Directly employed Gas Safe team in ${city.name}, fully insured and uniformed.` },
@@ -169,8 +169,8 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         <div className="container-content py-10 grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: 'Avg response', value: city.responseTime },
-            { label: 'Call-out fee', value: city.callOutFee },
-            { label: 'Hourly rate', value: city.hourlyRate },
+            { label: 'Availability', value: '24/7' },
+            { label: 'No surcharge', value: 'Day or night' },
             { label: 'Postcodes covered', value: `${city.postcodes.length}+` },
           ].map((s) => (
             <div key={s.label} className="rounded-2xl bg-white/10 backdrop-blur border border-white/20 p-5">
@@ -255,15 +255,22 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
       {/* Pricing */}
       <section className="section bg-off-white">
         <div className="container-content">
-          <span className="eyebrow">Pricing</span>
-          <h2 className="mt-3">Transparent pricing in {city.name}</h2>
+          <span className="eyebrow">Clear quotes</span>
+          <h2 className="mt-3">Clear quotes in {city.name} - no surprises</h2>
           <p className="mt-3 max-w-2xl text-gray-soft">
-            Same rate at 3am on Sunday as at midday on Tuesday. No call-out surcharge for nights, weekends or bank holidays.
+            We confirm a clear quote before any work begins, and the price you agree is the price you pay. Same response at 3am on Sunday as at midday on Tuesday - no call-out surcharge for nights, weekends or bank holidays.
           </p>
           <div className="mt-10 grid gap-5 md:grid-cols-3">
-            <PriceCard label="Call-out fee" value={city.callOutFee} note="Covers attendance and the first hour of labour on site." accent="primary" />
-            <PriceCard label="Hourly rate" value={city.hourlyRate} note="Standard hourly rate beyond the first hour, same rate 24/7." accent="primary" />
-            <PriceCard label="No surcharge" value="0%" note="No surcharge for nights, weekends or bank holidays." accent="green" />
+            {[
+              { t: 'Quote before work', d: 'We explain the problem and confirm the cost with you up front, so there are no surprises on the invoice.' },
+              { t: 'Same rate, any hour', d: `No surcharge for nights, weekends or bank holidays anywhere in ${city.name}.` },
+              { t: 'Insurance-grade report', d: 'Itemised written report with photos on leak and damage call-outs, accepted by major UK insurers.' },
+            ].map((b) => (
+              <div key={b.t} className="rounded-2xl border-2 border-gray-line bg-white p-7 shadow-sm">
+                <div className="font-bold text-ink">{b.t}</div>
+                <p className="mt-2 text-sm text-gray-soft leading-relaxed">{b.d}</p>
+              </div>
+            ))}
           </div>
           <div className="mt-8 rounded-2xl border border-gray-line bg-white p-7 shadow-sm">
             <div className="flex items-start gap-4">
@@ -436,17 +443,5 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         subheading={`A Gas Safe engineer can reach you in around ${city.responseTime}. Same rates day or night.`}
       />
     </>
-  );
-}
-
-function PriceCard({ label, value, note, accent }: { label: string; value: string; note: string; accent: 'primary' | 'green' }) {
-  const accentBg = accent === 'green' ? 'bg-green/10 text-green-dark' : 'bg-primary/10 text-primary';
-  const accentBorder = accent === 'green' ? 'border-green/30' : 'border-primary/20';
-  return (
-    <div className={`rounded-2xl border-2 ${accentBorder} bg-white p-7 shadow-sm hover:shadow-md transition`}>
-      <span className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${accentBg}`}>{label}</span>
-      <div className="mt-3 text-4xl font-extrabold text-ink">{value}</div>
-      <p className="mt-3 text-sm text-gray-soft leading-relaxed">{note}</p>
-    </div>
   );
 }

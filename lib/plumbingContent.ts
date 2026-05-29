@@ -74,16 +74,6 @@ export const issueExplanations = [
   },
 ];
 
-export const pricingFactors = [
-  { factor: 'Type of problem', why: 'A tap washer is not the same job as a hidden leak or a burst supply pipe.', example: 'Tap repair is quicker and cheaper than excavation for a collapsed drain.' },
-  { factor: 'Emergency vs scheduled', why: 'Out-of-hours work needs an engineer dispatched immediately rather than booked in.', example: 'We charge the same rate day or night - many other operators surcharge nights.' },
-  { factor: 'Parts required', why: 'Replacement components affect the total cost of the repair.', example: 'A diverter valve costs more in parts than a thermostatic radiator valve.' },
-  { factor: 'Access to pipework', why: 'Concealed pipework behind tiling, under floors or inside walls takes longer.', example: 'Surface-mounted pipe repair is faster than chasing into masonry.' },
-  { factor: 'Water damage complexity', why: 'A long-running hidden leak may need additional drying and reinstatement.', example: 'A simple drip costs less than a leak that has saturated the floor structure.' },
-  { factor: 'Drain blockage severity', why: 'A surface blockage clears in minutes; a deep collapse needs excavation.', example: 'Auger clearance is cheaper than a CCTV-confirmed pipe relining job.' },
-  { factor: 'Out-of-hours callout', why: 'Some plumbing companies surcharge nights, weekends and bank holidays - we do not.', example: 'Our call-out fee is identical at 3am Sunday and 11am Tuesday.' },
-  { factor: 'Domestic vs commercial', why: 'Commercial premises need wider insurance, larger jetting equipment and scheduled access.', example: 'A restaurant grease-trap clearance differs from a domestic kitchen sink.' },
-];
 
 export const preventionTips = [
   'Find your internal stop tap now and label it - in a flood you will not have time to search.',
@@ -203,20 +193,6 @@ export const certificationBadges: CertificationBadge[] = [
   { name: 'Google verified business', detail: 'Reviewed across 12 UK cities', icon: 'pin' },
 ];
 
-export type PricingRow = { item: string; price: string; note: string };
-
-export const pricingTable: PricingRow[] = [
-  { item: 'Standard call-out fee', price: '£75', note: 'Covers travel and the first 30 minutes on site.' },
-  { item: 'Minimum charge', price: '£95', note: 'Smallest job we will invoice for - includes diagnosis and quote.' },
-  { item: 'Standard hourly rate', price: '£75 / hour', note: 'After the first hour, charged in 30-minute blocks.' },
-  { item: 'Emergency / out-of-hours', price: 'Same as standard', note: 'No surcharge for nights, weekends or bank holidays.' },
-  { item: 'Drain unblocking (typical)', price: 'From £120', note: 'Mechanical clearance, no jetting required.' },
-  { item: 'CCTV drain survey', price: 'From £180', note: 'Recorded footage and written report supplied.' },
-  { item: 'VAT', price: '20% (incl.)', note: 'All prices on quotes are inclusive of VAT (GB 123 4567 89).' },
-];
-
-export const pricingFinalNote =
-  'Every job gets a fixed quote in writing before work begins. Parts are charged at trade-plus-fitting. No hidden charges, no surprise bills, same rate day or night.';
 
 export const emergencySafetyTips = [
   {

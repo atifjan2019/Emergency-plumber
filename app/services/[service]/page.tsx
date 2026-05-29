@@ -23,7 +23,6 @@ import Image from 'next/image';
 import {
   problemRouter,
   issueExplanations,
-  pricingFactors,
   preventionTips,
   trustReasons,
   recentSamples,
@@ -164,8 +163,8 @@ export default async function ServicePage({ params }: { params: Promise<{ servic
               <div className="grid h-12 w-12 place-items-center rounded-lg bg-primary text-white">
                 <ServiceIcon name={service.icon} />
               </div>
-              <p className="mt-4 text-xs uppercase tracking-wide font-semibold text-gray-soft">From</p>
-              <p className="text-h3-m md:text-h3-d">{service.startingPrice}</p>
+              <p className="mt-4 text-xs uppercase tracking-wide font-semibold text-gray-soft">24/7 emergency response</p>
+              <p className="text-h3-m md:text-h3-d">Free, fixed quote</p>
               <p className="mt-3 text-sm text-gray-soft">Same rates day or night - no surcharge for evenings, weekends or bank holidays.</p>
               <p className="mt-3 text-sm text-gray-soft">Most repairs completed in a single visit from full van stock. Written report provided for insurance claims at no extra cost.</p>
               <div className="mt-5 flex flex-col gap-2">
@@ -429,40 +428,25 @@ export default async function ServicePage({ params }: { params: Promise<{ servic
       <section className="section">
         <div className="container-content">
           <div className="max-w-3xl">
-            <h2>{service.shortName} cost & clear quotes</h2>
+            <h2>Clear quotes for {service.shortName.toLowerCase()} - no surprises</h2>
             <p className="mt-3 text-gray-soft">
-              {service.shortName} starts from <span className="font-semibold text-ink">{service.startingPrice}</span>. Your final price depends on the type of problem, parts required, access, urgency and time of day. After diagnosis the engineer explains the issue and confirms a fixed quote before any work begins - and the call-out fee covers the first hour on site.
+              Your quote depends on the type of problem, parts required, access, urgency and time of day. After diagnosis the engineer explains the issue and confirms a fixed quote before any work begins - the price you agree is the price you pay.
             </p>
             <p className="mt-3 text-sm font-semibold text-primary">No hidden charges. Same rate day or night. Quote before work.</p>
           </div>
 
-          <div className="mt-10 hidden md:block overflow-hidden rounded-xl border border-gray-line bg-white">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-off-white text-xs uppercase tracking-wide text-gray-soft">
-                <tr>
-                  <th className="px-5 py-4 font-semibold">Cost factor</th>
-                  <th className="px-5 py-4 font-semibold">Why it matters</th>
-                  <th className="px-5 py-4 font-semibold">Example</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-line">
-                {pricingFactors.map((row) => (
-                  <tr key={row.factor} className="align-top">
-                    <td className="px-5 py-4 font-semibold text-ink">{row.factor}</td>
-                    <td className="px-5 py-4 text-gray-soft">{row.why}</td>
-                    <td className="px-5 py-4 text-gray-soft">{row.example}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="mt-8 grid gap-4 md:hidden">
-            {pricingFactors.map((row) => (
-              <div key={row.factor} className="rounded-xl border border-gray-line bg-white p-5">
-                <h3 className="text-base font-semibold text-ink">{row.factor}</h3>
-                <p className="mt-2 text-sm text-gray-soft"><span className="font-semibold text-ink">Why it matters: </span>{row.why}</p>
-                <p className="mt-1 text-sm text-gray-soft"><span className="font-semibold text-ink">Example: </span>{row.example}</p>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { t: 'Quote before any work', d: 'We diagnose first, explain the fault, then confirm a fixed quote you approve before we start.' },
+              { t: 'Same rate, day or night', d: 'No surcharge for evenings, weekends or bank holidays - the rate is the same whenever you call.' },
+              { t: 'No hidden charges', d: 'The price you agree is the price you pay. Anything unexpected is explained and agreed before we continue.' },
+              { t: 'Single-visit repairs', d: 'Most jobs are completed in one visit from full van stock, so you are not paying for repeat call-outs.' },
+              { t: 'Insurance-grade report', d: 'Itemised written report with photos on leak and damage jobs, accepted by major UK insurers.' },
+              { t: 'Free, no-obligation quote', d: 'Send a photo and a few details and a real engineer comes back with a written quote.' },
+            ].map((b) => (
+              <div key={b.t} className="rounded-xl border border-gray-line bg-white p-6">
+                <h3 className="text-base font-semibold text-ink">{b.t}</h3>
+                <p className="mt-2 text-sm text-gray-soft leading-relaxed">{b.d}</p>
               </div>
             ))}
           </div>

@@ -65,7 +65,6 @@ function plumbingServicesSchema(city: City, s: SiteSettings) {
     name: `${s.brand} Plumbing Services ${city.name}`,
     url: `${SITE_URL}/plumbing-services/${city.slug}`,
     telephone: s.phoneTel,
-    priceRange: '££',
     openingHours: 'Mo-Su 00:00-23:59',
     areaServed: { '@type': 'City', name: city.name },
     geo: { '@type': 'GeoCoordinates', latitude: city.geo.lat, longitude: city.geo.lng },
@@ -86,7 +85,7 @@ function buildFaq(city: City, s: SiteSettings) {
     { question: `What plumbing services do you offer in ${city.name}?`, answer: `${s.brand} offers a full range of plumbing services in ${city.name}, including emergency pipe repairs, burst pipe repair, leak detection, drain unblocking, blocked toilet repair, tap replacement, low water pressure diagnosis, bathroom and kitchen plumbing, hot water cylinder repairs, radiator valve services, and routine plumbing maintenance. We cover domestic and commercial properties across ${city.name} and the surrounding postcodes.` },
     { question: `When should I call an emergency plumber in ${city.name}?`, answer: `Call an emergency plumber immediately if you have a burst pipe, a serious water leak causing property damage, an overflowing toilet that is not clearing, a complete loss of water supply, or water entering your property that cannot be stopped by turning off the stop tap. Turn off the main stop tap first if it is safe to reach, then call us straight away.` },
     { question: `Do you offer same-day plumbing repairs in ${city.name}?`, answer: `We attend urgent plumbing callouts in ${city.name} and the surrounding areas. For genuine emergencies we aim to respond as quickly as possible. For non-urgent repairs we offer prompt booked appointments. Contact us directly to confirm availability for your specific situation.` },
-    { question: 'How much does a plumber cost?', answer: `Plumbing costs depend on the type of problem, parts required, access difficulty, and how urgent the job is. A straightforward tap repair is significantly less than a hidden leak detection or a burst pipe repair. We assess the job and provide a clear quote before any work begins. Our call-out fee in ${city.name} starts from ${city.callOutFee}.` },
+    { question: 'How do you quote for plumbing work?', answer: `Plumbing costs depend on the type of problem, parts required, access difficulty, and how urgent the job is. A straightforward tap repair is a smaller job than a hidden leak detection or a burst pipe repair. We assess the job and confirm a clear quote before any work begins in ${city.name}, so you always know the price up front.` },
     { question: 'What affects emergency plumber cost?', answer: `Emergency plumbing typically costs more than a pre-booked appointment because it requires immediate attendance, out-of-hours labour, and parts carried in stock. The complexity of the problem, access to the pipework, extent of water damage, and whether the job is outside normal hours will all affect the total cost.` },
     { question: 'Can you repair burst pipes?', answer: `Yes. Burst pipe repair is one of the most common emergency callouts we attend in ${city.name}. We isolate the water supply, assess the damaged section, replace the pipe or fitting, test the repair under pressure, and restore the water supply. Where pipes are concealed we work to access the damaged section with minimal disruption.` },
     { question: 'Can you unblock drains and toilets?', answer: `Yes. We clear blocked sinks, shower drains, bath drains, toilets, and external gully drains across ${city.name}. For accessible blockages we use rods, plungers, or mechanical clearance tools. For recurring or suspected deep blockages we can arrange a CCTV drain inspection to identify the cause inside the pipework.` },
@@ -654,62 +653,30 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
       <section className="section bg-off-white">
         <div className="container-content">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <h2>Plumbing Repair Costs &amp; Clear Quotes</h2>
-            <span className="rounded-full border border-green/30 bg-green/10 px-3 py-1 text-xs font-semibold text-green">No surprise pricing</span>
+            <h2>Clear Quotes - No Surprises</h2>
+            <span className="rounded-full border border-green/30 bg-green/10 px-3 py-1 text-xs font-semibold text-green">Quote before any work</span>
           </div>
           <p className="mt-3 max-w-2xl text-gray-soft">
-            Plumbing repair costs vary depending on the type of problem, how quickly the job is needed, what parts are required, and how accessible the pipework is. We assess the job first and provide a clear quote before any work begins.
+            We assess the job first and confirm a clear quote before any work begins. What goes into your quote depends on the type of problem, how quickly the job is needed, what parts are required, and how accessible the pipework is - and we explain it all up front.
           </p>
-          <div className="mt-8 grid gap-8 md:grid-cols-[1fr_280px]">
-            {/* Table */}
-            <div className="overflow-x-auto rounded-xl border border-gray-line bg-white shadow-sm">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-gray-line bg-off-white text-left">
-                    <th className="px-5 py-3.5 font-semibold text-ink">Cost Factor</th>
-                    <th className="px-5 py-3.5 font-semibold text-ink">Why It Matters</th>
-                    <th className="px-5 py-3.5 font-semibold text-ink hidden lg:table-cell">Example</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-line">
-                  {[
-                    ['Type of problem',         'Simple fixture repair vs. emergency pipe repair involve very different labour and parts',  'Dripping tap vs. burst pipe'],
-                    ['Emergency vs. scheduled', 'Urgent out-of-hours attendance costs more than a booked appointment',                     'Saturday night vs. weekday morning'],
-                    ['Parts required',          'Valve, cartridge, or pipe section costs vary by specification and availability',           'Standard fitting vs. specialist section'],
-                    ['Access to pipework',      'Concealed pipework behind tiles or under floors requires additional time to access',        'Under-floor leak vs. visible sink leak'],
-                    ['Hidden leak complexity',  'Locating a concealed leak adds time and specialist equipment use',                         'Acoustic or thermal leak detection'],
-                    ['Blockage severity',       'Partial blockage versus drain collapse or root intrusion',                                 'Drain rods vs. CCTV survey and jetting'],
-                    ['Out-of-hours callout',    'Evening, weekend, or bank holiday attendance',                                             'Sunday repair vs. Tuesday booking'],
-                    ['Property type',           'Domestic versus commercial property may affect labour rate and access',                    'House vs. multi-storey commercial premises'],
-                  ].map(([factor, reason, example], i) => (
-                    <tr key={i} className={i % 2 === 1 ? 'bg-off-white/50' : ''}>
-                      <td className="px-5 py-3 font-medium text-ink">{factor}</td>
-                      <td className="px-5 py-3 text-gray-soft">{reason}</td>
-                      <td className="px-5 py-3 text-gray-soft hidden lg:table-cell">{example}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {/* Stat cards */}
-            <div className="space-y-4 self-start">
-              {[
-                { label: 'Call-out fee',       value: city.callOutFee, note: 'Covers attendance and first hour of labour on site.' },
-                { label: 'Hourly rate',         value: city.hourlyRate,  note: 'Standard rate beyond the first hour, same rate 24/7.' },
-                { label: 'Out-of-hours extra',  value: 'None',           note: 'No additional charge for nights, weekends, or bank holidays.' },
-              ].map(({ label, value, note }) => (
-                <div key={label} className="rounded-xl border border-gray-line bg-white p-5">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-gray-soft">{label}</div>
-                  <div className="mt-1 text-3xl font-extrabold text-ink">{value}</div>
-                  <p className="mt-2 text-xs text-gray-soft">{note}</p>
-                </div>
-              ))}
-              <Link href="#quote" className="btn-primary w-full justify-center">
-                Request a quote →
-              </Link>
-            </div>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { t: 'Quote before any work', d: 'We diagnose the problem, explain the cause and confirm a clear quote you approve before we start.' },
+              { t: 'Same rate, day or night', d: `No surcharge for nights, weekends or bank holidays anywhere in ${city.name}.` },
+              { t: 'No surprises on the invoice', d: 'The price you agree is the price you pay. If the job turns out more complex, we explain why and agree any change before continuing.' },
+              { t: 'Domestic & commercial', d: 'Clear quoting for homeowners, landlords and commercial premises alike.' },
+              { t: 'Workmanship guaranteed', d: 'Every repair is backed by a workmanship guarantee, with an itemised invoice for your records.' },
+              { t: 'Free, no-obligation quote', d: 'Tell us the issue and we reply with a quote, usually within the hour.' },
+            ].map((b) => (
+              <div key={b.t} className="rounded-xl border border-gray-line bg-white p-6">
+                <h3 className="text-base font-semibold text-ink">{b.t}</h3>
+                <p className="mt-2 text-sm text-gray-soft leading-relaxed">{b.d}</p>
+              </div>
+            ))}
           </div>
-          <p className="mt-4 text-sm text-gray-soft">We aim to give you a clear and honest cost before we start. If the job turns out to be more complex than the initial assessment, we will explain why and agree on any additional cost before continuing.</p>
+          <div className="mt-8">
+            <Link href="#quote" className="btn-primary">Request a quote →</Link>
+          </div>
         </div>
       </section>
 
@@ -719,11 +686,11 @@ export default async function PlumbingServicesPage({ params }: { params: Promise
       <section className="section">
         <div className="container-content">
           <h2>Why Choose {s.brand} for Plumbing Services in {city.name}?</h2>
-          <p className="mt-3 max-w-2xl text-gray-soft">Real experience, transparent pricing, and guaranteed workmanship. Not just promises.</p>
+          <p className="mt-3 max-w-2xl text-gray-soft">Real experience, clear quotes, and guaranteed workmanship. Not just promises.</p>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <TrustCard icon={<IconPin />}    heading="Local Plumbing Experience"         body={`${s.brand} serves homeowners, landlords, and businesses across ${city.name}. We understand the local property types, housing stock, water hardness (${city.waterHardness}), and drainage infrastructure common to this area.`} />
             <TrustCard icon={<IconAlert />}  heading="Emergency Attendance"              body={`When a plumbing problem cannot wait, we attend urgent callouts across ${city.name} as quickly as possible. We carry common parts and repair materials to handle most urgent repairs on the same visit.`} />
-            <TrustCard icon={<IconPrice />}  heading="Clear Pricing, No Hidden Charges" body="We explain the problem, the options, and the cost before we begin. The price you agree is the price you pay. No surprises on the invoice." />
+            <TrustCard icon={<IconPrice />}  heading="Clear Quotes, No Hidden Charges" body="We explain the problem, the options, and the cost before we begin. The price you agree is the price you pay. No surprises on the invoice." />
             <TrustCard icon={<IconShield />} heading="Guaranteed Workmanship"            body="All repairs completed by our plumbers are backed by a workmanship guarantee. If the same fault returns due to our repair work, we come back and put it right." />
             <TrustCard icon={<IconCheck />}  heading="Insured &amp; Compliant"           body="Our plumbers carry public liability insurance and carry out all work in compliance with Water Regulations and Building Regulations where applicable." />
             <TrustCard icon={<IconStar />}   heading="Verified Customer Reviews"         body={`${s.brand} is rated ${NATIONWIDE_RATING} stars across ${NATIONWIDE_REVIEW_COUNT.toLocaleString()} verified customer reviews. Real customers, real jobs, real feedback from across the UK.`} />

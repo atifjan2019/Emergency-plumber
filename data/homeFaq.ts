@@ -15,14 +15,14 @@ export const homeFaq = [
       'Average response across our 12-city UK coverage is 25 to 30 minutes from call to arrival, 24 hours a day, every day of the year. Same-day appointments for non-urgent work are usually available the same week.',
   },
   {
-    question: 'How much does a plumber cost?',
+    question: 'How do you quote for plumbing work?',
     answer:
-      'Plumbing repair cost depends on the problem type, parts required, access, urgency and whether the work is in or out of hours. Most domestic emergency repairs fall between £130 and £350 fully fitted. We confirm the price after diagnosis and before any work begins.',
+      'It depends on the problem type, parts required, access, urgency and whether the work is in or out of hours. After diagnosis we explain the issue and confirm a fixed quote before any work begins, so you always know the price up front.',
   },
   {
-    question: 'What affects emergency plumber cost?',
+    question: 'What affects the quote for an emergency plumber?',
     answer:
-      'The main factors are the type of problem (a tap repair is not the same as a hidden leak), parts required, time on site, access to pipework, water damage complexity, and whether the call is scheduled or out-of-hours. We charge the same call-out fee and hourly rate day or night.',
+      'The main factors are the type of problem (a tap repair is not the same as a hidden leak), parts required, time on site, access to pipework, water damage complexity, and whether the call is scheduled or out-of-hours. We charge the same rate day or night, with no out-of-hours surcharge.',
   },
   {
     question: 'Can you repair burst pipes?',

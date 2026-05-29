@@ -20,8 +20,8 @@ export const buildAreaFaq = (
     answer: `We cover ${area.name} and the surrounding ${area.landmarks.slice(0, 3).join(', ')} streets, including ${area.postcodes.join(', ')}. If your postcode is not listed, call us - we almost always cover further than the prefixes shown.`,
   },
   {
-    question: `Is the call-out price in ${area.name} the same as the rest of ${city.name}?`,
-    answer: `Yes. Our ${area.name} call-out fee is ${city.callOutFee}, covering attendance and the first hour on site, with an hourly rate of ${city.hourlyRate} after that. It is the same rate across the whole of ${city.name}, with no surcharge for nights, weekends or bank holidays.`,
+    question: `Is the rate in ${area.name} the same as the rest of ${city.name}?`,
+    answer: `Yes. We charge the same across the whole of ${area.name} and the rest of ${city.name}, with no surcharge for nights, weekends or bank holidays. The call-out covers attendance and the first hour on site, and we always confirm a clear quote before any work begins.`,
   },
   {
     question: `What plumbing problems are most common in ${area.name}?`,

@@ -92,14 +92,14 @@ export default function PlumbingServicesIndexPage() {
               <span className="eyebrow">Plumbing services</span>
               <h1 className="mt-4">Plumbing Services Across the UK</h1>
               <p className="mt-5 max-w-2xl text-base md:text-lg leading-relaxed text-gray-soft">
-                {BRAND} provides local plumbing repairs, emergency callouts, leak detection, drain unblocking, and bathroom and kitchen plumbing across the UK. Select your city below to view pricing, coverage, and book a local plumber.
+                {BRAND} provides local plumbing repairs, emergency callouts, leak detection, drain unblocking, and bathroom and kitchen plumbing across the UK. Select your city below to view coverage and book a local plumber.
               </p>
               <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {[
                   { label: 'Services available', value: '8+' },
                   { label: 'Cities covered', value: `${cities.length}+` },
                   { label: 'Rating', value: '4.9★' },
-                  { label: 'Out-of-hours surcharge', value: 'None' },
+                  { label: 'Availability', value: '24/7' },
                 ].map(({ label, value }) => (
                   <div key={label} className="rounded-2xl border border-gray-line bg-white p-4 text-center shadow-sm">
                     <div className="text-2xl font-extrabold text-primary">{value}</div>
@@ -131,7 +131,7 @@ export default function PlumbingServicesIndexPage() {
             <span className="eyebrow">Choose your city</span>
             <h2 className="mt-3">Select Your City</h2>
             <p className="mt-3 text-gray-soft">
-              Each city page includes local pricing, postcode coverage, recent jobs, customer reviews, and a full breakdown of plumbing services available in that area.
+              Each city page includes postcode coverage, recent jobs, customer reviews, and a full breakdown of plumbing services available in that area.
             </p>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -156,7 +156,7 @@ export default function PlumbingServicesIndexPage() {
                   <p className="mt-1 text-xs text-gray-soft">{city.region}</p>
                   <div className="mt-4 flex flex-wrap gap-1.5 text-xs">
                     <span className="rounded-full border border-gray-line bg-off-white px-2.5 py-1 font-semibold text-gray-soft">
-                      From {city.callOutFee}
+                      {city.responseTime} response
                     </span>
                     <span className="rounded-full border border-gray-line bg-off-white px-2.5 py-1 font-semibold text-gray-soft">
                       {city.postcodes.length} postcodes
