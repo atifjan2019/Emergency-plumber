@@ -118,7 +118,7 @@ Leeds' wider housing stock includes the inter-war semi belt around Roundhay, Moo
     commonIssues: ['Back-to-back access constraints', 'Student-let toilet blockages', 'Frozen pipes in vacated lets', 'Copper pinhole leaks', 'High-rise stack failures'],
     landmarks: ['City Centre', 'Headingley', 'Roundhay', 'Holbeck', 'Chapel Allerton'],
     geo: { lat: 53.8008, lng: -1.5491 },
-    futureAreas: ['headingley', 'roundhay', 'chapel-allerton', 'horsforth', 'pudsey', 'morley', 'beeston', 'hyde-park'],
+    futureAreas: ['headingley', 'roundhay', 'chapel-allerton', 'horsforth', 'pudsey', 'morley', 'armley', 'hyde-park'],
     waterBoard: 'Yorkshire Water',
     waterHardness: 'moderately soft',
   },
