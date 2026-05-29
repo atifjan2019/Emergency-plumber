@@ -23,6 +23,20 @@ export type Area = {
   geo: { lat: number; lng: number };
   /** Sibling area slugs in the same city, for internal linking */
   nearbyAreas: string[];
+
+  // ── Optional rich content (present on hand-deepened pages) ───────────────────
+  /** One-paragraph positioning lead shown under the hero. */
+  overview?: string;
+  /** Named sub-areas / neighbourhoods within this area, each with a unique note. */
+  neighbourhoods?: { name: string; note: string }[];
+  /** Richer common-problem cards; preferred over commonIssues when present. */
+  commonProblems?: { title: string; detail: string }[];
+  /** Area-specific coverage/access note; replaces the boilerplate postcode intro. */
+  responseNote?: string;
+  /** Area-specific prevention/advice tips. */
+  localTips?: string[];
+  /** Hand-written, area-specific FAQ; preferred over the generated FAQ when present. */
+  faqs?: { question: string; answer: string }[];
 };
 
 // ─── London (pilot) ─────────────────────────────────────────────────────────
@@ -37,10 +51,44 @@ const london: Area[] = [
     intro: 'From the Georgian terraces of Camden Town to the stucco villas of Primrose Hill, Camden mixes period property and canal-side conversions that each fail in their own way.',
     postcodes: ['NW1', 'NW3', 'NW5', 'N7', 'N19', 'WC1'],
     responseTime: '30 minutes',
-    housingNotes: `Camden's housing runs from the early-Victorian terraces around Camden Town and Kentish Town to the grand stucco-fronted villas of Primrose Hill and Belsize Park, with a band of canal-side warehouse conversions threaded along the Regent's Canal. That spread means no two call-outs look alike. The terrace stock still carries stretches of original lead supply pipe and undersized waste runs that were never planned for the second and third bathrooms now squeezed into loft conversions, while the larger Primrose Hill houses hide complex internal pipework behind cornicing and panelling that cannot simply be cut into.
+    overview: `Camden is one of the most plumbing-varied boroughs in London. In the space of a single mile you move from the canal-side warehouse conversions of Camden Lock to the Georgian shopfront terraces of Camden Town, the grand stucco villas of Primrose Hill, the dense Victorian flat-conversions of Kentish Town and the red-brick mansion blocks of Belsize Park. Each was built to a different standard, plumbed in a different decade, and fails in a different way - so our Camden engineers turn up with a kit calibrated to the property in front of them rather than a one-size-fits-all van.`,
+    housingNotes: `The everyday workhorse of Camden's housing is the Victorian and early-Victorian terrace that fills Camden Town and Kentish Town. Built fast for a city that was growing just as quickly, these houses were never engineered for the way modern households use water, and most have since been carved into flats or extended upward into the roof. Original lead rising mains, cast-iron soil stacks and waste runs sized for a single cold tap now feed two and three bathrooms apiece, and the joints between the original pipework and the retrofitted runs are where the majority of our leaks and slow drains begin.
 
-Thames Water supplies Camden with very hard water, and limescale is the single biggest driver of boiler and immersion failures we attend here - combi heat exchangers in the flat conversions around Kentish Town scale up and start kettling years before they should. Lower-ground and basement flats, common right across Primrose Hill and Belsize Park, are where leaks do the most damage: water from an upper floor tracks down through the building and pools at the lowest level, so we isolate and trace fast on every Camden basement call.`,
+Climb the hill into Primrose Hill and Belsize Park and the stock changes completely. Here the houses are grand stucco-fronted villas and mansion blocks, almost all with lower-ground and basement levels, and the pipework runs behind cornicing, panelling and lath-and-plaster that cannot simply be cut into. Much of this part of Camden is listed or sits inside a conservation area, which shapes how an emergency repair has to be carried out - we lead with non-invasive detection rather than exploratory holes.
+
+Threading through all of it is Thames Water's very hard supply, often above 300 parts per million. Limescale is the single biggest driver of the boiler and immersion failures we attend across the borough: combi heat exchangers scale up, start to kettle, and deliver lukewarm water years before they should. Combined with the borough's appetite for basement conversions - where any leak from above collects at the lowest level out of sight - it makes Camden a borough where fast isolation and accurate tracing matter more than almost anywhere else we cover.`,
+    neighbourhoods: [
+      { name: 'Camden Town (NW1)', note: 'Georgian and early-Victorian terraces around the market and the canal, many split into flats above shops and bars. Original lead rising mains, retrofitted upstairs bathrooms and mixed residential-commercial drainage are the usual culprits.' },
+      { name: 'Primrose Hill (NW1, NW3)', note: 'Grand stucco-fronted villas, almost all with lower-ground and basement levels. The defining problem is water from an upper floor or a failed mains run migrating down and pooling at the lowest level, out of sight.' },
+      { name: 'Kentish Town (NW5)', note: 'Denser Victorian terraces heavily converted into flats. Thames hard water furs up the combi heat exchangers, shared soil stacks back up between flats, and decades of retrofitted bathrooms overload the original waste runs.' },
+      { name: 'Belsize Park (NW3)', note: 'Red-brick mansion blocks and large period conversions running communal cold-water risers and vertical waste stacks - so one flat\'s leak or blockage is felt several floors below, and unvented cylinders raise the stakes when a valve fails.' },
+      { name: 'Gospel Oak & Dartmouth Park (NW5)', note: 'A mix of post-war estates and hillside Victorian terraces toward the Highgate boundary - estate blocks bring communal-stack work while the terraces bring lead pipes and limescale.' },
+      { name: 'Somers Town (NW1)', note: 'Post-war social-housing estates between Euston and King\'s Cross with shared risers and communal plumbing, where isolation is coordinated with the block rather than a single flat.' },
+    ],
+    commonProblems: [
+      { title: 'Limescale-furred combi boilers', detail: 'Thames Water supplies Camden with very hard water, often above 300ppm. In the flat-conversions of Kentish Town and Camden Town that scale narrows the combi heat exchanger until the boiler kettles, the hot water runs lukewarm and pressure starts cycling. We descale or replace the heat exchanger and fit a scale-reducer to slow it happening again.' },
+      { title: 'Lead supply-pipe leaks in period terraces', detail: 'Pre-1970s terraces across Camden Town and Kentish Town still carry stretches of original lead rising main. As the metal degrades it produces pinhole leaks that surface under floorboards or behind plaster, and we replace the lead run with copper or MDPE as part of the repair rather than patching it.' },
+      { title: 'Leak migration into basement flats', detail: 'Primrose Hill and Belsize Park are full of lower-ground and basement flats. Because they sit at the bottom of the building, a leak two floors up - or a failed mains run - tracks down and collects there, often appearing far from its source. Fast isolation and acoustic tracing limit the damage.' },
+      { title: 'Listed and conservation-area constraints', detail: 'Large parts of Camden Town, Primrose Hill and the Hampstead fringe sit in conservation areas, and many homes are listed. We cannot chase into period fabric without thought, so we lead with thermal and acoustic detection and choose replacement materials that suit the building.' },
+      { title: 'Communal riser and stack faults', detail: 'The Belsize Park mansion blocks and larger conversions run shared cold-water risers and vertical waste stacks, so a blockage or leak on one floor is felt by the flats below. We carry isolation tools and matting and know the access procedures for the managed blocks.' },
+    ],
     commonIssues: ['Limescale-furred combi boilers in Kentish Town flats', 'Lead supply pipe leaks in Camden Town terraces', 'Leak migration into Primrose Hill basement flats', 'Listed and conservation-area repair constraints', 'Communal stack faults in Belsize Park mansion blocks'],
+    responseNote: `Engineers covering Camden are dispatched from across north and central London, so we reach Camden Town, Kentish Town and Primrose Hill well inside our advertised window even through the borough's heavy traffic and controlled-parking zones. For the canal-side conversions and the larger managed blocks we plan access on the call, so the engineer arrives with the right approach and the isolation kit those buildings need.`,
+    localTips: [
+      'Find and label your stopcock now - in converted Camden flats it is often shared or tucked inside a hallway cupboard, and you will not want to hunt for it mid-leak.',
+      'Fit a scale-reducer or inhibitor if you are on a combi - Thames Water\'s very hard supply is the single biggest cause of boiler failure we see across Camden.',
+      'In Primrose Hill and Belsize Park basement flats, keep the lowest floor clear of anything valuable and check for damp early - leaks from above show here first.',
+      'If your home is listed or in a conservation area, keep a note of which pipe and fitting materials are acceptable - it speeds up an emergency repair enormously.',
+      'Lag any pipework in unheated Victorian lofts and cellars before winter - the exposed runs in Camden\'s older stock are the ones that split in a cold snap.',
+    ],
+    faqs: [
+      { question: 'Do you cover listed and conservation-area homes in Camden?', answer: 'Yes. Much of Camden Town, Primrose Hill and the Hampstead fringe is listed or in a conservation area. We use non-invasive thermal and acoustic leak detection to avoid disturbing period fabric, and we choose repair materials appropriate to the building so an emergency fix does not create a planning problem later.' },
+      { question: 'Why does my Camden combi boiler keep scaling up or losing pressure?', answer: 'Thames Water supplies Camden with very hard water, which deposits limescale inside the combi heat exchanger over time. That causes kettling, lukewarm hot water and pressure that cycles up and down. We descale or replace the heat exchanger and can fit a scale-reducer to slow it recurring, and we check for the small hidden leaks that also drop pressure.' },
+      { question: 'My lower-ground flat in Primrose Hill takes water from upstairs - can you find the source?', answer: 'Yes, and it is one of the most common calls we get in Primrose Hill and Belsize Park. Water from an upper floor or a failed mains run travels down through the structure and collects in the basement, often metres from the actual leak. We isolate the supply, then use thermal imaging and acoustic detection to pinpoint the source before any cutting.' },
+      { question: 'How quickly can you reach Camden Town or Kentish Town?', answer: 'We aim to be with you in around 30 minutes. Engineers covering Camden are dispatched from across north and central London, and we plan around the borough\'s traffic and controlled-parking zones so the advertised window holds even at peak times.' },
+      { question: 'Do you carry parts for the old lead and cast-iron pipework in Camden terraces?', answer: 'Yes. The pre-1970s terraces of Camden Town and Kentish Town still run lead supply pipe and cast-iron soil stacks. We carry copper, MDPE and the couplings needed to replace a failed lead run on the spot, rather than making a temporary patch that fails again.' },
+      { question: 'Can you handle a leak in a Belsize Park mansion block that affects other flats?', answer: 'Yes. Mansion blocks and large conversions share cold-water risers and waste stacks, so a leak on one floor reaches the flats below. We carry isolation tools and absorbent matting, know the access procedures for most managed blocks, and coordinate isolation with the building where a communal riser is involved.' },
+    ],
     landmarks: ['Camden Town', 'Primrose Hill', 'Kentish Town', 'Belsize Park', "Regent's Park"],
     geo: { lat: 51.539, lng: -0.1426 },
     nearbyAreas: ['islington', 'haringey'],

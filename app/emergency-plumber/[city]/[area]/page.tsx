@@ -67,10 +67,10 @@ export default async function AreaPage({ params }: { params: Promise<{ city: str
   if (!city || !area) notFound();
 
   const settings = await getSettings();
-  const faq = buildAreaFaq(area, city, settings.gasSafeNumber);
+  const faq = area.faqs && area.faqs.length ? area.faqs : buildAreaFaq(area, city, settings.gasSafeNumber);
+  const housingParas = area.housingNotes.split('\n\n');
 
-  // Sibling areas for internal linking: prefer the curated nearby list, then
-  // top up with any other areas in the same city.
+  // Sibling areas for internal linking: curated nearby first, then top up.
   const siblings = getAreasByCity(city.slug).filter((a) => a.slug !== area.slug);
   const nearby = [
     ...area.nearbyAreas
@@ -114,8 +114,11 @@ export default async function AreaPage({ params }: { params: Promise<{ city: str
           <div>
             <span className="eyebrow">Local insight</span>
             <h2 className="mt-3">Why {area.name} homes call us</h2>
+            {area.overview && (
+              <p className="mt-4 text-lg font-medium leading-relaxed text-ink">{area.overview}</p>
+            )}
             <div className="mt-6 space-y-5 text-base md:text-lg leading-relaxed">
-              {area.housingNotes.split('\n\n').map((para, i) => (
+              {housingParas.map((para, i) => (
                 <p key={i} className="text-gray-soft">{para}</p>
               ))}
             </div>
@@ -159,40 +162,103 @@ export default async function AreaPage({ params }: { params: Promise<{ city: str
         </div>
       </section>
 
-      {/* Common issues */}
-      <section className="section">
+      {/* Neighbourhoods */}
+      {area.neighbourhoods && area.neighbourhoods.length > 0 && (
+        <section className="section">
+          <div className="container-content">
+            <span className="eyebrow">Neighbourhoods</span>
+            <h2 className="mt-3">Parts of {area.name} we cover</h2>
+            <p className="mt-3 max-w-3xl text-gray-soft">
+              {area.name} is not one place but several, and the plumbing changes street by street. Here is what we see across its neighbourhoods.
+            </p>
+            <div className="mt-8 grid gap-5 md:grid-cols-2">
+              {area.neighbourhoods.map((n) => (
+                <div key={n.name} className="rounded-2xl border border-gray-line bg-white p-6">
+                  <div className="flex items-center gap-2.5">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4.5 w-4.5 text-primary" aria-hidden>
+                      <path d="M12 22s7-7.5 7-13a7 7 0 10-14 0c0 5.5 7 13 7 13z" />
+                      <circle cx="12" cy="9" r="2.5" />
+                    </svg>
+                    <h3 className="font-bold text-ink">{n.name}</h3>
+                  </div>
+                  <p className="mt-3 text-sm text-gray-soft leading-relaxed">{n.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Common problems */}
+      <section className={`section ${area.neighbourhoods?.length ? 'bg-off-white' : ''}`}>
         <div className="container-content">
           <span className="eyebrow">What we fix</span>
           <h2 className="mt-3">Common plumbing problems in {area.name}</h2>
           <p className="mt-3 max-w-3xl text-gray-soft">
             The faults we are called to most often in {area.name} reflect its local property stock and the {city.waterBoard} {city.waterHardness}-water supply. Our engineers carry the parts and detection kit these jobs typically need.
           </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            {area.commonIssues.map((issue, i) => (
-              <div key={i} className="flex items-start gap-3 rounded-2xl border border-gray-line bg-white p-5">
-                <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary text-white text-xs font-bold">
-                  {i + 1}
-                </span>
-                <span className="text-ink font-medium leading-snug">{issue}</span>
-              </div>
-            ))}
-          </div>
+          {area.commonProblems && area.commonProblems.length > 0 ? (
+            <div className="mt-8 grid gap-5 md:grid-cols-2">
+              {area.commonProblems.map((p, i) => (
+                <div key={i} className="rounded-2xl border border-gray-line bg-white p-6">
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary text-white text-sm font-bold">{i + 1}</span>
+                    <h3 className="font-bold text-ink leading-snug">{p.title}</h3>
+                  </div>
+                  <p className="mt-3 text-sm text-gray-soft leading-relaxed">{p.detail}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {area.commonIssues.map((issue, i) => (
+                <div key={i} className="flex items-start gap-3 rounded-2xl border border-gray-line bg-white p-5">
+                  <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-primary text-white text-xs font-bold">{i + 1}</span>
+                  <span className="text-ink font-medium leading-snug">{issue}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Postcodes */}
-      <section className="section bg-off-white">
+      <section className={`section ${area.neighbourhoods?.length ? '' : 'bg-off-white'}`}>
         <div className="container-content">
           <span className="eyebrow">Coverage</span>
           <h2 className="mt-3">Postcodes we cover in {area.name}</h2>
           <p className="mt-3 max-w-3xl text-gray-soft">
-            We reach most {area.name} postcodes inside our advertised response time. If yours is not listed, call us - we cover further than the prefixes shown in most cases.
+            {area.responseNote ??
+              `We reach most ${area.name} postcodes inside our advertised response time. If yours is not listed, call us - we cover further than the prefixes shown in most cases.`}
           </p>
           <div className="mt-8">
             <PostcodeChips postcodes={area.postcodes} />
           </div>
         </div>
       </section>
+
+      {/* Local tips */}
+      {area.localTips && area.localTips.length > 0 && (
+        <section className="section bg-off-white">
+          <div className="container-content">
+            <span className="eyebrow">Local advice</span>
+            <h2 className="mt-3">Plumbing advice for {area.name} homes</h2>
+            <p className="mt-3 max-w-3xl text-gray-soft">A few things worth doing before a problem starts - tuned to {area.name}&apos;s property stock and water supply.</p>
+            <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+              {area.localTips.map((tip, i) => (
+                <li key={i} className="flex items-start gap-3 rounded-2xl border border-gray-line bg-white p-5">
+                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-green/15 text-green-dark">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="h-3.5 w-3.5" aria-hidden>
+                      <path strokeLinecap="round" d="M5 12l5 5L20 7" />
+                    </svg>
+                  </span>
+                  <span className="text-sm text-ink leading-relaxed">{tip}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* Services */}
       <section className="section">
