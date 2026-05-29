@@ -1,6 +1,7 @@
 import { BRAND, SITE_URL, EMAIL, GAS_SAFE_NUMBER, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT } from './constants';
 import { cities as allCities } from '@/data/cities';
 import type { City } from '@/data/cities';
+import type { Area } from '@/data/areas';
 import type { Service } from '@/data/services';
 
 const ORG_DESCRIPTION =
@@ -107,6 +108,55 @@ export const cityPlumberSchema = (city: City, phoneTel: string) => {
       '@type': 'AggregateRating',
       ratingValue: NATIONWIDE_RATING,
       reviewCount: Math.floor(NATIONWIDE_REVIEW_COUNT / 12),
+      bestRating: 5,
+    },
+  };
+};
+
+export const areaPlumberSchema = (area: Area, city: City, phoneTel: string) => {
+  const url = `${SITE_URL}/emergency-plumber/${city.slug}/${area.slug}`;
+  const callOutPrice = priceNumber(city.callOutFee);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Plumber',
+    '@id': `${url}#plumber`,
+    name: `${BRAND} Emergency Plumber ${area.name}`,
+    url,
+    telephone: phoneTel,
+    image: ORG_HERO_IMAGE,
+    parentOrganization: { '@id': `${SITE_URL}/#organization` },
+    priceRange: '££',
+    openingHours: 'Mo-Su 00:00-23:59',
+    areaServed: [
+      { '@type': 'City', name: city.name },
+      { '@type': 'Place', name: `${area.name}, ${city.name}` },
+      ...area.postcodes.map((p) => ({ '@type': 'PostalCodeSpecification', postalCode: p, addressCountry: 'GB' })),
+    ],
+    serviceArea: {
+      '@type': 'GeoCircle',
+      geoMidpoint: { '@type': 'GeoCoordinates', latitude: area.geo.lat, longitude: area.geo.lng },
+      geoRadius: '8000',
+    },
+    geo: { '@type': 'GeoCoordinates', latitude: area.geo.lat, longitude: area.geo.lng },
+    address: { '@type': 'PostalAddress', addressLocality: area.name, addressRegion: city.region, addressCountry: 'GB' },
+    hasMap: `https://www.google.com/maps/search/?api=1&query=emergency+plumber+${encodeURIComponent(`${area.name} ${city.name}`)}`,
+    ...(callOutPrice !== undefined && {
+      offers: {
+        '@type': 'Offer',
+        availability: 'https://schema.org/InStock',
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          priceCurrency: 'GBP',
+          price: callOutPrice,
+          minPrice: callOutPrice,
+          valueAddedTaxIncluded: true,
+        },
+      },
+    }),
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: NATIONWIDE_RATING,
+      reviewCount: Math.floor(NATIONWIDE_REVIEW_COUNT / 60),
       bestRating: 5,
     },
   };

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { cities } from '@/data/cities';
+import { areas } from '@/data/areas';
 import { services } from '@/data/services';
 import { SITE_URL } from '@/lib/constants';
 
@@ -21,6 +22,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const areaPages: MetadataRoute.Sitemap = areas.map((a) => ({
+    url: `${SITE_URL}/emergency-plumber/${a.citySlug}/${a.slug}`,
+    lastModified,
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
   const servicePages: MetadataRoute.Sitemap = services.map((s) => ({
     url: `${SITE_URL}/services/${s.slug}`,
     lastModified,
@@ -28,5 +36,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...cityPages, ...servicePages];
+  return [...staticPages, ...cityPages, ...areaPages, ...servicePages];
 }

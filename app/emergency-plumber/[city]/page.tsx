@@ -12,6 +12,7 @@ import CTASection from '@/components/CTASection';
 import QuoteForm from '@/components/QuoteForm';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import { cities, getCityBySlug, getCitySlugs } from '@/data/cities';
+import { getAreaBySlug } from '@/data/areas';
 import { services } from '@/data/services';
 import { getReviewsByCity } from '@/lib/reviews';
 import { getRecentJobsByCity } from '@/data/recentJobs';
@@ -351,28 +352,52 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
         </div>
       </section>
 
-      {/* Future areas */}
+      {/* Areas */}
       <section className="section">
         <div className="container-content">
           <span className="eyebrow">Areas</span>
           <h2 className="mt-3">Areas we cover in {city.name}</h2>
           <p className="mt-3 max-w-2xl text-gray-soft">
-            Sub-area pages coming soon. In the meantime we cover all listed postcodes from this hub.
+            Dedicated local pages for the areas across {city.name}. Tap an area for response times, postcodes and local plumbing notes, or call us with any {city.name} postcode.
           </p>
           <div className="mt-10 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {city.futureAreas.map((area) => (
-              <div
-                key={area}
-                aria-disabled
-                className="rounded-xl border border-gray-line bg-off-white p-5 cursor-not-allowed"
-              >
-                <div className="font-bold capitalize text-ink">{area.replace(/-/g, ' ')}</div>
-                <div className="mt-1 text-xs text-gray-soft inline-flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-yellow-500" />
-                  Dedicated page coming soon
+            {city.futureAreas.map((areaSlug) => {
+              const area = getAreaBySlug(city.slug, areaSlug);
+              const label = areaSlug.replace(/-/g, ' ');
+              if (area) {
+                return (
+                  <Link
+                    key={areaSlug}
+                    href={`/emergency-plumber/${city.slug}/${area.slug}`}
+                    className="group rounded-xl border border-gray-line bg-white p-5 transition hover:border-primary hover:shadow-md"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="font-bold text-ink group-hover:text-primary transition-colors">{area.name}</div>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 text-gray-soft group-hover:text-primary group-hover:translate-x-0.5 transition" aria-hidden>
+                        <path strokeLinecap="round" d="M9 6l6 6-6 6" />
+                      </svg>
+                    </div>
+                    <div className="mt-1 text-xs text-gray-soft inline-flex items-center gap-1.5">
+                      <span className="h-1.5 w-1.5 rounded-full bg-green" />
+                      Emergency plumber in {area.name}
+                    </div>
+                  </Link>
+                );
+              }
+              return (
+                <div
+                  key={areaSlug}
+                  aria-disabled
+                  className="rounded-xl border border-gray-line bg-off-white p-5 cursor-not-allowed capitalize"
+                >
+                  <div className="font-bold text-ink">{label}</div>
+                  <div className="mt-1 text-xs text-gray-soft inline-flex items-center gap-1.5">
+                    <span className="h-1.5 w-1.5 rounded-full bg-yellow-500" />
+                    Dedicated page coming soon
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
