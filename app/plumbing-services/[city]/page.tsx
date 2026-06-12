@@ -18,7 +18,7 @@ import { SITE_URL, PHONE_TEL, NATIONWIDE_RATING, NATIONWIDE_REVIEW_COUNT, BRAND 
 import { ogImageFor } from '@/lib/seo';
 
 export const dynamicParams = false;
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 export function generateStaticParams() {
   return getCitySlugs().map((city) => ({ city }));

@@ -42,7 +42,7 @@ import {
   localAreaContext,
 } from '@/lib/plumbingContent';
 
-export const revalidate = 3600;
+export const revalidate = 86400;
 
 const HOME_TITLE = `${BRAND} | 24/7 Emergency Plumbers UK`;
 const HOME_DESCRIPTION = `24/7 emergency plumbers across 12 UK cities. Burst pipes, blocked drains, leaks & boiler repairs. Gas Safe registered. Transparent quotes. Call now.`;
